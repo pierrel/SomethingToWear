@@ -1,0 +1,93 @@
+<html>
+<head>
+	<link rel="stylesheet" href="../../css/style.css" type="text/css">
+	<link rel="stylesheet" href="../../css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../css/blueprint/print.css" type="text/css" media="print">	
+	<!--[if lt IE 8]><link rel="stylesheet" href="../../css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+</head>
+<body id="main" onload="draw_mannequin()">
+	<div class="container">
+		<div class="span-24 last">
+			<h1>Something to Wear</h1>
+		</div>
+		
+		<div id="closet" class="span-12">
+			<div class="closet-part">
+				<div id="shirts" class="part">
+					<div class="piece-image"><img src="images/shirt1.png" /></div>
+					<div class="piece-image"><img src="images/shirt2.png" /></div>
+					<div class="piece-image"><img src="images/polo1.png" /></div>
+					<div class="piece-image"><img src="images/polo2.png" /></div>
+				</div>
+			</div>
+			<div class="closet-part">
+				<div id="pants" class="part">
+					<div class="piece-image"><img src="images/pant1.png" /></div>
+					<div class="piece-image"><img src="images/pant2.png" /></div>
+					<div class="piece-image"><img src="images/cropped_pant1.png" /></div>
+				</div>
+			</div>
+			<div id="shows-part" class="closet-part">
+				<div id="shoes" class="part">
+					<div class="piece-image"><img src="images/shoes1.png" /></div>
+					<div class="piece-image"><img src="images/shoes2.png" /></div>
+					<div class="piece-image"><img src="images/shoes3.png" /></div>
+				</div>
+			</div>
+		</div>
+		
+		<div id="dress-button">
+			<input type="button" name="dress" value="Dress Me!" id="dress">
+		</div>
+		<div id="mannequin" class="span-12 last">
+			<canvas id="mannequin-canvas" height="500px">
+				canvas?
+			</canvas>
+		</div>
+		<div id="rating">
+			<img src="images/stars.png" />
+		</div>
+				
+	</div>
+	
+	
+	
+	<script type="text/javascript" charset="utf-8">
+		function set_image(context, image, width) {
+			ratio = image.width/image/height;
+			context.drawImage(image, 10, 10, width, width/ratio);
+		}
+		
+		
+		function draw_mannequin() {
+			var cont = document.getElementById('mannequin-canvas').getContext('2d');
+			var shirt = new Image();
+			var pant = new Image();
+			var shoes = new Image();
+						
+			shirt.onload = function() {
+				ratio = shirt.width/shirt.height;
+				width = 150;
+				cont.drawImage(shirt, 60, 60, width, width/ratio);
+			}
+			
+			pant.onload = function() {
+				ratio = pant.width/pant.height;
+				width = 110;
+				cont.drawImage(pant, 90, 235, width, width/ratio);
+			}
+			
+			shoes.onload = function() {
+				ratio = shoes.width/shoes.height;
+				height = 50;
+				cont.drawImage(shoes, 85, 439, height*ratio, height);
+			}
+			
+			shoes.src = 'images/shoes2.png';
+			pant.src = 'images/pant2.png';
+			shirt.src = 'images/shirt1.png';
+		}
+		
+	</script>
+</body>
+

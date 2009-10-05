@@ -1,0 +1,37 @@
+#shoes-part {
+	height: 100px;;
+}
+
+.closet-part {
+	overflow-x: auto;
+	overflow-y: hidden;
+	height: 220px;
+	width: 300px;
+}
+
+.part {
+	width: 2000px;
+}
+
+
+.piece-image img{
+	float: left;
+	height: 200px;
+	border: 1px solid #97efd5;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+
+#shoes div img {
+	height: 100px;
+}
+
+#dress-button {
+	position: relative;
+	left: 100px;
+}
+
+#rating {
+	position: relative;
+	left: 100px;
+}
