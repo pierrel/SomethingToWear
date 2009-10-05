@@ -1,5 +1,5 @@
 #shoes-part {
-	height: 100px;;
+	height: 120px;;
 }
 
 .closet-part {
@@ -32,6 +32,12 @@
 }
 
 #rating {
+	position: relative;
+	left: 100px;
+	top: 10px;
+}
+
+#edit_button {
 	position: relative;
 	left: 100px;
 }
