@@ -7,11 +7,11 @@
 }
 
 #shirts {
-	width: 700px;
+	width: 500px;
 }
 
 #shoes {
-	width: 650px;
+	width: 600px;
 }
 
 #dress-button {
@@ -33,7 +33,9 @@
 .search {
 	display: block;
 	color: #9b9b9b;
-	-webkit-border-radius: 5px;
+	width: 200px;
+	height: 30px;
+	font-size: 17px;
 }
 
 /* @group closet images */
@@ -41,7 +43,7 @@
 .closet-part {
 	overflow-x: auto;
 	overflow-y: hidden;
-	height: 220px;
+	height: 150px;
 	width: 400px;
 	border: 2px solid;
 }
@@ -52,7 +54,7 @@
 
 .piece-image img{
 	float: left;
-	height: 200px;
+	height: 140px;
 	border: 1px solid #97efd5;
 	margin-right: 2px;
 	margin-left: 2px;
