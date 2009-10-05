@@ -66,12 +66,6 @@
 	
 	
 	<script type="text/javascript" charset="utf-8">
-		function set_image(context, image, width) {
-			ratio = image.width/image/height;
-			context.drawImage(image, 10, 10, width, width/ratio);
-		}
-		
-		
 		function draw_mannequin() {
 			var cont = document.getElementById('mannequin-canvas').getContext('2d');
 			var shirt = new Image();
