@@ -1,3 +1,31 @@
+/* @group closet images */
+
+.closet-part {
+	overflow-x: auto;
+	overflow-y: hidden;
+	height: 150px;
+	width: 400px;
+	border: 2px solid;
+}
+
+#shoes div img {
+	height: 100px;
+}
+
+.piece-image img{
+	float: left;
+	height: 140px;
+	border: 1px solid #97efd5;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+
+
+
+/* @end */
+
+/* @group main functionality */
+
 #shoes-part {
 	height: 120px;;
 }
@@ -38,28 +66,14 @@
 	font-size: 17px;
 }
 
-/* @group closet images */
-
-.closet-part {
-	overflow-x: auto;
-	overflow-y: hidden;
-	height: 150px;
-	width: 400px;
-	border: 2px solid;
-}
-
-#shoes div img {
-	height: 100px;
-}
-
-.piece-image img{
-	float: left;
-	height: 140px;
-	border: 1px solid #97efd5;
-	margin-right: 2px;
-	margin-left: 2px;
-}
-
 
 
 /* @end */
+
+#fashion{
+	background-color: #e8effb;
+}
+
+#fashion img {
+	margin: 10px;
+}
