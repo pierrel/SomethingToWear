@@ -77,15 +77,35 @@
 
 /* @end */
 
-#instructions img {
-	height: 500px;
-	opacity: 0.52;
+#instructions img{
+	text-align: center;
+	height: 550px;
+	opacity: 0.50;
 }
 
 #fashion{
+	display: block;
 	background-color: #e8effb;
+	width: 500px;
+	height: 600px;
+}
+
+#fashion-image {
+	display: inline;
+	float: right;
 }
 
 #fashion img {
+	text-align: right;
+	display: inline;
 	margin: 10px;
+}
+
+#other-rating {
+	text-align: center;
+	display: block;
+}
+
+#add-to-closet-links {
+	display: inline;
 }
