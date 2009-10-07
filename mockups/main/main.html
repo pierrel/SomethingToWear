@@ -9,7 +9,7 @@
 	<script src="../../script/jquery-ui-1.7.2.custom.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body id="main" onload="draw_mannequin()">
-	<div class="container">
+	<div class="container showgrid">
 		<div class="span-24 last">
 			<h1>Something to Wear</h1>
 		</div>
@@ -18,7 +18,7 @@
 			&nbsp;
 		</div>
 		
-		<div id="mannequin" class="span-11">
+		<div id="mannequin" class="span-10">
 			<div id="dress-button">
 				<input type="button" name="dress" value="Dress Me!" id="dress" />
 			</div>
@@ -34,8 +34,15 @@
 			</div>	
 		</div>
 		
+		<div id="instructions" class="span-12">
+			<img src="images/instructions.png" />
+		</div>
 		
-		<div id="closet" class="span-12 last">
+		<div id="closet-handle" class="span-1 last">
+			&nbsp;
+		</div>
+				
+		<div id="closet">
 			<div id="edit_button">
 				<input type="submit" name="edit_closet" value="Edit Your Closet" id="edit_closet">
 			</div>
@@ -80,6 +87,7 @@
 	</div>
 	
 	<script type="text/javascript" charset="utf-8">
+		var closet_state = 'closed';
 	
 		$("#fashion").dialog({
 			autoOpen: false,
@@ -98,6 +106,27 @@
 		$("#rate_others").click(function() {
 			$("#fashion").dialog('open');
 		});
+		
+		$("#closet-handle").click(function() {
+			if (closet_state == 'closed') {
+				$("#instructions").hide();
+				$("#mannequin").switchClass('span-11', 'span-10');
+				$("#closet-handle").removeClass('last');
+				$("#closet").addClass('span-11 last');
+				$("#closet").show('slide');
+
+				closet_state = 'open';
+			} else {
+				$("#closet").removeClass('span-11 last');
+				$("#closet").hide('slide');
+				$("#closet-handle").addClass('last');
+				$("#mannequin").switchClass('span-10', 'span-11');
+				$("#instructions").show();
+				
+				closet_state = 'closed';
+			}
+			
+		});
 
 
 		function draw_mannequin() {
@@ -109,19 +138,19 @@
 			shirt.onload = function() {
 				ratio = shirt.width/shirt.height;
 				width = 150;
-				cont.drawImage(shirt, 60, 60, width, width/ratio);
+				cont.drawImage(shirt, 30, 60, width, width/ratio);
 			}
 
 			pant.onload = function() {
 				ratio = pant.width/pant.height;
 				width = 110;
-				cont.drawImage(pant, 90, 235, width, width/ratio);
+				cont.drawImage(pant, 60, 235, width, width/ratio);
 			}
 
 			shoes.onload = function() {
 				ratio = shoes.width/shoes.height;
 				height = 50;
-				cont.drawImage(shoes, 85, 439, height*ratio, height);
+				cont.drawImage(shoes, 55, 439, height*ratio, height);
 			}
 
 			shoes.src = 'images/shoes2.png';

@@ -26,6 +26,24 @@
 
 /* @group main functionality */
 
+#closet {
+	display: none;
+}
+
+#closet-handle {
+	background-color: #ff704b;
+	height: 100%;
+	width: 10px;
+}
+
+#closet-handle:hover {
+	cursor: pointer;
+}
+
+#mannequin {
+	text-align: right;
+}
+
 #shoes-part {
 	height: 120px;;
 }
@@ -40,17 +58,6 @@
 
 #shoes {
 	width: 600px;
-}
-
-#dress-button {
-	position: relative;
-	left: 100px;
-}
-
-#rating {
-	position: relative;
-	left: 100px;
-	top: 10px;
 }
 
 #edit_button {
@@ -69,6 +76,11 @@
 
 
 /* @end */
+
+#instructions img {
+	height: 500px;
+	opacity: 0.52;
+}
 
 #fashion{
 	background-color: #e8effb;
