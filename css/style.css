@@ -1,3 +1,18 @@
+/* add-clothes */
+#left-column img {
+    margin: 0 auto 0 auto;
+}
+#clothing-types td, #clothing-types th, #patterns td, #patterns th {
+    text-align: center;
+}
+#steps ol li {
+    font-size: 100%;
+    list-style: none;
+}
+#clothing-types img {
+    cursor: pointer;
+}
+
 /* @group closet images */
 
 .closet-part {

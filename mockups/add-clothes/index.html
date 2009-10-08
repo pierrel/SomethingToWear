@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Add clothes</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Bryan Summersett">
+	<!-- Date: 2009-10-07 -->
+	<link rel="stylesheet" href="../../css/style.css" type="text/css">
+	<link rel="stylesheet" href="../../css/blueprint/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="../../css/blueprint/print.css" type="text/css" media="print">	
+	<link rel="stylesheet" href="farbtastic/farbtastic.css" type="text/css" />
+  <script src="../../script/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../script/jquery-ui-1.7.2.custom.min.js" type="text/javascript" charset="utf-8"></script>
+	
+	 <script type="text/javascript" src="farbtastic/farbtastic.js"></script>
+	<!--[if lt IE 8]><link rel="stylesheet" href="../../css/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
+	<script type="text/javascript" charset="utf-8">
+	  $(document).ready(function() {
+	    var drawingEles = "#drawing h3, #drawing img";
+	    $(drawingEles).hide();
+	    $('#steps ol li').hide().click(function() {
+	      $(this).next().fadeIn(1000);
+	      $(drawingEles).fadeIn(1000);
+	    });
+	    $('#steps ol li:first').show();
+      $('#picker').farbtastic('#color');
+	  });
+	 
+	</script>
+</head>
+<body>
+	<div class="container showgrid">
+	  <div id="drawing" class="span-12">
+	    <fieldset>
+	      <legend>Preview</legend>
+          <h3>This provides an approximation of what your clothing item looks like:</h3>
+    	    <img src="images/bigsuit.png">
+  	  </fieldset>
+	  </div>
+	  <div id="steps" class="span-12 last">
+	    <ol>
+	     <li>Pick out a clothing type:
+	       <table id="clothing-types">
+	           <tr>
+	             <th>Tops</th>
+	             <th>Bottoms</th>
+	             <th>Accessories</th>
+	             <th>Other</th>
+	           </tr>
+	           <tr>
+	             <td><img src="images/clothing-types/tops/tee.png"></td>
+	             <td><img src="images/clothing-types/bottoms/jeans.png"></td>
+	             <td><img src="images/clothing-types/accessories/aviators.png"></td>
+	             <td><img src="images/clothing-types/swimwear/bikini.png"></td>
+	           </tr>
+	         </tbody>
+	        </table>
+	    </li>
+	      <li>
+	       Pick a style:
+	       <table id="patterns">
+	         <tr>
+	           <th>Solid</th>
+	           <th>Horizontal stripe</th>
+	           <th>Vertical stripe</th>
+	           <th>Spots</th>
+	           <th>Other</th>
+	         </tr>
+	         <tr>
+	            <td><img src="images/patterns/solid.png"></td>
+	            <td><img src="images/patterns/h-stripe.png"></td>
+	            <td><img src="images/patterns/v-stripe.png"></td>
+	            <td><img src="images/patterns/spots.png"></td>
+	            <td><img src="images/patterns/other.png"></td>
+	         </tr>
+	       </table>
+	      </li>
+	     <li>Choose its main color:
+	     <div class="form-item"><label for="color">Color:</label><input type="text" id="color" name="color" value="#123456" /></div><div id="picker"></div>  
+	     </li>
+	     <li>Tell us about it:
+	       <form action="index_submit" method="get" accept-charset="utf-8">
+	         <label for="tags">Tags</label>
+	         <br>
+	         <input type="text" name="tags" value="michigan hoodie" id="tags" class="text">
+	         
+           
+	       </form>
+	     </li>
+	    </ol>
+	  </div>
+	</div>
+</body>
+</html>
