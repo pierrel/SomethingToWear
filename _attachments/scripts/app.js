@@ -1,76 +1,70 @@
-var closet_state = 'closed';
-
-$("#fashion").dialog({
-	autoOpen: false,
-	modal: true,
-	width: 'auto',
-	hide: 'slide',
-	show: 'slide',
-	resizable: false,
-	buttons : {
-		'Close' : function() {
-			$(this).dialog('close');
-		}
-	}
-});
-
-$("#rate_others").click(function() {
-	$("#fashion").dialog('open');
-});
-
-$("#closet-handle").click(function() {
-	if (closet_state == 'closed') {
-		$("#instructions").hide();
-		$("#mannequin").switchClass('span-11', 'span-10');
-		$("#closet-handle").removeClass('last');
-		$("#closet").addClass('span-11 last');
-		$("#closet").show('slide');
-
-		closet_state = 'open';
-	} else {
-		$("#closet").removeClass('span-11 last');
-		$("#closet").hide('slide');
-		$("#closet-handle").addClass('last');
-		$("#mannequin").switchClass('span-10', 'span-11');
-		$("#instructions").show();
-		
-		closet_state = 'closed';
-	}
-	
-});
-
-
-function draw_mannequin() {
-	var cont = document.getElementById('mannequin-canvas').getContext('2d');
-	var shirt = new Image();
-	var pant = new Image();
-	var shoes = new Image();
-
-	shirt.onload = function() {
-		ratio = shirt.width/shirt.height;
-		width = 150;
-		cont.drawImage(shirt, 30, 60, width, width/ratio);
-	}
-
-	pant.onload = function() {
-		ratio = pant.width/pant.height;
-		width = 110;
-		cont.drawImage(pant, 60, 235, width, width/ratio);
-	}
-
-	shoes.onload = function() {
-		ratio = shoes.width/shoes.height;
-		height = 50;
-		cont.drawImage(shoes, 55, 439, height*ratio, height);
-	}
-
-	shoes.src = 'images/shoes2.png';
-	pant.src = 'images/pant2.png';
-	shirt.src = 'images/shirt1.png';
+function couch(url) {
+    return 'http://127.0.0.1:5984' + url;
 }
-	
-	
-	
-	
-	
+
+// Works!
+function uuid() {
+    var id;
+    
+    $.ajax({
+        type: "GET",
+        url: 'http://localhost:5984/_uuids',
+        async: false,
+        datatype: "json",
+        success: function(msg) {
+            id = msg['uuids'][0];
+        },
+        error: function(msg) {
+            alert("there was an error getting an id: " + msg);
+        }
+    });
+    
+    return id;
+    
+}
+
+var app = $.sammy(function() { with(this) {
+    element_selector = '#main';
+    
+    get('#/mannequin', function() { with(this) {
+        alert('mannequin was hit!');
+    }});
+    
+    get('#/added', function() { with(this) {
+        $('#add-clothes').dialog('close');
+        alert('Piece added!');
+    }});
+    
+    post('#/closet/add', function() { with(this) {
+        // piece = params;
+        var piece = params;
+        piece['type'] = 'piece';
+        alert("sending '" + JSON.stringify(piece) +"' to '/wear' ...");
+        $.ajax({
+            type: "POST",
+            url: 'http://127.0.0.1:5984/wear',
+            dataType: "json",
+            contentType: 'application/json',
+            data: JSON.stringify(piece),
+            success: function(msg) {
+                alert("the response was '" + JSON.stringify(msg) + "'");
+            },
+            error: function(msg) {
+                members = [];
+                for(var member in msg){
+                    members = members + member;
+                }
+                alert("there was an error: '" + JSON.strinfigy(msg) + "'");
+            }
+        });
+        redirect('#/added');
+    }});
+    
+}});
+   
+$(function() {
+    app.run('#/');
+});
+    
+
 
