@@ -7,10 +7,11 @@
 	
 	<script src="scripts/json2.js" type="text/javascript" charset="utf-8"></script>
 	<script src="scripts/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="scripts/jquery.form.js" type="text/javascript" charset="utf-8"></script>
 	<script src="scripts/jquery-ui-1.7.2.custom.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="scripts/sammy.min.js" type="text/javascript" charset="utf-8"></script>
 </head>
-<body id="main" onload="draw_mannequin()">
+<body id="main">
 	<div class="container">
 		<div class="span-24 last">
 			<h1>Something to Wear</h1>
@@ -32,7 +33,7 @@
 			<div id="rating">
 				<img src="images/stars.png" />
 				<br>
-				<button id="rate_others">Rate other outfits</button>
+				<a href="#/rate" id="rate-others">Rate other outfits</a>
 			</div>	
 		</div>
 		
@@ -45,8 +46,11 @@
 		</div>
 				
 		<div id="closet">
+			<div id="add_link">
+				<a href="#/piece/new">Add a piece</a>
+			</div>
 			<div id="edit_button">
-				<input type="submit" name="edit_closet" value="Edit Your Closet" id="edit_closet">
+				<input type="submit" name="edit-closet" value="Edit Your Closet" id="edit-closet">
 			</div>
 			
 			<input type="text" name="shirt-search" value="Search your shirts" id="shirt-search" class="search">
@@ -82,15 +86,15 @@
 	
 	<div id="fashion">
 		<div id="add-to-closet-links">
+			<a id="shirt-link" href="#">I have that shirt</a><br>
+			<a id="pants-link" href="#">I have those pants</a><br>
+			<a id="shoes-link" href="#">I have those shoes</a><br>
 		</div>
-		
-		<div id="fashion-image">
-			<a href="#">I have that shirt</a><br>
-			<a href="#">I have those pants</a><br>
-			<a href="#">I have those shoes</a><br>
 			
+		<div id="fashion-image">	
 			<img src="images/fashion.jpg" />
 		</div>
+		
 		<div id="other-rating">
 			Would you wear this?<br>
 			<button>Yes</button> <button>No</button>
@@ -98,35 +102,55 @@
 	</div>
 	
 	<div id="add-clothes">
-		<form action="#/closet/add" method="post" accept-charset="utf-8">
-			<label for="colors">Colors</label><input type="text" name="colors" value="" id="colors"><br>
-			<label for="pattern">Pattern</label><input type="text" name="pattern" value="" id="pattern"><br>
-			<label for="material">Material</label><input type="text" name="material" value="" id="material"><br>
-			<label for="styles">Styles</label><input type="text" name="styles" value="" id="styles"><br>
-			<label for="name">Name</label><input type="text" name="name" value="" id="name"><br>
+		
+		<div id="piece-image-upload">
+			<form id="piece-image-upload-form" method="PUT" accept-charset="utf-8">
+				<label for="image">Image</label><input type="file" name="image" value="" id="image" />
+				<p><input type="submit" value="Continue &rarr;" /></p>
+				
+			</form>
+		</div>
+		
+		<div id="describe-piece-form">
+			<h3>Please describe it for us</h3>
+			<form action="#/closet/add" method="post" accept-charset="utf-8">
+				<label for="colors">Colors</label><input type="text" name="colors" value="" id="colors" /><br />
+				<label for="pattern">Pattern</label><input type="text" name="pattern" value="" id="pattern" /><br />
+				<label for="material">Material</label><input type="text" name="material" value="" id="material" /><br />
+				<label for="styles">Styles</label><input type="text" name="styles" value="" id="styles" /><br />
+				<label for="name">Name</label><input type="text" name="name" value="" id="name" /><br />
 			
-			<label for"type">Type</label>
-			<select name="type" id="place" onchange="" size="1">
-				<option value="shirt">Shirt</option>
-				<option value="pants">Pants</option>
-				<option value="shoes">Shoes</option>
-			</select>
+				<label for"type">Type</label>
+				<select name="type" id="place" onchange="" size="1">
+					<option value="shirt">Shirt</option>
+					<option value="pants">Pants</option>
+					<option value="shoes">Shoes</option>
+				</select>
 			
-			<br>
-			<label for="image">Image</label><input type="file" name="image" value="" id="image">
+				<br>
+				<label for="image">Image</label><input type="file" name="image" value="" id="image" onchange="show_preview(this)" />
 
-			<p><input type="submit" value="Add &rarr;"></p>
-		</form>
+				<p><input type="submit" value="Add &rarr;" /></p>
+			</form>
+		</div>
+		
+		<div id="piece-preview">
+			<canvas id="piece-canvas" height="300px" width="210px">
+			</canvas>
+		</div>
+		
 	</div>
 	
 	<script src="scripts/app.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		var closet_state = 'closed';
-		
-		$("#fashion").dialog({
+	    draw_mannequin();
+	    var closet_state = 'closed';
+    
+	    $("#fashion").dialog({
 			autoOpen: false,
 			modal: true,
-			width: 'auto',
+			width: 500,
+			height: 1100,
 			hide: 'slide',
 			show: 'slide',
 			resizable: false,
@@ -136,7 +160,7 @@
 				}
 			}
 		});
-		
+	
 		$("#add-clothes").dialog({
 			autoOpen: false,
 			modal: true,
@@ -150,16 +174,7 @@
 				}
 			}
 		});
-
-		$("#rate_others").click(function() {
-			$("#fashion").dialog('open');
-		});
-		
-		$("#edit_closet").click(function() {
-			$("#add-clothes").dialog('open');
-	        
-		})
-
+	
 		$("#closet-handle").click(function() {
 			if (closet_state == 'closed') {
 				$("#instructions").hide();
@@ -178,38 +193,8 @@
 
 				closet_state = 'closed';
 			}
-
 		});
 
-
-		function draw_mannequin() {
-			var cont = document.getElementById('mannequin-canvas').getContext('2d');
-			var shirt = new Image();
-			var pant = new Image();
-			var shoes = new Image();
-
-			shirt.onload = function() {
-				ratio = shirt.width/shirt.height;
-				width = 150;
-				cont.drawImage(shirt, 30, 60, width, width/ratio);
-			}
-
-			pant.onload = function() {
-				ratio = pant.width/pant.height;
-				width = 110;
-				cont.drawImage(pant, 60, 235, width, width/ratio);
-			}
-
-			shoes.onload = function() {
-				ratio = shoes.width/shoes.height;
-				height = 50;
-				cont.drawImage(shoes, 55, 439, height*ratio, height);
-			}
-
-			shoes.src = 'images/shoes2.png';
-			pant.src = 'images/pant2.png';
-			shirt.src = 'images/shirt1.png';
-		}
 	</script>
 </body>
 
