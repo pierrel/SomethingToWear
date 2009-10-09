@@ -1,5 +1,8 @@
+var couch_url = 'http://127.0.0.1:5984';
+var proxy_url = 'http://127.0.0.1:4567';
+
 function couch(url) {
-    return 'http://127.0.0.1:5984' + url;
+    return couch_url + url;
 }
 
 // Works!
@@ -115,18 +118,11 @@ var app = $.sammy(function() { with(this) {
                 
                 $('#add-clothes').dialog('open');
                 
-                form = $('#piece-image-upload-form')
-                form.ajaxForm({
-                    type: "PUT",
-                    url: 'http://127.0.0.1:5984/wear/' + msg.id + '/image?rev=' + msg.rev,
-                    dataType: "json",
-                    contentType: 'image/jpeg',
-                    success: function(msg) {
-                        alert('uploaded! ' + JSON.stringify(msg));
-                    },
-                    error: function(msg) {
-                        alert('There was an error:' + JSON.stringify(msg));
-                    }
+                $('#new-piece-id').attr('value', msg.id);
+                $('#new-piece-revision').attr('value', msg.rev);
+                form = $('#piece-image-upload-form');
+                form.ajaxForm(function() {
+                    alert('Image uploaded!');
                 });
                 
             },

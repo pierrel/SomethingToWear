@@ -104,8 +104,10 @@
 	<div id="add-clothes">
 		
 		<div id="piece-image-upload">
-			<form id="piece-image-upload-form" method="PUT" accept-charset="utf-8">
+			<form id="piece-image-upload-form" action="http://127.0.0.1:4567/attach_file" method="POST" accept-charset="utf-8">
 				<label for="image">Image</label><input type="file" name="image" value="" id="image" />
+				<input type="hidden" name="id" value="" id="new-piece-id" />
+				<input type="hidden" name="revision" value="" id="new-piece-revision" />
 				<p><input type="submit" value="Continue &rarr;" /></p>
 				
 			</form>
