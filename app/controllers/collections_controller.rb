@@ -25,11 +25,19 @@ class CollectionsController < ApplicationController
 
 	def getrecommendation
 		userid = params[:user]
+		user = User.find(userid)
+		userArticles = user.articles
 		
 		articles = Article.all
 		articles.each do |article|
-			
+			userArticles.each do |userArticle|
+				if article.id == userArticle.id
+					articles.delete(article)
+					break
+				end
+			end
 		end 		
+		render :xml => articles	
 	end	
 
 end
