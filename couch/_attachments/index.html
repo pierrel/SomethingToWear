@@ -112,23 +112,22 @@
 		
 		<div id="describe-piece-form">
 			<h3>Please describe it for us</h3>
-			<form action="#/closet/add" method="post" accept-charset="utf-8">
+			<form action="#/piece/describe" method="POST" accept-charset="utf-8">
 				<label for="colors">Colors</label><input type="text" name="colors" value="" id="colors" /><br />
 				<label for="pattern">Pattern</label><input type="text" name="pattern" value="" id="pattern" /><br />
 				<label for="material">Material</label><input type="text" name="material" value="" id="material" /><br />
 				<label for="styles">Styles</label><input type="text" name="styles" value="" id="styles" /><br />
 				<label for="name">Name</label><input type="text" name="name" value="" id="name" /><br />
-			
+				
 				<label for"type">Type</label>
 				<select name="type" id="place" onchange="" size="1">
 					<option value="shirt">Shirt</option>
 					<option value="pants">Pants</option>
 					<option value="shoes">Shoes</option>
 				</select>
+				
+				<input type="hidden" name="piece-description-id" value="" id="piece-description-id" />
 			
-				<br>
-				<label for="image">Image</label><input type="file" name="image" value="" id="image" onchange="show_preview(this)" />
-
 				<p><input type="submit" value="Add &rarr;" /></p>
 			</form>
 		</div>

@@ -41,7 +41,8 @@
 }
 
 #fashion{
-	background-color: #e8effb;
+	background-color: #fff;
+	border: 3px solid #ff704b;
 }
 
 
@@ -51,7 +52,8 @@
 /* @group Add clothes */
 
 #add-clothes {
-	background-color: #e96645;
+	background-color: #fff;
+	border: 3px solid #ff704b;
 }
 
 

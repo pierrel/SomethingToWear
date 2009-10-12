@@ -1,29 +1,8 @@
-var couch_url = 'http://127.0.0.1:5984';
+var couch_url = 'http://127.0.0.1:5984/wear';
 var proxy_url = 'http://127.0.0.1:4567';
 
 function couch(url) {
     return couch_url + url;
-}
-
-// Works!
-function uuid() {
-    var id;
-    
-    $.ajax({
-        type: "GET",
-        url: 'http://localhost:5984/_uuids',
-        async: false,
-        datatype: "json",
-        success: function(msg) {
-            id = msg['uuids'][0];
-        },
-        error: function(msg) {
-            alert("there was an error getting an id: " + msg);
-        }
-    });
-    
-    return id;
-    
 }
 
 function draw_mannequin() {
@@ -55,34 +34,12 @@ function draw_mannequin() {
 	shirt.src = 'images/shirt1.png';
 }
 
-function open_description() {
-	$("#piece-image-upload").hide();
-	$('#describe-piece-form').show();
-}
-
-function show_preview(input) {
-	var cont = document.getElementById('piece-canvas').getContext('2d');
-	piece = new Image();
-	alert("showing preview of '" + input.value + "'");
-	
-	piece.onload = function() {
-		ratio = piece.width/piece.height;
-		width = 150;
-		cont.drawImage(piece, 10, 10, width, width/ratio);
-		alert("loaded!");
-	}
-	
-	piece.src = 'file://localhost/' + input.value;
-	
-}
-
-
 function new_piece(data, success_func, error_func) {
     typed_data = data;
-    typed_data['type'] = 'piece';
+    typed_data['doc_type'] = 'piece';
     $.ajax({
         type: "POST",
-        url: 'http://127.0.0.1:5984/wear',
+        url: couch(''),
         dataType: "json",
         contentType: 'application/json',
         data: JSON.stringify(typed_data),
@@ -91,20 +48,86 @@ function new_piece(data, success_func, error_func) {
     });
 }
 
+function comma_separate(string) {
+    return $.map(string.split(','), function(elt, index) {
+        return elt.replace('/^\s*|\s*$/g', '');
+    });
+}
+
+function get_piece(id) {
+    alert('getting ' + id);
+    to_return = null;
+    $.ajax({
+        type: "GET",
+        url: couch('/' + id),
+        dataType: 'json',
+        async: false,
+        success: function(msg) {
+            to_return = msg;
+        },
+        error: function(msg) {
+            alert('There was an error retrieving ' + id);
+            return null;
+        }
+    });
+    return to_return;
+}
+
+function update_piece(id, data, success_func) {
+    alert('updaing ' + id);
+    //get the revision number
+    $.ajax({
+        type: "GET",
+        url: couch('/' + id),
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function(msg) {            
+            // get the old attributes
+            reved_data = msg;
+            
+            // replace any that should be updated
+            $.each(data, function(key, value) {
+                reved_data[key] = value;
+            });
+            
+            // Send the updated doc
+            $.ajax({
+                type: "PUT",
+                url: couch('/' + id),
+                dataType: 'json',
+                contentType: 'application/json',
+                data: JSON.stringify(reved_data),
+                success: success_func,
+                error: function(msg) {
+                    alert('error, could not update ' + id + ": '" + JSON.stringify(msg) + "'");
+                }
+            })
+        },
+        error: function(msg) {
+            alert('Error updating document ' + id + ": '" + JSON.stringify(msg) + "'");
+        }
+    });
+}
+
+function piece_image_url(id) {
+    return couch('/' + id) + "/image";
+}
+
+var click1 = 0;
+function set_click(evt) {
+    click1 = 20;
+    alert('clicked on 20');
+}
+
 var app = $.sammy(function() { with(this) {
     element_selector = '#main';
-    
-    get('#/mannequin', function() { with(this) {
-        alert('mannequin was hit!');
-    }});
-    
+        
     get('#/rate', function() { with(this) {
         $("#fashion").dialog('open');
     }});
     
     get('#/added', function() { with(this) {
         $('#add-clothes').dialog('close');
-        alert('Piece added!');
     }});
     
     get('#/piece/new', function() { with(this) {
@@ -122,7 +145,7 @@ var app = $.sammy(function() { with(this) {
                 $('#new-piece-revision').attr('value', msg.rev);
                 form = $('#piece-image-upload-form');
                 form.ajaxForm(function() {
-                    alert('Image uploaded!');
+                    redirect('#/piece/describe/' + msg.id);
                 });
                 
             },
@@ -131,33 +154,50 @@ var app = $.sammy(function() { with(this) {
             });
     }});
     
-    post('#/piece/add/image', function() { with(this) {
+    get('#/piece/describe/:id', function() { with(this) {
+        // show/hide the correct elements
+        $('#piece-preview').show();
+        $('#describe-piece-form').show();
+        $('#piece-image-upload').hide();
         
-        alert('Trying to add image: ' + params['image']);
-        form = $('#piece-image-upload-form')
-        form.attr(
-            'action', 
-            'http://127.0.0.1:5984/wear/' + params['piece-id'] + '/image?rev=' + params['piece-rev']);
-        alert("The action now looks like: '" + form.attr('action') + "'");
-        form.submit();
-        alert('The form has been submitted!');
-                // Then send the image
-                // $.ajax({
-                //     type: "PUT",
-                //     url: 'http://127.0.0.1:5984/wear/' + msg.id +'/image?rev=' + msg.rev,
-                //     dataType: 'json',
-                //     contentType: 'image/jpeg',
-                //     data: image,
-                //     success: function(msg) {
-                //         alert("Image sent, the response was '" + JSON.stringify(msg) + "'");
-                //     },
-                //     error: function(msg) {
-                //         alert("there was an error sending the image: '" + JSON.stringify(msg) + "'");
-                //     }
-                // });
-                
-        redirect('#/piece/new/description');
+        $('#add-clothes').dialog('open');
+        
+        //make sure the canvas isn't doing anything with mouse clicks
+        $('#piece-canvas').click(null);
+        
+        $('#piece-description-id').attr('value', params['id']);
     }});
+    
+    post('#/piece/describe', function() { with(this) {
+        //do stuff
+        data = {};
+        data['colors'] = comma_separate(params['colors']);
+        data['styles'] = comma_separate(params['styles']);
+        data['pattern'] = params['pattern'];
+        data['material'] = params['material'];
+        data['name'] = params['name'];
+        data['type'] = params['type'];
+        
+        update_piece(params['piece-description-id'], data, function(msg) {
+            redirect('#/piece/pick_points/' + params['piece-description-id']);
+        });
+    }});
+    
+    get('#/piece/pick_points/:id', function() { with(this) {
+        // show/hide the correct elements
+        $('#piece-preview').show();
+        $('#describe-piece-form').hide();
+        $('#piece-image-upload').hide();
+        
+        // TODO: draw the image onto the canvas
+        
+        
+        // set the listener on the canvas
+        $('#piece-canvas').click(set_click);
+        
+        $('#add-clothes').dialog('open');
+    }});
+    
     
 }});
    
