@@ -184,9 +184,9 @@
 				closet_state = 'open';
 			} else {
 				$("#closet").hide('slide', function() {
+					$("#instructions").show('slide');
 					$("#closet").removeClass('span-11 last');
 					$("#closet-handle").addClass('last');
-					$("#instructions").show();
 				});
 				
 				
