@@ -13,15 +13,12 @@
 </head>
 <body id="main">
 	<div class="container">
-		<div class="span-24 last">
-			<h1>Something to Wear</h1>
+		
+		<div id="title" class="span-5">
+			Some- thing to Wear
 		</div>
 		
-		<div id="buffer" class="span-1">
-			&nbsp;
-		</div>
-		
-		<div id="mannequin" class="span-10">
+		<div id="mannequin" class="span-7">
 			<div id="dress-button">
 				<input type="button" name="dress" value="Dress Me!" id="dress" />
 			</div>
@@ -37,7 +34,7 @@
 			</div>	
 		</div>
 		
-		<div id="instructions" class="span-12">
+		<div id="instructions" class="span-11">
 			<img src="images/instructions.png" />
 		</div>
 		
@@ -180,18 +177,20 @@
 		$("#closet-handle").click(function() {
 			if (closet_state == 'closed') {
 				$("#instructions").hide();
-				$("#mannequin").switchClass('span-11', 'span-10');
 				$("#closet-handle").removeClass('last');
 				$("#closet").addClass('span-11 last');
 				$("#closet").show('slide');
 
 				closet_state = 'open';
 			} else {
-				$("#closet").removeClass('span-11 last');
-				$("#closet").hide('slide');
-				$("#closet-handle").addClass('last');
-				$("#mannequin").switchClass('span-10', 'span-11');
-				$("#instructions").show();
+				$("#closet").hide('slide', function() {
+					$("#closet").removeClass('span-11 last');
+					$("#closet-handle").addClass('last');
+					$("#instructions").show();
+				});
+				
+				
+				
 
 				closet_state = 'closed';
 			}
