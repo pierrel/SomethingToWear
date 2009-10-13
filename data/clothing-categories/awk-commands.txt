@@ -1,0 +1,2 @@
+# prints outs nicely formatted HTML
+awk '{printf "<option value=\""$1"\">"; $1 = "";print substr($0,2)"</option>"}' categories.txt
