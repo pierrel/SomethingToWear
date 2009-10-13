@@ -109,10 +109,7 @@ function draw_mannequin(pieces_ids) {
 
     shoes.src = couch(pieces_ids['shoes_id']) + '/image';
 	pant.src = couch(pieces_ids['pant_id']) + '/image';
-    shirt.src = couch(pieces_ids['shirt_id']) + '/image';
-	
-	//boxes to make sure they are drawn correctly
-	cont.strokeRect(waistline_x - waist_width/2, waistline_y, waist_width, leg_length);
+    shirt.src = couch(pieces_ids['shirt_id']) + '/image';	
 }
 
 function new_piece(data, success_func, error_func) {
