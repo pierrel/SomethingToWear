@@ -203,7 +203,7 @@ function draw_new_piece(image_url, canvas_id) {
         
         // get image and canvas size differences
         width_diff = piece.width - canvas.width;
-        height_diff = piece.width - canvas.width;
+        height_diff = piece.height - canvas.height;
                 
         // image dimension ratio
         ratio = piece.width/piece.height;
@@ -246,7 +246,7 @@ var app = $.sammy(function() { with(this) {
     get('#/', function() { with(this) {
         pieces = {};
         pieces['shirt_id'] = '98a5df0ced33d5fa891b464926a5539c';
-        pieces['pant_id'] = 'ff7b00dc50abd3e480532d1a1319b913';
+        pieces['pant_id'] = '4ab8eb6901ee17def7dc670dcc4ffdaf';
         pieces['shoes_id'] = '18170179a9ce4ebcab91979881386f4c';
         
         draw_mannequin(pieces);
