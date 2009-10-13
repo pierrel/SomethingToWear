@@ -212,7 +212,7 @@ var app = $.sammy(function() { with(this) {
         $('#add-clothes').dialog('open');
         
         //make sure the canvas isn't doing anything with mouse clicks
-        $('#piece-canvas').click(null);
+        // $('#piece-canvas').click(null);
         
         // draw the piece for reference
         draw_new_piece(piece_image_url(params['id']), 'piece-canvas');
