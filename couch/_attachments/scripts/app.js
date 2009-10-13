@@ -55,7 +55,6 @@ function comma_separate(string) {
 }
 
 function get_piece(id) {
-    alert('getting ' + id);
     to_return = null;
     $.ajax({
         type: "GET",
@@ -74,7 +73,6 @@ function get_piece(id) {
 }
 
 function update_piece(id, data, success_func) {
-    alert('updaing ' + id);
     //get the revision number
     $.ajax({
         type: "GET",
@@ -113,10 +111,57 @@ function piece_image_url(id) {
     return couch('/' + id) + "/image";
 }
 
-var click1 = 0;
-function set_click(evt) {
-    click1 = 20;
-    alert('clicked on 20');
+var piece_width_translation_ratio = 0; // These are needed to translate important points on the picture
+var piece_height_translation_ration = 0;
+function draw_new_piece(image_url, canvas_id) {
+    var canvas = document.getElementById(canvas_id);
+    var context = canvas.getContext('2d');
+    
+    var piece = new Image();
+    
+    piece.onload = function() {
+        
+        // get image and canvas size differences
+        width_diff = piece.width - canvas.width;
+        height_diff = piece.width - canvas.width;
+        
+        // image dimension ratio
+        ratio = piece.width/piece.height;
+        
+        // Assuming the picture is larger than the canvas
+        if (width_diff > height_diff) { // then the width is the limiting length
+            context.drawImage(piece, 0, 0, canvas.width, canvas.width/ratio);
+            
+            // need this only for translating pixels from the canvas to the image
+            piece_width_translation_ratio = piece.width/canvas.width;
+            piece_height_translation_ratio = piece.height/(canvas.width/ratio);
+        } else { // then the height is the limiting width
+            context.drawImage(piece, 0, 0, canvas.height*ratio, canvas.height);
+            
+            // ditto
+            piece_width_translation_ratio = piece.width/(canvas.height*ratio);
+            piece_height_translation_ratio = piece.height/canvas.height;
+        }   
+    }
+    piece.src = image_url;
+}
+
+function absolute_offset(element) {
+    var offX = 0;
+    var offY = 0;
+    while( element.parent().length != 0 ) {
+        offY += element.position().top;
+        offX += element.position().left;
+        element = $(element.parent().get(0));
+    }
+    return [offX, offY];
+}
+
+var point_number = 0;
+var point_pixels = [];
+function piece_points(evt) {
+
+       
 }
 
 var app = $.sammy(function() { with(this) {
@@ -138,6 +183,7 @@ var app = $.sammy(function() { with(this) {
                 $('#piece-preview').hide();
                 $('#describe-piece-form').hide();
                 $('#piece-image-upload').show();
+                $('#all-done').hide();
                 
                 $('#add-clothes').dialog('open');
                 
@@ -159,11 +205,15 @@ var app = $.sammy(function() { with(this) {
         $('#piece-preview').show();
         $('#describe-piece-form').show();
         $('#piece-image-upload').hide();
+        $('#all-done').hide();
         
         $('#add-clothes').dialog('open');
         
         //make sure the canvas isn't doing anything with mouse clicks
         $('#piece-canvas').click(null);
+        
+        // draw the piece for reference
+        draw_new_piece(piece_image_url(params['id']), 'piece-canvas');
         
         $('#piece-description-id').attr('value', params['id']);
     }});
@@ -188,16 +238,61 @@ var app = $.sammy(function() { with(this) {
         $('#piece-preview').show();
         $('#describe-piece-form').hide();
         $('#piece-image-upload').hide();
+        $('#all-done').hide();
         
-        // TODO: draw the image onto the canvas
-        
+        // draw the image onto the canvas
+        draw_new_piece(piece_image_url(params['id']), 'piece-canvas');
         
         // set the listener on the canvas
-        $('#piece-canvas').click(set_click);
+        canvas = $('#piece-canvas');
+        point_number = 0; //reset point number
+        point_pixels = []; //reset pixels
+        canvas.click(function (evt) {
+            element = $('#add-clothes')
+
+            // selection is off by a few pixels, not sure why
+            // 'add-clothes' element seems to give a closer position.
+            // anyway, calculate the absolute position
+            abs_off = absolute_offset(element); 
+
+            offsetX = evt.pageX - abs_off[0];
+            offsetY = evt.pageY - abs_off[1];
+
+            // translate it to the original size of the image
+            image_offsetX = offsetX * piece_width_translation_ratio;
+            image_offsetY = offsetY * piece_height_translation_ratio;
+
+            // put it in the array to be sent off
+            point_pixels[point_number] = [image_offsetX, image_offsetY];
+
+            if (point_number < 2) {
+                document.getElementById('piece-canvas').getContext('2d').strokeRect(offsetX - 5, offsetY - 5, 10, 10);
+            } else { // it's equal to 2, don't draw just send
+                update_piece(
+                    params['id'],
+                    {
+                        'left_shoulder' : point_pixels[0],
+                        'right_shoulder' : point_pixels[1],
+                        'waist' : point_pixels[2],
+                    },
+                    function(msg) {
+                        // show/hide the correct elements
+                        $('#piece-preview').hide();
+                        $('#describe-piece-form').hide();
+                        $('#piece-image-upload').hide();
+                        $('#all-done').show();
+
+
+                        window.setTimeout('$(\'#add-clothes\').dialog(\'close\')', 3000);
+                        redirect('#/');
+                    }
+                );
+            }
+            point_number += 1;
+        });
         
         $('#add-clothes').dialog('open');
-    }});
-    
+    }});    
     
 }});
    
