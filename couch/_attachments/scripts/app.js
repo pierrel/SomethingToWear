@@ -242,10 +242,6 @@ function absolute_offset(element) {
 
 var point_number = 0;
 var point_pixels = [];
-function piece_points(evt) {
-
-       
-}
 
 var app = $.sammy(function() { with(this) {
     element_selector = '#main';
