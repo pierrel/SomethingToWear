@@ -50,7 +50,7 @@ function new_piece(data, success_func, error_func) {
 
 function comma_separate(string) {
     return $.map(string.split(','), function(elt, index) {
-        return elt.replace('/^\s*|\s*$/g', '');
+        return $.trim(elt);
     });
 }
 
@@ -66,7 +66,6 @@ function get_piece(id) {
         },
         error: function(msg) {
             alert('There was an error retrieving ' + id);
-            return null;
         }
     });
     return to_return;
@@ -117,6 +116,9 @@ function draw_new_piece(image_url, canvas_id) {
     var canvas = document.getElementById(canvas_id);
     var context = canvas.getContext('2d');
     
+    // clear the canvas
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    
     var piece = new Image();
     
     piece.onload = function() {
@@ -124,12 +126,12 @@ function draw_new_piece(image_url, canvas_id) {
         // get image and canvas size differences
         width_diff = piece.width - canvas.width;
         height_diff = piece.width - canvas.width;
-        
+                
         // image dimension ratio
         ratio = piece.width/piece.height;
         
         // Assuming the picture is larger than the canvas
-        if (width_diff > height_diff) { // then the width is the limiting length
+        if (width_diff >= height_diff) { // then the width is the limiting length
             context.drawImage(piece, 0, 0, canvas.width, canvas.width/ratio);
             
             // need this only for translating pixels from the canvas to the image
@@ -170,17 +172,16 @@ var app = $.sammy(function() { with(this) {
     get('#/rate', function() { with(this) {
         $("#fashion").dialog('open');
     }});
-    
-    get('#/added', function() { with(this) {
-        $('#add-clothes').dialog('close');
-    }});
-    
+        
     get('#/piece/new', function() { with(this) {
+        form = $('#piece-image-upload-form');
+        form.ajaxForm(null);
         new_piece(
             {}, 
             function(msg) {
                 // show/hide the correct elements
                 $('#piece-preview').hide();
+                $('#pick-points-instructions').hide();
                 $('#describe-piece-form').hide();
                 $('#piece-image-upload').show();
                 $('#all-done').hide();
@@ -189,7 +190,7 @@ var app = $.sammy(function() { with(this) {
                 
                 $('#new-piece-id').attr('value', msg.id);
                 $('#new-piece-revision').attr('value', msg.rev);
-                form = $('#piece-image-upload-form');
+                
                 form.ajaxForm(function() {
                     redirect('#/piece/describe/' + msg.id);
                 });
@@ -203,6 +204,7 @@ var app = $.sammy(function() { with(this) {
     get('#/piece/describe/:id', function() { with(this) {
         // show/hide the correct elements
         $('#piece-preview').show();
+        $('#pick-points-instructions').hide();
         $('#describe-piece-form').show();
         $('#piece-image-upload').hide();
         $('#all-done').hide();
@@ -236,6 +238,10 @@ var app = $.sammy(function() { with(this) {
     get('#/piece/pick_points/:id', function() { with(this) {
         // show/hide the correct elements
         $('#piece-preview').show();
+        $('#pick-points-instructions').show();
+        $('#pick-points-instructions-shirt').hide();
+        $('#pick-points-instructions-pants').hide();
+        $('#pick-points-instructions-shoes').hide();
         $('#describe-piece-form').hide();
         $('#piece-image-upload').hide();
         $('#all-done').hide();
@@ -243,20 +249,31 @@ var app = $.sammy(function() { with(this) {
         // draw the image onto the canvas
         draw_new_piece(piece_image_url(params['id']), 'piece-canvas');
         
+        // get the piece information
+        piece = get_piece(params['id']);
+        
         // set the listener on the canvas
         canvas = $('#piece-canvas');
         point_number = 0; //reset point number
         point_pixels = []; //reset pixels
+        if (piece['type'] == 'shirt') {
+            max_points = 3;
+            $('#pick-points-instructions-shirt').show();
+        } else if (piece['type'] == 'pants') {
+            max_points = 2;
+            $('#pick-points-instructions-pants').show();
+        } else if (piece['type'] == 'shoes') {
+            max_points = 2;
+            $('#pick-points-instructions-shoes').show();
+        }
         canvas.click(function (evt) {
-            element = $('#add-clothes')
-
             // selection is off by a few pixels, not sure why
             // 'add-clothes' element seems to give a closer position.
             // anyway, calculate the absolute position
-            abs_off = absolute_offset(element); 
+            abs_off = absolute_offset($('#piece-preview')); 
 
             offsetX = evt.pageX - abs_off[0];
-            offsetY = evt.pageY - abs_off[1];
+            offsetY = evt.pageY - abs_off[1] + 10; // not sure why it seems to be off by about 10
 
             // translate it to the original size of the image
             image_offsetX = offsetX * piece_width_translation_ratio;
@@ -265,25 +282,34 @@ var app = $.sammy(function() { with(this) {
             // put it in the array to be sent off
             point_pixels[point_number] = [image_offsetX, image_offsetY];
 
-            if (point_number < 2) {
+            if (point_number < max_points-1) {
                 document.getElementById('piece-canvas').getContext('2d').strokeRect(offsetX - 5, offsetY - 5, 10, 10);
             } else { // it's equal to 2, don't draw just send
+                data = {};
+                if (piece['type'] == 'shirt') {
+                    data['left_shoulder'] = point_pixels[0];
+                    data['right_shoulder'] = point_pixels[1];
+                    data['waist'] = point_pixels[2];
+                } else if (piece['type'] == 'pants') {
+                    data['left_waist'] = point_pixels[0];
+                    data['right_waist'] = point_pixels[1];
+                } else if (piece['type'] == 'shoes') {
+                    data['left_ankle'] = point_pixels[0];
+                    data['right_ankle'] = point_pixels[1];
+                }
                 update_piece(
                     params['id'],
-                    {
-                        'left_shoulder' : point_pixels[0],
-                        'right_shoulder' : point_pixels[1],
-                        'waist' : point_pixels[2],
-                    },
+                   data,
                     function(msg) {
                         // show/hide the correct elements
                         $('#piece-preview').hide();
+                        $('#pick-points-instructions').hide();
                         $('#describe-piece-form').hide();
                         $('#piece-image-upload').hide();
                         $('#all-done').show();
 
 
-                        window.setTimeout('$(\'#add-clothes\').dialog(\'close\')', 3000);
+                        window.setTimeout('$(\'#add-clothes\').dialog(\'close\')', 2000);
                         redirect('#/');
                     }
                 );
