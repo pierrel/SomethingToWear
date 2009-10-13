@@ -2,36 +2,117 @@ var couch_url = 'http://127.0.0.1:5984/wear';
 var proxy_url = 'http://127.0.0.1:4567';
 
 function couch(url) {
-    return couch_url + url;
+    return couch_url + '/' + url;
 }
 
-function draw_mannequin() {
-	var cont = document.getElementById('mannequin-canvas').getContext('2d');
+function draw_mannequin(pieces_ids) {
+    // Image stuff
+    var canvas = document.getElementById('mannequin-canvas');
+	var cont = canvas.getContext('2d');
+	
 	var shirt = new Image();
 	var pant = new Image();
 	var shoes = new Image();
-
-	shirt.onload = function() {
-		ratio = shirt.width/shirt.height;
-		width = 150;
-		cont.drawImage(shirt, 30, 60, width, width/ratio);
-	}
-
+	
+	// Some constants
+	var waistline_y = 250;
+	var waistline_x = canvas.width/2;
+	var waist_width = 75;
+	var leg_length = 200;
+	
 	pant.onload = function() {
-		ratio = pant.width/pant.height;
-		width = 110;
-		cont.drawImage(pant, 60, 235, width, width/ratio);
+	    pant_info = get_piece(pieces_ids['pant_id']);
+	    right_waist = pant_info['right_waist'];
+	    left_waist = pant_info['left_waist']
+		image_dimensions_ratio = pant.width/pant.height;
+		
+		// Calculate the appropriate size of the image
+		image_waist_width = right_waist[0] - left_waist[0];
+		
+		width = waist_width * (pant.width/image_waist_width);
+		height = width/image_dimensions_ratio
+		
+		image_width_translation_ratio = width/pant.width;
+        image_height_translation_ratio = height/pant.height;
+        
+		// Calculate the appropriate position of the image
+		image_waistline_y = (right_waist[1] - left_waist[1])/2 + left_waist[1];
+		image_waistline_x = (image_waist_width)/2 + left_waist[0];
+		
+		translated_image_waistline_y = image_waistline_y * image_height_translation_ratio;
+		translated_image_waistline_x = image_waistline_x * image_width_translation_ratio;
+		
+		image_y = waistline_y - translated_image_waistline_y;
+		image_x = waistline_x - translated_image_waistline_x;
+		
+		cont.drawImage(pant, image_x, image_y, width, height);
 	}
 
+		
+	shirt.onload = function() {
+	    var shirt_info = get_piece(pieces_ids['shirt_id']);
+	    
+	    var left_shoulder = shirt_info['left_shoulder'];
+	    var right_shoulder = shirt_info['right_shoulder'];
+	    image_waist = shirt_info['waist'];
+	    
+		image_dimensions_ratio = shirt.width/shirt.height;
+		waist_shoulder_ratio = 0.8; // pulled out of my ass
+		
+		// calculate image size
+		image_shoulder_width = right_shoulder[0] - left_shoulder[0];
+		translated_image_shoulder_width = waist_width/waist_shoulder_ratio;
+		
+		image_width = translated_image_shoulder_width * (shirt.width/image_shoulder_width);
+		image_height = image_width/image_dimensions_ratio
+		
+		image_width_translation_ratio = image_width/shirt.width;
+        image_height_translation_ratio = image_height/shirt.height;
+        
+        // calculated image location
+        image_waistline_y = image_waist[1];
+        image_waistline_x = left_shoulder[0] + image_shoulder_width/2;
+        
+        translated_image_waistline_y = image_waistline_y * image_height_translation_ratio;
+        translated_image_waistline_x = image_waistline_x * image_width_translation_ratio;
+        
+        image_y = waistline_y - translated_image_waistline_y;
+        image_x = waistline_x - translated_image_waistline_x;
+		
+		cont.drawImage(shirt, image_x, image_y, image_width, image_height);
+	}
+
+	
 	shoes.onload = function() {
-		ratio = shoes.width/shoes.height;
-		height = 50;
-		cont.drawImage(shoes, 55, 439, height*ratio, height);
+	    shoe_info = get_piece(pieces_ids['shoes_id']);
+		image_dimensions_ratio = shoes.width/shoes.height;
+		
+		// set the dimensions
+		image_width = waist_width*1.5;
+		image_height = image_width/image_dimensions_ratio;
+		
+		image_width_translation_ratio = image_width/shoes.width;
+        image_height_translation_ratio = image_height/shoes.height;
+        
+        // center the shoes under the "legs"
+		image_center_y = Math.min(shoe_info['left_ankle'][1], shoe_info['right_ankle'][1]);
+		image_center_x = (shoe_info['left_ankle'][0] - shoe_info['right_ankle'][0])/2 + shoe_info['right_ankle'][0];
+		
+		translated_image_center_x = image_center_x * image_width_translation_ratio;
+		translated_image_center_y = image_center_y * image_height_translation_ratio;
+		
+		image_x = waistline_x - translated_image_center_x;
+		image_y = waistline_y + leg_length - translated_image_center_y;
+		
+		cont.drawImage(shoes, image_x, image_y, image_width, image_height);
 	}
 
-	shoes.src = 'images/shoes2.png';
-	pant.src = 'images/pant2.png';
-	shirt.src = 'images/shirt1.png';
+    shoes.src = couch(pieces_ids['shoes_id']) + '/image';
+	pant.src = couch(pieces_ids['pant_id']) + '/image';
+    shirt.src = couch(pieces_ids['shirt_id']) + '/image';
+	
+	//boxes to make sure they are drawn correctly
+	cont.strokeRect(waistline_x - waist_width/2, waistline_y, waist_width, leg_length);
 }
 
 function new_piece(data, success_func, error_func) {
@@ -58,7 +139,7 @@ function get_piece(id) {
     to_return = null;
     $.ajax({
         type: "GET",
-        url: couch('/' + id),
+        url: couch(id),
         dataType: 'json',
         async: false,
         success: function(msg) {
@@ -75,7 +156,7 @@ function update_piece(id, data, success_func) {
     //get the revision number
     $.ajax({
         type: "GET",
-        url: couch('/' + id),
+        url: couch(id),
         dataType: 'json',
         contentType: 'application/json',
         success: function(msg) {            
@@ -90,7 +171,7 @@ function update_piece(id, data, success_func) {
             // Send the updated doc
             $.ajax({
                 type: "PUT",
-                url: couch('/' + id),
+                url: couch(id),
                 dataType: 'json',
                 contentType: 'application/json',
                 data: JSON.stringify(reved_data),
@@ -107,7 +188,7 @@ function update_piece(id, data, success_func) {
 }
 
 function piece_image_url(id) {
-    return couch('/' + id) + "/image";
+    return couch(id) + "/image";
 }
 
 var piece_width_translation_ratio = 0; // These are needed to translate important points on the picture
@@ -168,7 +249,16 @@ function piece_points(evt) {
 
 var app = $.sammy(function() { with(this) {
     element_selector = '#main';
+    
+    get('#/', function() { with(this) {
+        pieces = {};
+        pieces['shirt_id'] = '98a5df0ced33d5fa891b464926a5539c';
+        pieces['pant_id'] = 'ff7b00dc50abd3e480532d1a1319b913';
+        pieces['shoes_id'] = '18170179a9ce4ebcab91979881386f4c';
         
+        draw_mannequin(pieces);
+    }});
+    
     get('#/rate', function() { with(this) {
         $("#fashion").dialog('open');
     }});
