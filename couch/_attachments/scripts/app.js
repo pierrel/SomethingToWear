@@ -5,6 +5,10 @@ function couch(url) {
     return couch_url + '/' + url;
 }
 
+function couch_view(view_name) {
+    return couch('_design/SomethingToWear/_view/' + view_name);
+}
+
 function draw_mannequin(pieces_ids) {
     // Image stuff
     var canvas = document.getElementById('mannequin-canvas');
@@ -250,6 +254,50 @@ var app = $.sammy(function() { with(this) {
         pieces['shoes_id'] = '18170179a9ce4ebcab91979881386f4c';
         
         draw_mannequin(pieces);
+        
+        
+        // fill closet
+        $('#shirts').empty();
+        $('#pants').empty();
+        $('#shoes').empty();
+        // first the shirts
+        $.get(couch_view('pieces_by_type'), {'key':"\"shirt\""}, function(data, textStatus) {
+            ids = $.map(data['rows'], function(row) {return row['id']});
+            $.each(ids, function(i, id) {
+                partial('templates/closet_piece.template', {'id': id}, function(rendered) {
+                    $('#shirts').append(rendered);
+                });
+            });
+            
+            // resize the container
+            $('#shirts').attr('width', '' + ids.length*100 + 'px');
+            
+        }, "json");
+        
+        // then pants
+        $.get(couch_view('pieces_by_type'), {'key':"\"pants\""}, function(data, textStatus) {
+            ids = $.map(data['rows'], function(row) {return row['id']});
+            $.each(ids, function(i, id) {
+                partial('templates/closet_piece.template', {'id': id}, function(rendered) {
+                    $('#pants').append(rendered);
+                });
+            });
+            
+            $('#pants').attr('width', '' + ids.length * 100 + 'px');
+            
+        }, "json");
+        
+        // then shoes
+        $.get(couch_view('pieces_by_type'), {'key':"\"shoes\""}, function(data, textStatus) {
+            ids = $.map(data['rows'], function(row) {return row['id']});
+            $.each(ids, function(i, id) {
+                partial('templates/closet_piece.template', {'id': id}, function(rendered) {
+                    $('#shoes').append(rendered);
+                });
+            });
+            
+            $('#shoes').attr('width', '' + ids.length*150 + 'px');
+        }, "json");
     }});
     
     get('#/rate', function() { with(this) {
