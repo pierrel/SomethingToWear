@@ -5,6 +5,10 @@ function comma_separate(string) {
     });
 }
 
+function fill_closet() {
+    
+}
+
 var point_number = 0;  // For adding clothes to the db
 var point_pixels = []; //
 
@@ -18,7 +22,6 @@ var app = $.sammy(function() { with(this) {
         
         Mannequin.draw();
         
-        
         // fill closet
         $('#shirts').empty();
         $('#pants').empty();
@@ -27,7 +30,7 @@ var app = $.sammy(function() { with(this) {
         $.get(couch_view('pieces_by_type'), {'key':"\"shirt\""}, function(data, textStatus) {
             ids = $.map(data['rows'], function(row) {return row['id']});
             $.each(ids, function(i, id) {
-                partial('templates/closet_piece.template', {'id': id}, function(rendered) {
+                partial('templates/closet_piece.template', {type: 'shirt', id: id}, function(rendered) {
                     $('#shirts').append(rendered);
                 });
             });
@@ -41,7 +44,7 @@ var app = $.sammy(function() { with(this) {
         $.get(couch_view('pieces_by_type'), {'key':"\"pants\""}, function(data, textStatus) {
             ids = $.map(data['rows'], function(row) {return row['id']});
             $.each(ids, function(i, id) {
-                partial('templates/closet_piece.template', {'id': id}, function(rendered) {
+                partial('templates/closet_piece.template', {type: 'pants', id: id}, function(rendered) {
                     $('#pants').append(rendered);
                 });
             });
@@ -54,13 +57,35 @@ var app = $.sammy(function() { with(this) {
         $.get(couch_view('pieces_by_type'), {'key':"\"shoes\""}, function(data, textStatus) {
             ids = $.map(data['rows'], function(row) {return row['id']});
             $.each(ids, function(i, id) {
-                partial('templates/closet_piece.template', {'id': id}, function(rendered) {
+                partial('templates/closet_piece.template', {type: 'shoes', id: id}, function(rendered) {
                     $('#shoes').append(rendered);
+                    $('.piece-image').draggable({helper: 'clone'});
                 });
             });
             
             $('#shoes').attr('width', '' + ids.length*150 + 'px');
         }, "json");
+        
+        // set up mannequin-canvas interaction
+        Mannequin.element().droppable({
+            drop: function(evt, ui) {
+                draggable_info = ui.draggable.attr('id').split("-");
+                type = draggable_info[0];
+                id = draggable_info[1];
+                
+                if (type == 'shirt') {
+                    Mannequin.shirt_id = id;
+                } else if (type == 'pants') {
+                    Mannequin.pant_id = id;
+                } else if (type == 'shoes') {
+                    Mannequin.shoes_id = id;
+                }
+                
+                Mannequin.draw();
+            },
+            accept: '.piece-image',
+            activeClass: 'mannequin-canvas-dragging'
+        });        
     }});
     
     get('#/rate', function() { with(this) {
@@ -106,12 +131,15 @@ var app = $.sammy(function() { with(this) {
         $('#add-clothes').dialog('open');
         
         //make sure the canvas isn't doing anything with mouse clicks
-        // $('#piece-canvas').click(null);
+        $('#piece-canvas').click(null);
         
         // draw the piece for reference
         draw_new_piece(piece_image_url(params['id']), 'piece-canvas');
         
         $('#piece-description-id').attr('value', params['id']);
+        
+        //clear the form
+        
     }});
     
     post('#/piece/describe', function() { with(this) {

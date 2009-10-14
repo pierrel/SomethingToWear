@@ -1,1 +1,3 @@
-<div class="piece-image" id="piece-<%= id %>"><img src="<%= piece_image_url(id) %>" /></div>
+<div class="piece-image" id="<%= type %>-<%= id %>">
+	<img src="<%= piece_image_url(id) %>" />	
+</div>
