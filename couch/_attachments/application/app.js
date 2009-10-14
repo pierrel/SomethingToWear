@@ -59,7 +59,7 @@ var app = $.sammy(function() { with(this) {
             $.each(ids, function(i, id) {
                 partial('templates/closet_piece.template', {type: 'shoes', id: id}, function(rendered) {
                     $('#shoes').append(rendered);
-                    $('.piece-image').draggable({helper: 'clone'});
+                    $('.piece').draggable({helper: 'clone'});
                 });
             });
             
@@ -83,7 +83,7 @@ var app = $.sammy(function() { with(this) {
                 
                 Mannequin.draw();
             },
-            accept: '.piece-image',
+            accept: '.piece',
             activeClass: 'mannequin-canvas-dragging'
         });        
     }});
