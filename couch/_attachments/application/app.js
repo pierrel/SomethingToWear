@@ -12,12 +12,11 @@ var app = $.sammy(function() { with(this) {
     element_selector = '#main';
     
     get('#/', function() { with(this) {
-        pieces = {};
-        pieces['shirt_id'] = '98a5df0ced33d5fa891b464926a5539c';
-        pieces['pant_id'] = '4ab8eb6901ee17def7dc670dcc4ffdaf';
-        pieces['shoes_id'] = '18170179a9ce4ebcab91979881386f4c';
+        Mannequin.shirt_id = '98a5df0ced33d5fa891b464926a5539c';
+        Mannequin.pant_id = '4ab8eb6901ee17def7dc670dcc4ffdaf';
+        Mannequin.shoes_id = '18170179a9ce4ebcab91979881386f4c';
         
-        draw_mannequin(pieces);
+        Mannequin.draw();
         
         
         // fill closet
