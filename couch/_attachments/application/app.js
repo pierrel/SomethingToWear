@@ -181,7 +181,13 @@ var app = $.sammy(function() { with(this) {
         });
     }});
     
-    post('#/user/new', function() {with(this) {
+    get('#/user/new', function() { with(this) {
+        partial('templates/new_user.html', {}, function(rendered) {
+           $('#body').html(rendered); 
+        });
+    }});
+    
+    post('#/user/create', function() {with(this) {
         if (params['password'] != params['password_check']) {
             alert('passwords do not match');
         } else {
