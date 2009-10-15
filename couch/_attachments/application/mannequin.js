@@ -147,7 +147,6 @@ $('#' + Mannequin.element_id).click(function(evt) {
     
     // to remove
     context = document.getElementById(Mannequin.element_id).getContext('2d');
-    context.strokeRect(click_x, click_y, 20, 20);
         
     if (click_x > shoes['min_x'] && click_x < shoes['max_x'] && click_y > shoes['min_y'] && click_y < shoes['max_y']) {
         Mannequin.shoes_id = '';
