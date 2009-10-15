@@ -5,6 +5,59 @@ function comma_separate(string) {
     });
 }
 
+function fill_closet_part(context, ids, part_name) {
+    $.each(ids, function(i, id) {
+        context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
+            $('#' + part_name).append(rendered);
+            $('.piece').draggable({helper: 'clone'});
+        });
+    });
+    
+    //find out part width
+    part_width = 200;
+    if (part_name == 'shoes') {
+        part_width = 210;
+    } else if (part_name == 'shirts') {
+        part_width = 150;
+    } else if (part_name == 'pants') {
+        part_width = 100;
+    }
+    
+    $('#' + part_name).width('' + ids.length*part_width + 'px');
+    
+}
+
+function fill_closet(context) {
+    // fill closet
+    $('#shirts').empty();
+    $('#pants').empty();
+    $('#shoes').empty();
+    
+    // first the shirts
+    $.get(couch_view('pieces_by_type'), {'key':"\"shirt\""}, function(data, textStatus) {
+        ids = $.map(data['rows'], function(row) {return row['id']});
+        
+        fill_closet_part(context, ids, 'shirts');
+        
+    }, "json");
+    
+    // then pants
+    $.get(couch_view('pieces_by_type'), {'key':"\"pants\""}, function(data, textStatus) {
+        ids = $.map(data['rows'], function(row) {return row['id']});
+        
+        fill_closet_part(context, ids, 'pants');        
+        
+    }, "json");
+    
+    // then shoes
+    $.get(couch_view('pieces_by_type'), {'key':"\"shoes\""}, function(data, textStatus) {
+        ids = $.map(data['rows'], function(row) {return row['id']});
+        
+        fill_closet_part(context, ids, 'shoes');
+        
+    }, "json");
+}
+
 var point_number = 0;  // For adding clothes to the db
 var point_pixels = []; //
 
@@ -18,49 +71,7 @@ var app = $.sammy(function() { with(this) {
         
         Mannequin.draw();
         
-        // fill closet
-        $('#shirts').empty();
-        $('#pants').empty();
-        $('#shoes').empty();
-        // first the shirts
-        $.get(couch_view('pieces_by_type'), {'key':"\"shirt\""}, function(data, textStatus) {
-            ids = $.map(data['rows'], function(row) {return row['id']});
-            $.each(ids, function(i, id) {
-                partial('templates/closet_piece.template', {type: 'shirt', id: id}, function(rendered) {
-                    $('#shirts').append(rendered);
-                });
-            });
-            
-            // resize the container
-            $('#shirts').width('' + ids.length*150 + 'px');
-            
-        }, "json");
-        
-        // then pants
-        $.get(couch_view('pieces_by_type'), {'key':"\"pants\""}, function(data, textStatus) {
-            ids = $.map(data['rows'], function(row) {return row['id']});
-            $.each(ids, function(i, id) {
-                partial('templates/closet_piece.template', {type: 'pants', id: id}, function(rendered) {
-                    $('#pants').append(rendered);
-                });
-            });
-            
-            $('#pants').width('' + ids.length * 100 + 'px');
-            
-        }, "json");
-        
-        // then shoes
-        $.get(couch_view('pieces_by_type'), {'key':"\"shoes\""}, function(data, textStatus) {
-            ids = $.map(data['rows'], function(row) {return row['id']});
-            $.each(ids, function(i, id) {
-                partial('templates/closet_piece.template', {type: 'shoes', id: id}, function(rendered) {
-                    $('#shoes').append(rendered);
-                    $('.piece').draggable({helper: 'clone'});
-                });
-            });
-            
-            $('#shoes').width('' + ids.length*210 + 'px');
-        }, "json");
+        fill_closet(this);
         
         // set up mannequin-canvas interaction
         Mannequin.element().droppable({
@@ -69,7 +80,7 @@ var app = $.sammy(function() { with(this) {
                 type = draggable_info[0];
                 id = draggable_info[1];
                 
-                if (type == 'shirt') {
+                if (type == 'shirts') {
                     Mannequin.shirt_id = id;
                 } else if (type == 'pants') {
                     Mannequin.pant_id = id;
