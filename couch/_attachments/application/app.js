@@ -175,6 +175,28 @@ var app = $.sammy(function() { with(this) {
         
     }});
     
+    get('#/user/login', function() { with(this) {
+        partial('templates/login.html', {}, function(rendered) {
+           $('#body').html(rendered); 
+        });
+    }});
+    
+    post('#/user/new', function() {with(this) {
+        if (params['password'] != params['password_check']) {
+            alert('passwords do not match');
+        } else {
+            // something
+        }
+    }});
+    
+    
+    
+    
+    
+    
+    
+    
+    
     get('#/rate', function() { with(this) {
         $("#fashion").dialog('open');
     }});
