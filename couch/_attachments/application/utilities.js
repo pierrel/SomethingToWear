@@ -15,3 +15,13 @@ function unique(arr) {
     }
     return new_arr;
 }
+
+function arr_select(arr, bool_function) {
+    var new_arr = [];
+    $.each(arr, function(index, elt) {
+        if (bool_function(elt)) {
+            new_arr.push(elt);
+        }
+    });
+    return new_arr;
+}

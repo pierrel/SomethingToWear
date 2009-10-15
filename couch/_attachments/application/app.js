@@ -141,25 +141,25 @@ var app = $.sammy(function() { with(this) {
         $('.search').click(function(evt) {
             this.select();
         });
-        $('.search').listenForChange();        
         
-        $('#shirt-search').change(function(evt) {
+        select_function = function(elt) { return elt != "" }; // use this to select only non-empty strings as attributes
+        $('#shirt-search').keypress(function(evt) {
             var value = $(this).attr('value');
-            var attributes = comma_separate(value);
+            var attributes = arr_select(comma_separate(value), select_function);
             
             search_and_update_closet(context, 'shirt', 'shirts', attributes);
         });
         
-        $('#pants-search').change(function(evt) {
+        $('#pants-search').keypress(function(evt) {
             var value = $(this).attr('value');
-            var attributes = comma_separate(value);
+            var attributes = arr_select(comma_separate(value), select_function);
             
             search_and_update_closet(context, 'pants', 'pants', attributes);
         });
         
-        $('#shoes-search').change(function(evt) {
+        $('#shoes-search').keypress(function(evt) {
             var value = $(this).attr('value');
-            var attributes = comma_separate(value);
+            var attributes = arr_select(comma_separate(value), select_function);
             
             search_and_update_closet(context, 'shoes', 'shoes', attributes);
         });
