@@ -1,11 +1,7 @@
-
-function comma_separate(string) {
-    return $.map(string.split(','), function(elt, index) {
-        return $.trim(elt);
-    });
-}
-
 function fill_closet_part(context, ids, part_name) {
+    // empty first closet
+    $('#' + part_name).empty();
+    
     $.each(ids, function(i, id) {
         context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
             $('#' + part_name).append(rendered);
@@ -28,10 +24,6 @@ function fill_closet_part(context, ids, part_name) {
 }
 
 function fill_closet(context) {
-    // fill closet
-    $('#shirts').empty();
-    $('#pants').empty();
-    $('#shoes').empty();
     
     // first the shirts
     $.get(couch_view('pieces_by_type'), {'key':"\"shirt\""}, function(data, textStatus) {
@@ -58,6 +50,55 @@ function fill_closet(context) {
     }, "json");
 }
 
+function search_and_update_closet(context, piece_type, closet_part_name, attributes) {
+        
+    if (attributes.length == 0 || (attributes.length == 1 && attributes[0] == "")) { // empty array or array with one empty string
+        alert('filling empty');
+        $.get(couch_view('pieces_by_type'), {'key':"\"" + piece_type + "\""}, function(data, textStatus) {
+            ids = $.map(data['rows'], function(row) {return row['id']});
+
+            fill_closet_part(context, ids, closet_part_name);
+
+        }, "json");
+    } else {
+        
+        keys = [];
+        $.each(attributes, function(index, attr) {
+            keys[index] = [piece_type, attr];
+        });
+        data = {keys: keys};
+    
+        $.post(couch_view('search'), JSON.stringify(data), function(msg, status) {
+        
+            // get unique ids
+            ids = unique($.map(msg['rows'], function(row) { return row['id']}));
+        
+            // make hash of id -> list of searched tags
+            id_attrs = {};
+            for(index in msg['rows']) {
+                tag = msg['rows'][index]['key'][1];
+                id = msg['rows'][index]['id'];
+                if (id in id_attrs) {
+                       id_attrs[id].push(tag);
+                } else {
+                       id_attrs[id] = [];
+                       id_attrs[id].push(tag);
+                }
+            }
+                        
+            var matching_ids = [];
+            for (index in ids) {
+                id = ids[index];
+                if (id_attrs[id].length == attributes.length) { // then has all attributes
+                    matching_ids.push(id);
+                }
+            }
+                        
+            fill_closet_part(context, matching_ids, closet_part_name);
+        }, 'json');
+    }    
+}
+
 var point_number = 0;  // For adding clothes to the db
 var point_pixels = []; //
 
@@ -65,13 +106,16 @@ var app = $.sammy(function() { with(this) {
     element_selector = '#main';
     
     get('#/', function() { with(this) {
+        var context = this;
+        
         Mannequin.shirt_id = '98a5df0ced33d5fa891b464926a5539c';
         Mannequin.pant_id = '4ab8eb6901ee17def7dc670dcc4ffdaf';
         Mannequin.shoes_id = '18170179a9ce4ebcab91979881386f4c';
         
         Mannequin.draw();
         
-        fill_closet(this);
+        fill_closet(context);
+        
         
         // set up mannequin-canvas interaction
         Mannequin.element().droppable({
@@ -92,7 +136,34 @@ var app = $.sammy(function() { with(this) {
             },
             accept: '.piece',
             activeClass: 'mannequin-canvas-dragging'
-        });        
+        });
+        
+        
+        $('.search').click(function(evt) {
+            this.select();
+        });
+        
+        
+        $('#shirt-search').change(function(evt) {
+            var value = $(this).attr('value');
+            var attributes = comma_separate(value);
+            
+            search_and_update_closet(context, 'shirt', 'shirts', attributes);
+        });
+        
+        $('#pants-search').change(function(evt) {
+            var value = $(this).attr('value');
+            var attributes = comma_separate(value);
+            
+            search_and_update_closet(context, 'pants', 'pants', attributes);
+        });
+        
+        $('#shoes-search').change(function(evt) {
+            var value = $(this).attr('value');
+            var attributes = comma_separate(value);
+            
+            search_and_update_closet(context, 'shoes', 'shoes', attributes);
+        });
     }});
     
     get('#/rate', function() { with(this) {

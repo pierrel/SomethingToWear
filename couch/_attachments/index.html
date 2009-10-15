@@ -7,9 +7,11 @@
 	
 	<script src="third_party_scripts/json2.js" type="text/javascript" charset="utf-8"></script>
 	<script src="third_party_scripts/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="third_party_scripts/jquery.form.js" type="text/javascript" charset="utf-8"></script>
 	<script src="third_party_scripts/jquery-ui-1.7.2.custom.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="third_party_scripts/jquery.form.js" type="text/javascript" charset="utf-8"></script>
+	<script src="third_party_scripts/jquery.listenForChange.js" type="text/javascript" charset="utf-8"></script>
 	<script src="third_party_scripts/sammy.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="application/utilities.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body id="main">
 	<div class="container">
@@ -50,16 +52,19 @@
 				<input type="submit" name="edit-closet" value="Edit Your Closet" id="edit-closet">
 			</div>
 			
+			<input type="text" name="shirt-search" value="Search your shirts" id="shirt-search" class="search">
 			<div id="shirt-part" class="closet-part">
 				<div id="shirts" class="part">
 				</div>
 			</div>
 			
+			<input type="text" name="pants-search" value="Search your pants" id="pants-search" class="search">
 			<div id="pants-part" class="closet-part">
 				<div id="pants" class="part">
 				</div>
 			</div>
 			
+			<input type="text" name="shoes-search" value="Search your shoes" id="shoes-search" class="search">
 			<div id="shoes-part" class="closet-part">
 				<div id="shoes" class="part">
 				</div>
