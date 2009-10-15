@@ -143,21 +143,21 @@ var app = $.sammy(function() { with(this) {
         });
         
         select_function = function(elt) { return elt != "" }; // use this to select only non-empty strings as attributes
-        $('#shirt-search').keypress(function(evt) {
+        $('#shirt-search').keyup(function(evt) {
             var value = $(this).attr('value');
             var attributes = arr_select(comma_separate(value), select_function);
             
             search_and_update_closet(context, 'shirt', 'shirts', attributes);
         });
         
-        $('#pants-search').keypress(function(evt) {
+        $('#pants-search').keyup(function(evt) {
             var value = $(this).attr('value');
             var attributes = arr_select(comma_separate(value), select_function);
             
             search_and_update_closet(context, 'pants', 'pants', attributes);
         });
         
-        $('#shoes-search').keypress(function(evt) {
+        $('#shoes-search').keyup(function(evt) {
             var value = $(this).attr('value');
             var attributes = arr_select(comma_separate(value), select_function);
             
