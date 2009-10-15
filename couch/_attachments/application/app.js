@@ -53,7 +53,6 @@ function fill_closet(context) {
 function search_and_update_closet(context, piece_type, closet_part_name, attributes) {
         
     if (attributes.length == 0 || (attributes.length == 1 && attributes[0] == "")) { // empty array or array with one empty string
-        alert('filling empty');
         $.get(couch_view('pieces_by_type'), {'key':"\"" + piece_type + "\""}, function(data, textStatus) {
             ids = $.map(data['rows'], function(row) {return row['id']});
 
@@ -142,7 +141,7 @@ var app = $.sammy(function() { with(this) {
         $('.search').click(function(evt) {
             this.select();
         });
-        
+        $('.search').listenForChange();        
         
         $('#shirt-search').change(function(evt) {
             var value = $(this).attr('value');
