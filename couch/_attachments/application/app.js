@@ -5,10 +5,6 @@ function comma_separate(string) {
     });
 }
 
-function fill_closet() {
-    
-}
-
 var point_number = 0;  // For adding clothes to the db
 var point_pixels = []; //
 
@@ -36,7 +32,7 @@ var app = $.sammy(function() { with(this) {
             });
             
             // resize the container
-            $('#shirts').attr('width', '' + ids.length*100 + 'px');
+            $('#shirts').width('' + ids.length*150 + 'px');
             
         }, "json");
         
@@ -49,7 +45,7 @@ var app = $.sammy(function() { with(this) {
                 });
             });
             
-            $('#pants').attr('width', '' + ids.length * 100 + 'px');
+            $('#pants').width('' + ids.length * 100 + 'px');
             
         }, "json");
         
@@ -63,7 +59,7 @@ var app = $.sammy(function() { with(this) {
                 });
             });
             
-            $('#shoes').attr('width', '' + ids.length*150 + 'px');
+            $('#shoes').width('' + ids.length*210 + 'px');
         }, "json");
         
         // set up mannequin-canvas interaction
