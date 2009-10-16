@@ -17,13 +17,38 @@ Mannequin.element = function() {
 }
 
 Mannequin.like_current_outfit = function (username) {
-    
+        
+    // check if the outfit exists
+    msg = get_view('outfits_by_pieces', {key: [this.shirt_id, this.pant_id, this.shoes_id]});
+
+    if (msg['rows'].length == 0) { // outfit doesn't exist, create it
+        outfit = new_outfit(this.shirt_id, this.pant_id, this.shoes_id, username, function(msg) {
+            // say something
+        });
+
+    } else { // it exists, so add the user to it's liked_by array
+        users = msg['rows'][0]['value'];    // there should only be one.
+        outfit_id = msg['rows'][0]['id'];   //
+                
+        // check to see if the user has already liked the outfit
+        user_in = arr_select(users, function(user) { return normal_username(user) == username });
+
+        if (user_in.length == 0) {
+            // if not then add the user
+            users.push(couch_username(username));            
+            update_piece(outfit_id, {liked_by: users}, function(msg) {
+                // say something
+            });
+        } else {
+            // say something
+        }
+    }
 }
 
 Mannequin.piece_mousing_over = function(evt) {
-    shirt = Mannequin.shirt_position;
-    pant = Mannequin.pant_position;
-    shoes = Mannequin.shoes_position;
+    shirt = this.shirt_position;
+    pant = this.pant_position;
+    shoes = this.shoes_position;
 
     div_offset = absolute_offset($('#mannequin-canvas'));
 

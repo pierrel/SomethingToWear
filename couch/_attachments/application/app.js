@@ -175,11 +175,8 @@ var app = $.sammy(function() {
                 
                 // outfit saving stuff
                 $('#like-link').click(function(evt) {
-                    alert('clicked');
+                    Mannequin.like_current_outfit($.cookie('somethingtowear'));
                 });
-                
-
-
 
                 // search stuff
                 $('.search').click(function(evt) {
