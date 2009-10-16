@@ -1,127 +1,51 @@
-#title {
-	color: #81828f;
-	font: 70px Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
-}
-#instructions img{
-	text-align: center;
-	height: 550px;
-	opacity: 0.50;
+a {
+    text-decoration: underline;
+    color: black;
 }
 
-.mannequin-canvas-dragging {
-    border: 1px solid #97efd5;
+html {
+    background-color: white;
 }
 
-#mannequin {
-	text-align: right;
+#header-info {
+    position: relative;
+    padding-top: 4em;
 }
+    #header-nav {
+        margin: 0 1em 0 1em;
+    }
+    
+#main-content {}
+    #side-nav {
+        min-height: 500px;
+        position: relative;
+    }
 
-/* @group main functionality */
+    #discover, #rate, #share, 
+    #discover-text, #rate-text, #share-text { 
+        background: url("../images/main/nav-sprite.png") no-repeat top left;
+        display: block; 
+    }
+    #discover, #rate, #share { cursor: pointer; }
+    #discover { background-position: 0 -193px; width: 235px; height: 57px;} 
+    #discover:hover, #discover-hover { background-position: 0 0; width: 235px; height: 57px; } 
+    #discover-text { background-position: 0 -106px; width: 235px; height: 37px;} 
 
+    #rate { background-position: 0 -476px; width: 235px; height: 44px;} 
+    #rate:hover, #rate-hover { background-position: 0 -299px; width: 235px; height: 44px;} 
+    #rate-text { background-position: 0 -393px; width: 235px; height: 33px; } 
 
+    #share { background-position: 0 -743px; width: 235px; height: 43px; } 
+    #share:hover, #share-hover { background-position: 0 -570px; width: 235px; height: 43px;} 
+    #share-text { background-position: 0 -663px; width: 235px; height: 30px;} 
 
-/* @end */
-
-/* @group Non-owned */
-
-#fashion-image {
-	width: 300px;
-	float: left;
-	text-align: right;
-	margin: 10px;
-}
-
-#add-to-closet-links {
-	width: 150px;
-	float: left;
-	text-align: center;
-	vertical-align: middle;
-}
-
-#other-rating {
-	float: left;
-	display: block;
-	text-align: center;
-}
-
-#fashion{
-	background-color: #fff;
-	border: 3px solid #ff704b;
-}
-
-
-
-/* @end */
-
-/* @group Add clothes */
-
-#add-clothes {
-	background-color: #fff;
-	border: 3px solid #ff704b;
-}
-
-
-
-/* @end */
-
-/* @group Closet */
-
-#closet {
-	display: none;
-}
-
-#closet-handle {
-	background-color: #ff704b;
-	height: 600px;
-	width: 10px;
-}
-
-#closet-handle:hover {
-	cursor: pointer;
-}
-
-#shoes-part {
-	height: 120px;;
-}
-
-#edit_button {
-	position: relative;
-	left: 100px;
-}
-
-.search {
-	display: block;
-	color: #9b9b9b;
-	width: 200px;
-	height: 30px;
-	font-size: 17px;
-}
-
-/* @group closet images */
-
-.closet-part {
-	overflow-x: auto;
-	height: 150px;
-	width: 400px;
-	border: 2px solid #9c979a;
-}
-
-#shoes div img {
-	height: 100px;
-}
-
-.piece-image img{
-    float: left;
-	height: 140px;
-	border: 1px solid #97efd5;
-	margin-right: 2px;
-	margin-left: 2px;
-}
-
-
-
-/* @end */
-
-
-
-/* @end */
+    #side-bottom-nav {
+        position: absolute;
+        width: 100%;
+        margin-left: 20px;
+        bottom: 0px;
+    }
+        #side-bottom-nav  > ul {
+            list-style: none;
+            margin-left: -40px;
+        }
