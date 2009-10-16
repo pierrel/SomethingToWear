@@ -146,8 +146,36 @@ var app = $.sammy(function() { with(this) {
                     accept: '.piece',
                     activeClass: 'mannequin-canvas-dragging'
                 });
+                
+                Mannequin.element().click(function(evt) {
+                    shirt = Mannequin.shirt_position;
+                    pant = Mannequin.pant_position;
+                    shoes = Mannequin.shoes_position;
+
+                    div_offset = absolute_offset($('#mannequin-canvas'));
+
+                    click_x = evt.pageX - div_offset[0] + 200; // again some crazy error, not sure but this seems to work
+                    click_y = evt.pageY - div_offset[1];
+
+                    // to remove
+                    context = document.getElementById(Mannequin.element_id).getContext('2d');
+
+                    if (click_x > shoes['min_x'] && click_x < shoes['max_x'] && click_y > shoes['min_y'] && click_y < shoes['max_y']) {
+                        Mannequin.shoes_id = '';
+                        Mannequin.draw();
+                    } else if (click_x > shirt['min_x'] && click_x < shirt['max_x'] && click_y > shirt['min_y'] && click_y < shirt['max_y']) {
+                        Mannequin.shirt_id = '';
+                        Mannequin.draw();
+                    } else if (click_x > pant['min_x'] && click_x < pant['max_x'] && click_y > pant['min_y'] && click_y < pant['max_y']) {
+                        Mannequin.pant_id = '';
+                        Mannequin.draw();
+                    }
+                })
+                
 
 
+
+                // search stuff
                 $('.search').click(function(evt) {
                     this.select();
                 });
