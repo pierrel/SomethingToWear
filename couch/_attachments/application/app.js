@@ -173,6 +173,11 @@ var app = $.sammy(function() {
                     }
                 });
                 
+                // outfit saving stuff
+                $('#like-link').click(function(evt) {
+                    alert('clicked');
+                });
+                
 
 
 
