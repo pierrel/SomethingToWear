@@ -214,7 +214,7 @@ var app = $.sammy(function() { with(this) {
            
            $('#login-button').click(function() {
               username = $('#username').val();
-              password = $('password').crypt({method: 'sha1'});
+              password = $('#password').crypt({method: 'sha1'});
               
               if (user_authentic(username, password)) {
                   $.cookie('somethingtowear', username, { expires: 10 });
