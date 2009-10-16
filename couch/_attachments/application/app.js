@@ -211,7 +211,24 @@ var app = $.sammy(function() { with(this) {
     get('#/user/login', function() { with(this) {
         partial('templates/login.html', {}, function(rendered) {
            $('#body').html(rendered); 
+           
+           $('#login-button').click(function() {
+              username = $('#username').val();
+              password = $('password').crypt({method: 'sha1'});
+              
+              if (user_authentic(username, password)) {
+                  $.cookie('somethingtowear', username, { expires: 10 });
+                  redirect('#/');
+              } else {
+                  alert('username and password did not match');
+              }
+           });
         });
+    }});
+    
+    get('#/user/logout', function() {with (this) {
+        $.cookie('somethingtowear', null);
+        redirect('#/user/login');
     }});
     
     get('#/user/new', function() { with(this) {

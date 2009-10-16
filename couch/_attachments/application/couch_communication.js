@@ -45,6 +45,11 @@ function new_user(username, password, success_func, error_func) {
     });
 }
 
+function user_authentic(username, password) {
+    doc = get_piece('user-' + username);
+    return doc['password'] == password;
+}
+
 function get_piece(id) {
     to_return = null;
     $.ajax({
