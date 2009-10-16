@@ -264,16 +264,7 @@ var app = $.sammy(function() {
            });
         });
     });    
-    
-    
-    
-    
-    
-    
-    this.get('#/rate', function(context) {
-        $("#fashion").dialog('open');
-    });
-        
+            
     this.get('#/piece/new', function(context) {
         form = $('#piece-image-upload-form');
         form.ajaxForm(null);

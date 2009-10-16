@@ -1,9 +1,9 @@
 
-<div id="title" class="span-5">
+<div id="title" class="span-6">
 	Some- thing to Wear
 </div>
 
-<div id="mannequin" class="span-7">
+<div id="mannequin" class="span-6">
 	<div id="dress-button">
 		<input type="button" name="dress" value="Dress Me!" id="dress" />
 	</div>
@@ -13,9 +13,7 @@
 	</canvas>
 
 	<div id="rating">
-		<img src="images/stars.png" />
-		<br>
-		<a href="#/rate" id="rate-others">Rate other outfits</a>
+		<a id="like-link" href="#">Like it!</a>
 	</div>	
 </div>
 
@@ -28,13 +26,6 @@
 </div>
 
 <div id="closet">
-	<div id="add_link">
-		<a href="#/piece/new">Add a piece</a>
-	</div>
-	<div id="edit_button">
-		<input type="submit" name="edit-closet" value="Edit Your Closet" id="edit-closet">
-	</div>
-
 	<input type="text" name="shirt-search" value="Search your shirts" id="shirt-search" class="search">
 	<div id="shirt-part" class="closet-part">
 		<div id="shirts" class="part">
@@ -51,23 +42,6 @@
 	<div id="shoes-part" class="closet-part">
 		<div id="shoes" class="part">
 		</div>
-	</div>
-</div>
-
-<div id="fashion">
-	<div id="add-to-closet-links">
-		<a id="shirt-link" href="#">I have that shirt</a><br>
-		<a id="pants-link" href="#">I have those pants</a><br>
-		<a id="shoes-link" href="#">I have those shoes</a><br>
-	</div>
-
-	<div id="fashion-image">	
-		<img src="images/fashion.jpg" />
-	</div>
-
-	<div id="other-rating">
-		Would you wear this?<br>
-		<button>Yes</button> <button>No</button>
 	</div>
 </div>
 
@@ -148,21 +122,6 @@
 
 <script type="text/javascript" charset="utf-8">
 var closet_state = 'closed';
-
-$("#fashion").dialog({
-	autoOpen: false,
-	modal: true,
-	width: 500,
-	height: 1100,
-	hide: 'slide',
-	show: 'slide',
-	resizable: false,
-	buttons : {
-		'Close' : function() {
-			$(this).dialog('close');
-		}
-	}
-});
 
 $("#add-clothes").dialog({
 	autoOpen: false,
