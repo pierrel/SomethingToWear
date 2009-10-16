@@ -101,11 +101,11 @@ function search_and_update_closet(context, piece_type, closet_part_name, attribu
 var point_number = 0;  // For adding clothes to the db
 var point_pixels = []; //
 
-var app = $.sammy(function() { with(this) {
-    element_selector = '#main';
+var app = $.sammy(function() {
+    this.element_selector = '#main';
+    this.use(Sammy.Template);
     
-    get('#/', function() { with(this) {
-        var context = this;
+    this.get('#/', function(context) {
         
         Mannequin.shirt_id = '98a5df0ced33d5fa891b464926a5539c';
         Mannequin.pant_id = '4ab8eb6901ee17def7dc670dcc4ffdaf';
@@ -113,10 +113,11 @@ var app = $.sammy(function() { with(this) {
         
         // check that the user is logged in
         if($.cookie('somethingtowear') == null) {
-            redirect('#/user/login');
+            context.redirect('#/user/login');
+            return false;
         }
         
-        partial('templates/main.html', {}, function(rendered) {
+        context.partial('templates/main.html', {}, function(rendered) {
             $('#body').html(rendered);
             
             
@@ -157,8 +158,8 @@ var app = $.sammy(function() { with(this) {
                     click_x = evt.pageX - div_offset[0] + 200; // again some crazy error, not sure but this seems to work
                     click_y = evt.pageY - div_offset[1];
 
-                    // to remove
-                    context = document.getElementById(Mannequin.element_id).getContext('2d');
+                    // // to remove
+                    // context = document.getElementById(Mannequin.element_id).getContext('2d');
 
                     if (click_x > shoes['min_x'] && click_x < shoes['max_x'] && click_y > shoes['min_y'] && click_y < shoes['max_y']) {
                         Mannequin.shoes_id = '';
@@ -180,7 +181,7 @@ var app = $.sammy(function() { with(this) {
                     this.select();
                 });
 
-                select_function = function(elt) { return elt != "" }; // use this to select only non-empty strings as attributes
+                select_function = function(elt) { return elt != "" && elt != "and"}; // use this to select only non-empty strings as attributes
                 $('#shirt-search').keyup(function(evt) {
                     var value = $(this).attr('value');
                     var attributes = arr_select(comma_separate(value), select_function);
@@ -206,38 +207,40 @@ var app = $.sammy(function() { with(this) {
             
         });        
         
-    }});
+    });
     
-    get('#/user/login', function() { with(this) {
-        partial('templates/login.html', {}, function(rendered) {
+    this.get('#/user/login', function(context) {
+        context.partial('templates/login.html', {}, function(rendered) {
            $('#body').html(rendered); 
            
-           $('#login-button').click(function() {
-              username = $('#username').val();
-              password = $('#password').crypt({method: 'sha1'});
-              
-              if (user_authentic(username, password)) {
+           $('#login-form').ajaxForm(function() { // for some reason Sammy's post isn't working so hijack the form
+                username = $('#username').val();
+                password = $('#password').crypt({method: 'sha1'});
+
+                if (user_authentic(username, password)) {
+                    
                   $.cookie('somethingtowear', username, { expires: 10 });
-                  redirect('#/');
-              } else {
+                  context.redirect('#/');
+                } else {
                   alert('username and password did not match');
-              }
+                }
            });
         });
-    }});
+    });
     
-    get('#/user/logout', function() {with (this) {
+    this.get('#/user/logout', function(context) {
         $.cookie('somethingtowear', null);
-        redirect('#/user/login');
-    }});
+        context.redirect('#/user/login');
+    });
     
-    get('#/user/new', function() { with(this) {
-        partial('templates/new_user.html', {}, function(rendered) {
+    this.get('#/user/new', function(context) {
+        context.partial('templates/new_user.html', {}, function(rendered) {
            $('#body').html(rendered);
            
-           $('#new-user-button').click(function() {
+           $('#new-user-form').ajaxForm(function() {
                password = $('#password').val();
                password_check = $('#password_check').val();
+               encrypted = $('#password').crypt({method: 'sha1'});
                username = $('#username').val();
                
                if (password.length == 0) {
@@ -247,35 +250,31 @@ var app = $.sammy(function() { with(this) {
                } else if (username.length == 0) {
                    alert('come on, put in a username');
                } else {
-                   alert('all ok')
-                   encrypted = $().crypt({method: 'sha1', source: password});
-                   alert('encrypted ' + encrypted);
-                   alert('user ' + username);
                    new_user(username, encrypted, function(success_msg) {
                        $.cookie('somethingtowear', username, { expires: 10 });
 
-                       redirect('#/');
+                       context.redirect('#/');
                    },
-                   function(error_msg) {
-                       if (error_msg['error'] == 'conflict') {
+                   function(error_msg) {                       
+                       if (JSON.parse(error_msg['responseText'])['error'] == 'conflict') {
                            alert('Username already taken, sorry. Please try another.');
                        }
                    });
                }
            });
         });
-    }});    
+    });    
     
     
     
     
     
     
-    get('#/rate', function() { with(this) {
+    this.get('#/rate', function(context) {
         $("#fashion").dialog('open');
-    }});
+    });
         
-    get('#/piece/new', function() { with(this) {
+    this.get('#/piece/new', function(context) {
         form = $('#piece-image-upload-form');
         form.ajaxForm(null);
         new_piece(
@@ -294,16 +293,16 @@ var app = $.sammy(function() { with(this) {
                 $('#new-piece-revision').attr('value', msg.rev);
                 
                 form.ajaxForm(function() {
-                    redirect('#/piece/describe/' + msg.id);
+                    context.redirect('#/piece/describe/' + msg.id);
                 });
                 
             },
             function(msg) {
                 alert('error: ' + JSON.stringify(msg));
             });
-    }});
+    });
     
-    get('#/piece/describe/:id', function() { with(this) {
+    this.get('#/piece/describe/:id', function(context) {
         // show/hide the correct elements
         $('#piece-preview').show();
         $('#pick-points-instructions').hide();
@@ -323,9 +322,9 @@ var app = $.sammy(function() { with(this) {
         
         //clear the form
         
-    }});
+    });
     
-    post('#/piece/describe', function() { with(this) {
+    this.post('#/piece/describe', function(context) {
         //do stuff
         data = {};
         data['colors'] = comma_separate(params['colors']);
@@ -336,11 +335,11 @@ var app = $.sammy(function() { with(this) {
         data['type'] = params['type'];
         
         update_piece(params['piece-description-id'], data, function(msg) {
-            redirect('#/piece/pick_points/' + params['piece-description-id']);
+            context.redirect('#/piece/pick_points/' + params['piece-description-id']);
         });
-    }});
+    });
     
-    get('#/piece/pick_points/:id', function() { with(this) {
+    this.get('#/piece/pick_points/:id', function(context) {
         // show/hide the correct elements
         $('#piece-preview').show();
         $('#pick-points-instructions').show();
@@ -415,7 +414,7 @@ var app = $.sammy(function() { with(this) {
 
 
                         window.setTimeout('$(\'#add-clothes\').dialog(\'close\')', 2000);
-                        redirect('#/');
+                        context.redirect('#/');
                     }
                 );
             }
@@ -423,9 +422,9 @@ var app = $.sammy(function() { with(this) {
         });
         
         $('#add-clothes').dialog('open');
-    }});    
+    });    
     
-}});
+});
    
 $(function() {
     app.run('#/');

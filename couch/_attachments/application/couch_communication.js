@@ -33,7 +33,6 @@ function new_piece(data, success_func, error_func) {
 
 function new_user(username, password, success_func, error_func) {
     data = {password: password, doc_type: 'user'};
-    alert('sending to ' + couch_user_url(username));
     $.ajax({
         type: "PUT",
         url: couch_user_url(username),

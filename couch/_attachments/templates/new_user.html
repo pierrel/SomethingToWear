@@ -2,11 +2,13 @@
 	&nbsp;
 </div>
 <div id="form-container" class="fullpage-form span-8 last">
-	<table border="0" cellspacing="5" cellpadding="5">
-		<tr><th>Username</th><td><input type="input" name="username" value="" id="username" /></td></tr>
-		<tr><th>Password</th><td><input type="password" name="password" value="" id="password" /></td></tr>
-		<tr><th>Password Check</th><td><input type="password" name="password_check" value="" id="password_check" /></td></tr>
-	</table>
-
-	<p><button id="new-user-button">Continue &rarr;</button></p>
+	<form id="new-user-form" method="post" accept-charset="utf-8">		
+		<table border="0" cellspacing="2" cellpadding="2">
+			<tr><th>Username</th><td><input type="input" name="username" value="" id="username" /></td></tr>
+			<tr><th>Password</th><td><input type="password" name="password" value="" id="password" /></td></tr>
+			<tr><th>Password Check</th><td><input type="password" name="password_check" value="" id="password_check" /></td></tr>
+		</table>
+		<p><input type="submit" value="Create Account"></p>
+	</form>
+	
 </div>
