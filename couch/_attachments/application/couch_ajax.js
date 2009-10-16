@@ -7,18 +7,16 @@ Couch = (function(){
     var get_url_for = function(server_name) 
     {
         if (!url_data) {
-            $.ajax({
+            url_data = JSON.parse($.ajax({
+                type: "GET",
                 url: "urls.json",
-                async: false,
+                async: false, // blocks
                 ifModified: true,
                 dataType: 'json',
-                success: function(data) {
-                     url_data = data;
-                },
                 failure: function() {
                     throw new Error("CouchDB::get_url_for returned an error");
                 }
-            });
+            }).responseText);
         }
         return url_data[server_name];
     };

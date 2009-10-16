@@ -1,5 +1,5 @@
 {
-    "couchdb": "http://localhost:5984/wear",
+    "couchdb": "http://localhost:5984/wear2",
     "proxy"  : "http://localhost:4567",
     "views"  : "_design/couch/_view",
     "image"  : "/image"

@@ -2,21 +2,23 @@
 function page_piece_new(context)
 {
     var form = $('#piece-image-upload-form');
+    // run this on success
     form.ajaxForm(null);
-    
+    form.ajaxForm(function() {
+        App.redirect('#/piece/describe/' + msg.id);
+    });
+        
     // Update fields in the form, implicitly creating a new document. 
     $.ajax({
+        type: "POST",
         url: Couch.url(),
         dataType: "json",
+        contentType: 'application/json',
         data: JSON.stringify({"doc_type":"piece"}),
-        success: function() {
+        success: function(msg) {
             $('#new-piece-id').attr('value', msg.id);
             $('#new-piece-revision').attr('value', msg.rev);
-
-            // run this on success
-            form.ajaxForm(function() {
-                App.redirect('#/piece/describe/' + msg.id);
-            });
+            page_piece_describe();
         },
         error: function(req,status,error) { throw new Error("page_piece_new couldn't execute: "+status+", "+error);}
     });    
