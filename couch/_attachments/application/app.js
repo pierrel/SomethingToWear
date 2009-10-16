@@ -111,6 +111,11 @@ var app = $.sammy(function() { with(this) {
         Mannequin.pant_id = '4ab8eb6901ee17def7dc670dcc4ffdaf';
         Mannequin.shoes_id = '18170179a9ce4ebcab91979881386f4c';
         
+        // check that the user is logged in
+        if($.cookie('somethingtowear') == null) {
+            redirect('#/user/login');
+        }
+        
         partial('templates/main.html', {}, function(rendered) {
             $('#body').html(rendered);
             
@@ -183,20 +188,38 @@ var app = $.sammy(function() { with(this) {
     
     get('#/user/new', function() { with(this) {
         partial('templates/new_user.html', {}, function(rendered) {
-           $('#body').html(rendered); 
+           $('#body').html(rendered);
+           
+           $('#new-user-button').click(function() {
+               password = $('#password').val();
+               password_check = $('#password_check').val();
+               username = $('#username').val();
+               
+               if (password.length == 0) {
+                   alert('come on, put in a password.');
+               } else if (password != password_check) {
+                   alert('passwords do not match');
+               } else if (username.length == 0) {
+                   alert('come on, put in a username');
+               } else {
+                   alert('all ok')
+                   encrypted = $().crypt({method: 'sha1', source: password});
+                   alert('encrypted ' + encrypted);
+                   alert('user ' + username);
+                   new_user(username, encrypted, function(success_msg) {
+                       $.cookie('somethingtowear', username, { expires: 10 });
+
+                       redirect('#/');
+                   },
+                   function(error_msg) {
+                       if (error_msg['error'] == 'conflict') {
+                           alert('Username already taken, sorry. Please try another.');
+                       }
+                   });
+               }
+           });
         });
-    }});
-    
-    post('#/user/create', function() {with(this) {
-        if (params['password'] != params['password_check']) {
-            alert('passwords do not match');
-        } else {
-            // something
-        }
-    }});
-    
-    
-    
+    }});    
     
     
     

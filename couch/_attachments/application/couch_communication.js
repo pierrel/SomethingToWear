@@ -9,6 +9,10 @@ function couch_view(view_name) {
     return couch('_design/SomethingToWear/_view/' + view_name);
 }
 
+function couch_user_url(username) {
+    return couch('user-' + username);
+}
+
 function piece_image_url(id) {
     return couch(id) + "/image";
 }
@@ -22,6 +26,20 @@ function new_piece(data, success_func, error_func) {
         dataType: "json",
         contentType: 'application/json',
         data: JSON.stringify(typed_data),
+        success: success_func,
+        error: error_func
+    });
+}
+
+function new_user(username, password, success_func, error_func) {
+    data = {password: password, doc_type: 'user'};
+    alert('sending to ' + couch_user_url(username));
+    $.ajax({
+        type: "PUT",
+        url: couch_user_url(username),
+        dataType: "json",
+        contentType: 'application/json',
+        data: JSON.stringify(data),
         success: success_func,
         error: error_func
     });
@@ -78,3 +96,4 @@ function update_piece(id, data, success_func) {
         }
     });
 }
+
