@@ -149,29 +149,29 @@ var app = $.sammy(function() {
                 });
                 
                 Mannequin.element().click(function(evt) {
-                    shirt = Mannequin.shirt_position;
-                    pant = Mannequin.pant_position;
-                    shoes = Mannequin.shoes_position;
-
-                    div_offset = absolute_offset($('#mannequin-canvas'));
-
-                    click_x = evt.pageX - div_offset[0] + 200; // again some crazy error, not sure but this seems to work
-                    click_y = evt.pageY - div_offset[1];
-
-                    // // to remove
-                    // context = document.getElementById(Mannequin.element_id).getContext('2d');
-
-                    if (click_x > shoes['min_x'] && click_x < shoes['max_x'] && click_y > shoes['min_y'] && click_y < shoes['max_y']) {
+                    piece_over = Mannequin.piece_mousing_over(evt);
+                    
+                    if (piece == 'shoes') {
                         Mannequin.shoes_id = '';
                         Mannequin.draw();
-                    } else if (click_x > shirt['min_x'] && click_x < shirt['max_x'] && click_y > shirt['min_y'] && click_y < shirt['max_y']) {
+                    } else if (piece == 'shirt') {
                         Mannequin.shirt_id = '';
                         Mannequin.draw();
-                    } else if (click_x > pant['min_x'] && click_x < pant['max_x'] && click_y > pant['min_y'] && click_y < pant['max_y']) {
+                    } else if (piece == 'pants') {
                         Mannequin.pant_id = '';
                         Mannequin.draw();
                     }
                 })
+                
+                Mannequin.element().mousemove(function(evt) {
+                    piece = Mannequin.piece_mousing_over(evt);
+                    if(piece) {
+                        if (piece != Mannequin.last_piece_hover) {
+                            Mannequin.draw(piece);
+                            Mannequin.last_piece_hover = piece;
+                        }
+                    }
+                });
                 
 
 
