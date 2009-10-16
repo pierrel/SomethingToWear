@@ -1,0 +1,4 @@
+<div class="error">
+  <h2>404 <%= params.verb.toUpperCase() %> <%= params.path %></h2>
+Sorry, there seems to be a problem with the app at the moment.
+</div>

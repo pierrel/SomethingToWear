@@ -1,0 +1,16 @@
+<div id="fashion">
+	<div id="add-to-closet-links">
+		<a id="shirt-link" href="#">I have that shirt</a><br>
+		<a id="pants-link" href="#">I have those pants</a><br>
+		<a id="shoes-link" href="#">I have those shoes</a><br>
+	</div>
+		
+	<div id="fashion-image">	
+		<img src="images/fashion.jpg" />
+	</div>
+	
+	<div id="other-rating">
+		Would you wear this?
+		Yes<br>No
+	</div>
+</div>

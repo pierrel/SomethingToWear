@@ -7,6 +7,14 @@ html {
     background-color: white;
 }
 
+label {
+    margin-right: 2em;
+}
+/*Overrides error coloring for all element in an error box*/
+.error * {
+    color: #8A1F11;
+}
+
 #header-info {
     position: relative;
     padding-top: 4em;
@@ -21,12 +29,11 @@ html {
         position: relative;
     }
 
-    #discover, #rate, #share, 
-    #discover-text, #rate-text, #share-text { 
+    .nav { 
         background: url("../images/main/nav-sprite.png") no-repeat top left;
         display: block; 
     }
-    #discover, #rate, #share { cursor: pointer; }
+    .nav-title { cursor: pointer; }
     #discover { background-position: 0 -193px; width: 235px; height: 57px;} 
     #discover:hover, #discover-hover { background-position: 0 0; width: 235px; height: 57px; } 
     #discover-text { background-position: 0 -106px; width: 235px; height: 37px;} 
@@ -48,4 +55,15 @@ html {
         #side-bottom-nav  > ul {
             list-style: none;
             margin-left: -40px;
+        }
+
+.share-list {
+    list-style-type: none;
+}
+    .share-list > li {
+        text-indent: -3em;
+    }
+        .share-list > li > .number {
+            font-size: 300%;
+            font-weight: bold;
         }

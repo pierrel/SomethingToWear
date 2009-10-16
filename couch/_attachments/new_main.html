@@ -29,20 +29,20 @@
         <img src="images/main/hr.png" class="span-24 last">
         <div id="main-content" class="span-24 last">
           <div id="side-nav" class="span-7">
-            <a id="rate" class="nav"></a>
+            <a id="rate" class="nav nav-title" href="#/rate"></a>
             <div id="rate-text" class="nav"></div>
             
-            <a id="discover" class="nav"></a>
+            <a id="discover" class="nav nav-title" href="#/discover"></a>
             <div id="discover-text" class="nav"></div>
             
-            <a id="share" class="nav"></a>
+            <a id="share" class="nav nav-title" href="#/share"></a>
             <div id="share-text" class="nav"></div>
             
             <div id="side-bottom-nav">
               <ul>
                 <li><a href="#/vendors">Clothing vendors</a></li>
-                <li><a href="#/aboutus">About us</a></li>
-                <li><a href="#/contactus">Contact us</a></li>
+                <li><a href="#/about_us">About us</a></li>
+                <li><a href="#/contact_us">Contact us</a></li>
               </ul>
               <div id="copyright">
                 Site &copy; 2009 Ming, Bryan &amp; Pierre
@@ -50,7 +50,9 @@
             </div>
           </div>
           <div id="body" class="prepend-1 span-16 prepend-top last">
-            <p>This is paragraph.</p>
+            <noscript>
+              <div class="error">This site requires Javascript to function correctly.</div>
+            </noscript>
           </div>
         </div>
       </div>
@@ -61,5 +63,17 @@
 	<script src="third_party_scripts/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="third_party_scripts/jquery-ui-1.7.2.custom.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="third_party_scripts/jquery.form.js" type="text/javascript" charset="utf-8"></script>
-	<script src="third_party_scripts/sammy.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="third_party_scripts/sammy/sammy.js" type="text/javascript" charset="utf-8"></script>
+	<script src="third_party_scripts/sammy/plugins/sammy.template.js" type="text/javascript" charset="utf-8"></script>
+	
+  <!-- Site-specific JS -->
+	<script src="application/utilities.js" type="text/javascript" charset="utf-8"></script>
+	<script src="application/couch_ajax.js" type="text/javascript" charset="utf-8"></script>
+	<script src="application/closet.js" type="text/javascript" charset="utf-8"></script>
+	<script src="application/drawing.js" type="text/javascript" charset="utf-8"></script>
+	<script src="application/mannequin.js" type="text/javascript" charset="utf-8"></script>
+	<script src="application/pages/home.js" type="text/javascript" charset="utf-8"></script>
+	<script src="application/pages/piece.js" type="text/javascript" charset="utf-8"></script>
+	<script src="application/app.js" type="text/javascript" charset="utf-8"></script>
+	
 </html>
