@@ -143,3 +143,10 @@
 	font-size: 20px;
 	color: #ff704b;
 }
+
+#like-feedback {
+	display: none;
+	color: #29b99e;
+	font-size: 15px;
+	font-weight: bold;
+}

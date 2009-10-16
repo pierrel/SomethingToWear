@@ -16,6 +16,13 @@ Mannequin.element = function() {
     return $('#' + this.element_id);
 }
 
+Mannequin.like_confirmation = function() {
+    div = $('#like-feedback');
+    div.show();
+    setTimeout("div.fadeOut('slow')", 2000);
+}
+
+
 Mannequin.like_current_outfit = function (username) {
         
     // check if the outfit exists
@@ -23,7 +30,7 @@ Mannequin.like_current_outfit = function (username) {
 
     if (msg['rows'].length == 0) { // outfit doesn't exist, create it
         outfit = new_outfit(this.shirt_id, this.pant_id, this.shoes_id, username, function(msg) {
-            // say something
+            Mannequin.like_confirmation();
         });
 
     } else { // it exists, so add the user to it's liked_by array
@@ -37,10 +44,10 @@ Mannequin.like_current_outfit = function (username) {
             // if not then add the user
             users.push(couch_username(username));            
             update_piece(outfit_id, {liked_by: users}, function(msg) {
-                // say something
+                Mannequin.like_confirmation();
             });
         } else {
-            // say something
+            Mannequin.like_confirmation();
         }
     }
 }
