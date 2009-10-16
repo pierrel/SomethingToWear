@@ -1,5 +1,7 @@
-<p><label for="username">Username</label><input type="input" name="username" value="" id="username" /></p>
-<p><label for="password">password</label><input type="password" name="password" value="" id="password" /></p>
+<form id="login-form" action="#/user/authenticate" accept-charset="utf-8" method="POST">
+	<p><label for="username">Username</label><input type="input" name="username" value="" id="username" /></p>
+	<p><label for="password">password</label><input type="password" name="password" value="" id="password" /></p>
 
 
-<p><button id="login-button">Login</button> or <a href="#/user/new">Sign up</a></p>
+	<p><input id="login-button" type="button" value="Login" /> or <a href="#/user/new">Sign up</a></p>
+</form>
