@@ -40,14 +40,71 @@ App = $.sammy(function() {
     
         page_piece_describe(context);
     });
-
+    
     this.get('#/piece/pick_points/:id', function(context) {
         set_nav_css('share');
         set_title("Share");
         page_piece_pick_points_id(context);
-    });    
+    });
+    
+    
+    this.get('#/user/login', function(context) {
+        context.partial('templates/login.html', {}, function(rendered) {
+           $('#body').html(rendered); 
+           
+           $('#login-form').ajaxForm(function() { // for some reason Sammy's post isn't working so hijack the form
+                username = $('#username').val();
+                password = $('#password').crypt({method: 'sha1'});
 
-    // =====================
+                if (user_authentic(username, password)) {
+                    
+                  $.cookie('somethingtowear', username, { expires: 10 });
+                  context.redirect('#/');
+                } else {
+                  alert('username and password did not match');
+                }
+           });
+        });
+    });
+    
+    this.get('#/user/logout', function(context) {
+        $.cookie('somethingtowear', null);
+        context.redirect('#/user/login');
+    });
+    
+    this.get('#/user/new', function(context) {
+        context.partial('templates/new_user.html', {}, function(rendered) {
+           $('#body').html(rendered);
+           
+           $('#new-user-form').ajaxForm(function() {
+               password = $('#password').val();
+               password_check = $('#password_check').val();
+               encrypted = $('#password').crypt({method: 'sha1'});
+               username = $('#username').val();
+               
+               if (password.length == 0) {
+                   alert('come on, put in a password.');
+               } else if (password != password_check) {
+                   alert('passwords do not match');
+               } else if (username.length == 0) {
+                   alert('come on, put in a username');
+               } else {
+                   new_user(username, encrypted, function(success_msg) {
+                       $.cookie('somethingtowear', username, { expires: 10 });
+
+                       context.redirect('#/');
+                   },
+                   function(error_msg) {                       
+                       if (JSON.parse(error_msg['responseText'])['error'] == 'conflict') {
+                           alert('Username already taken, sorry. Please try another.');
+                       }
+                   });
+               }
+           });
+        });
+    });
+    
+     // =====================
      // = Internal settings =
      // =====================
      

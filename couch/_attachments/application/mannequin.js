@@ -6,6 +6,8 @@ Mannequin.shirt_id = '';
 Mannequin.pant_id = '';
 Mannequin.shoes_id = '';
 
+Mannequin.last_piece_hover = ''
+
 Mannequin.shirt_position = {};
 Mannequin.pant_position = {};
 Mannequin.shoes_position = {};
@@ -14,8 +16,30 @@ Mannequin.element = function() {
     return $('#' + this.element_id);
 }
 
+Mannequin.piece_mousing_over = function(evt) {
+    shirt = Mannequin.shirt_position;
+    pant = Mannequin.pant_position;
+    shoes = Mannequin.shoes_position;
 
-Mannequin.draw = function () {
+    div_offset = absolute_offset($('#mannequin-canvas'));
+
+    click_x = evt.pageX - div_offset[0] + 230; // again some crazy error, not sure but this seems to work
+    click_y = evt.pageY - div_offset[1];
+
+    if (click_x > shoes['min_x'] && click_x < shoes['max_x'] && click_y > shoes['min_y'] && click_y < shoes['max_y']) {
+        return 'shoes';
+    } else if (click_x > shirt['min_x'] && click_x < shirt['max_x'] && click_y > shirt['min_y'] && click_y < shirt['max_y']) {
+        return 'shirt';
+    } else if (click_x > pant['min_x'] && click_x < pant['max_x'] && click_y > pant['min_y'] && click_y < pant['max_y']) {
+        return 'pants';
+    } else {
+        return 'none';
+    }
+    
+}
+
+
+Mannequin.draw = function(highlight) {
 
     // Image stuff
     var canvas = document.getElementById(this.element_id);
@@ -65,6 +89,9 @@ Mannequin.draw = function () {
 
         Mannequin.pant_position = {min_x: image_x, min_y: image_y, max_x: image_x + image_width, max_y: image_y + image_height};
         cont.drawImage(pant, image_x, image_y, image_width, image_height);
+        if (highlight == 'pants') {
+            cont.strokeRect(image_x, image_y, image_width, image_height);
+        }
     }
 
 
@@ -101,6 +128,9 @@ Mannequin.draw = function () {
 
         Mannequin.shirt_position = {min_x: image_x, min_y: image_y, max_x: image_x + image_width, max_y: image_y + image_height};
         cont.drawImage(shirt, image_x, image_y, image_width, image_height);
+        if (highlight == 'shirt') {
+            cont.strokeRect(image_x, image_y, image_width, image_height);
+        }
     }
 
 
@@ -127,35 +157,12 @@ Mannequin.draw = function () {
 
         Mannequin.shoes_position = {min_x: image_x, min_y: image_y, max_x: image_x + image_width, max_y: image_y + image_height};
         cont.drawImage(shoes, image_x, image_y, image_width, image_height);
+        if (highlight == 'shoes') {
+            cont.strokeRect(image_x, image_y, image_width, image_height);
+        }
     }
 
     shoes.src = couch(this.shoes_id) + '/image';
     pant.src = couch(this.pant_id) + '/image';
     shirt.src = couch(this.shirt_id) + '/image'; 
 }
-
-// listen for clicks on the Mannequin and remove clothes that are clicked
-$('#' + Mannequin.element_id).click(function(evt) {
-    shirt = Mannequin.shirt_position;
-    pant = Mannequin.pant_position;
-    shoes = Mannequin.shoes_position;
-    
-    div_offset = absolute_offset($('#mannequin-canvas'));
-    
-    click_x = evt.pageX - div_offset[0] + 200; // again some crazy error, not sure but this seems to work
-    click_y = evt.pageY - div_offset[1];
-    
-    // to remove
-    context = document.getElementById(Mannequin.element_id).getContext('2d');
-        
-    if (click_x > shoes['min_x'] && click_x < shoes['max_x'] && click_y > shoes['min_y'] && click_y < shoes['max_y']) {
-        Mannequin.shoes_id = '';
-        Mannequin.draw();
-    } else if (click_x > shirt['min_x'] && click_x < shirt['max_x'] && click_y > shirt['min_y'] && click_y < shirt['max_y']) {
-        Mannequin.shirt_id = '';
-        Mannequin.draw();
-    } else if (click_x > pant['min_x'] && click_x < pant['max_x'] && click_y > pant['min_y'] && click_y < pant['max_y']) {
-        Mannequin.pant_id = '';
-        Mannequin.draw();
-    }
-});

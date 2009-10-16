@@ -37,7 +37,7 @@ function page_piece_describe(ctx)
     data['type'] = params['type'];
     
     update_piece(params['piece-description-id'], data, function(msg) {
-        redirect('#/piece/pick_points/' + params['piece-description-id']);
+        context.redirect('#/piece/pick_points/' + params['piece-description-id']);
     });
 }
 
@@ -45,23 +45,23 @@ function page_piece_describe(ctx)
 function page_piece_describe_id(context)
 {
     // show/hide the correct elements
-    $('#piece-preview').show();
-    $('#pick-points-instructions').hide();
-    $('#describe-piece-form').show();
-    $('#piece-image-upload').hide();
-    $('#all-done').hide();
-    
-    $('#add-clothes').dialog('open');
-    
-    //make sure the canvas isn't doing anything with mouse clicks
-    $('#piece-canvas').click(null);
-    
-    // draw the piece for reference
-    draw_new_piece(piece_image_url(params['id']), 'piece-canvas');
-    
-    $('#piece-description-id').attr('value', params['id']);
-    
-    //clear the form
+     $('#piece-preview').show();
+     $('#pick-points-instructions').hide();
+     $('#describe-piece-form').show();
+     $('#piece-image-upload').hide();
+     $('#all-done').hide();
+     
+     $('#add-clothes').dialog('open');
+     
+     //make sure the canvas isn't doing anything with mouse clicks
+     $('#piece-canvas').click(null);
+     
+     // draw the piece for reference
+     draw_new_piece(piece_image_url(params['id']), 'piece-canvas');
+     
+     $('#piece-description-id').attr('value', params['id']);
+     
+     //clear the form
 }
 
 // #/piece/pick_points/:id
