@@ -16,6 +16,10 @@ Mannequin.element = function() {
     return $('#' + this.element_id);
 }
 
+Mannequin.like_current_outfit = function (username) {
+    
+}
+
 Mannequin.piece_mousing_over = function(evt) {
     shirt = Mannequin.shirt_position;
     pant = Mannequin.pant_position;
@@ -23,7 +27,7 @@ Mannequin.piece_mousing_over = function(evt) {
 
     div_offset = absolute_offset($('#mannequin-canvas'));
 
-    click_x = evt.pageX - div_offset[0] + 230; // again some crazy error, not sure but this seems to work
+    click_x = evt.pageX - div_offset[0] + 270; // again some crazy error, not sure but this seems to work
     click_y = evt.pageY - div_offset[1];
 
     if (click_x > shoes['min_x'] && click_x < shoes['max_x'] && click_y > shoes['min_y'] && click_y < shoes['max_y']) {
