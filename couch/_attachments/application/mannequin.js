@@ -138,6 +138,7 @@ Mannequin.draw = function(highlight) {
     
     if (cache[pant_id]) { // draw the cached image
         cached_info = cache[pant_id];
+        Mannequin.pant_position = {min_x: cached_info['image_x'], min_y: cached_info['image_y'], max_x: cached_info['image_x'] + cached_info['image_width'], max_y: cached_info['image_y'] + cached_info['image_height']};
         cont.drawImage(cached_info['image'], cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
         if (highlight == 'pants') {
             cont.strokeRect(cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
@@ -183,6 +184,7 @@ Mannequin.draw = function(highlight) {
     if (cache[shirt_id]) { // draw the cached image
         cached_info = cache[shirt_id];
         cont.drawImage(cached_info['image'], cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
+        Mannequin.shirt_position = {min_x: cached_info['image_x'], min_y: cached_info['image_y'], max_x: cached_info['image_x'] + cached_info['image_width'], max_y: cached_info['image_y'] + cached_info['image_height']};
         if (highlight == 'shirt') {
             cont.strokeRect(cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
         }
@@ -233,6 +235,7 @@ Mannequin.draw = function(highlight) {
     if (cache[shoes_id]) { // draw the cached image
         cached_info = cache[shoes_id];
         cont.drawImage(cached_info['image'], cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
+        Mannequin.shoes_position = {min_x: cached_info['image_x'], min_y: cached_info['image_y'], max_x: cached_info['image_x'] + cached_info['image_width'], max_y: cached_info['image_y'] + cached_info['image_height']};
         if (highlight == 'shoes') {
             cont.strokeRect(cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
         }
