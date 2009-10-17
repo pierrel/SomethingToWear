@@ -123,6 +123,24 @@ function search_and_update_closet(context, piece_type, closet_part_name, attribu
     }    
 }
 
+function random_outfit() {
+    shirt_rows = get_view('pieces_by_type', {key: 'shirt'})['rows'];
+    pant_rows = get_view('pieces_by_type', {key: 'pants'})['rows'];
+    shoes_rows = get_view('pieces_by_type', {key: 'shoes'})['rows'];
+    
+    shirts = $.map(shirt_rows, function(row) { return row['id']});
+    pants = $.map(pant_rows, function(row) { return row['id']});
+    shoes = $.map(shoes_rows, function(row) { return row['id']});
+    
+    random_pieces = {
+        shirt: shirts[Math.floor(Math.random()*shirts.length)],
+        pant: pants[Math.floor(Math.random()*pants.length)],
+        shoes: shoes[Math.floor(Math.random()*shoes.length)]
+    }
+
+    return random_pieces;
+}
+
 var point_number = 0;  // For adding clothes to the db
 var point_pixels = []; //
 
@@ -131,10 +149,6 @@ var app = $.sammy(function() {
     this.use(Sammy.Template);
     
     this.get('#/', function(context) {
-        
-        Mannequin.shirt_id = '98a5df0ced33d5fa891b464926a5539c';
-        Mannequin.pant_id = '4ab8eb6901ee17def7dc670dcc4ffdaf';
-        Mannequin.shoes_id = '18170179a9ce4ebcab91979881386f4c';
         
         // check that the user is logged in
         if($.cookie('somethingtowear') == null) {
@@ -148,8 +162,12 @@ var app = $.sammy(function() {
             
             
             $('#main').ready(function() {
-                Mannequin.draw();
+                Mannequin.draw_random_outfit();
                 fill_closet(context);
+                
+                $('#dress').click(function(evt) {
+                    Mannequin.complete_outfit();
+                })
 
 
                 // set up mannequin-canvas interaction

@@ -74,6 +74,31 @@ Mannequin.piece_mousing_over = function(evt) {
     
 }
 
+Mannequin.draw_random_outfit = function() {
+    outfit = random_outfit();
+    
+    this.shirt_id = outfit['shirt'];
+    this.pant_id = outfit['pant'];
+    this.shoes_id = outfit['shoes'];
+    
+    this.draw();
+}
+
+Mannequin.complete_outfit = function() {
+    outfit = random_outfit();
+    
+    if (this.shirt_id == '') {
+        this.shirt_id = outfit['shirt'];
+    }
+    if (this.pant_id == '') {
+        this.pant_id = outfit['pant'];
+    }
+    if (this.shoes_id == '') {
+        this.shoes_id = outfit['shoes'];
+    }
+    
+    this.draw();
+}
 
 Mannequin.draw = function(highlight) {
 
