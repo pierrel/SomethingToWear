@@ -145,7 +145,7 @@ var point_number = 0;  // For adding clothes to the db
 var point_pixels = []; //
 
 var app = $.sammy(function() {
-    this.element_selector = '#main';
+    this.element_selector = '#main-wrapper';
     this.use(Sammy.Template);
     
     this.get('#/', function(context) {
@@ -157,11 +157,11 @@ var app = $.sammy(function() {
         }
         
         context.partial('templates/main.html', {}, function(rendered) {
-            $('#body').html(rendered);
+            $('#main-wrapper').html(rendered);
             
             
             
-            $('#main').ready(function() {
+            $('#main-wrapper').ready(function() {
                 Mannequin.draw_random_outfit();
                 fill_closet(context);
                 
@@ -256,7 +256,7 @@ var app = $.sammy(function() {
     
     this.get('#/user/login', function(context) {
         context.partial('templates/login.html', {}, function(rendered) {
-           $('#body').html(rendered); 
+           $('#main-wrapper').html(rendered); 
            
            $('#login-form').ajaxForm(function() { // for some reason Sammy's post isn't working so hijack the form
                 username = $('#username').val();
@@ -280,7 +280,7 @@ var app = $.sammy(function() {
     
     this.get('#/user/new', function(context) {
         context.partial('templates/new_user.html', {}, function(rendered) {
-           $('#body').html(rendered);
+           $('#main-wrapper').html(rendered);
            
            $('#new-user-form').ajaxForm(function() {
                password = $('#password').val();

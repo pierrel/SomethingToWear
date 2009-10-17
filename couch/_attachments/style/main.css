@@ -1,11 +1,13 @@
 #title {
 	color: #81828f;
-	font: 70px Helvetica, "Helvetica Neue", Arial, Geneva, sans-serif;
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light",
+                 "Helvetica Neue", sans-serif;
+    font-weight: 300;
+    font-size: 6em;
+    line-height: 1em;
 }
-#instructions img{
+#instructions img {
 	text-align: center;
-	height: 550px;
-	opacity: 0.50;
 }
 
 .mannequin-canvas-dragging {
@@ -65,10 +67,21 @@
 
 /* @end */
 
+#main-wrapper {
+    position: relative;
+    overflow: hidden; /* hide our closet layer */
+}
+
 /* @group Closet */
+#closet-layer {
+    z-index: 2;
+    position: absolute;
+    background-color: white;
+    right: -420px;
+}
 
 #closet {
-	display: none;
+/*  display: none;*/
 }
 
 #closet-handle {

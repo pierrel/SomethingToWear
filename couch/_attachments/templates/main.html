@@ -23,32 +23,34 @@
 	</div>	
 </div>
 
-<div id="instructions" class="span-11">
+<div id="instructions" class="span-11 last">
 	<img src="images/instructions.png" />
 </div>
 
-<div id="closet-handle" class="span-1 last">
-	&nbsp;
-</div>
+<div id="closet-layer" class="span-11">
+  <div id="closet-handle" class="span-1">
+    &nbsp;
+  </div>
 
-<div id="closet">
-	<input type="text" name="shirt-search" value="Search your shirts (i.e. 'blue, polo')" id="shirt-search" class="search">
-	<div id="shirt-part" class="closet-part">
-		<div id="shirts" class="part">
-		</div>
-	</div>
+  <div id="closet" class="span-10 last">
+  	<input type="text" name="shirt-search" value="Search your shirts (i.e. 'blue, polo')" id="shirt-search" class="search">
+  	<div id="shirt-part" class="closet-part">
+  		<div id="shirts" class="part">
+  		</div>
+  	</div>
 
-	<input type="text" name="pants-search" value="Search your pants (i.e. 'full length, skinny')" id="pants-search" class="search">
-	<div id="pants-part" class="closet-part">
-		<div id="pants" class="part">
-		</div>
-	</div>
+  	<input type="text" name="pants-search" value="Search your pants (i.e. 'full length, skinny')" id="pants-search" class="search">
+  	<div id="pants-part" class="closet-part">
+  		<div id="pants" class="part">
+  		</div>
+  	</div>
 
-	<input type="text" name="shoes-search" value="Search your shoes (i.e. 'red, strappy, heels')" id="shoes-search" class="search">
-	<div id="shoes-part" class="closet-part">
-		<div id="shoes" class="part">
-		</div>
-	</div>
+  	<input type="text" name="shoes-search" value="Search your shoes (i.e. 'red, strappy, heels')" id="shoes-search" class="search">
+  	<div id="shoes-part" class="closet-part">
+  		<div id="shoes" class="part">
+  		</div>
+  	</div>
+  </div>
 </div>
 
 <div id="add-clothes">
@@ -145,22 +147,15 @@ $("#add-clothes").dialog({
 
 $("#closet-handle").click(function() {
 	if (closet_state == 'closed') {
-		$("#instructions").hide();
-		$("#closet-handle").removeClass('last');
-		$("#closet").addClass('span-11 last');
-		$("#closet").show('slide');
+		$("#instructions").fadeOut(250,function() {
+		  $("#closet-layer").animate({right: 0},500,"swing");
+		});
 
 		closet_state = 'open';
 	} else {
-		$("#closet").hide('slide', function() {
-			$("#instructions").show('slide');
-			$("#closet").removeClass('span-11 last');
-			$("#closet-handle").addClass('last');
+		$("#closet-layer").animate({right: "-420px"}, 500, "swing", function() {
+			$("#instructions").fadeIn(250);
 		});
-
-
-
-
 		closet_state = 'closed';
 	}
 });
