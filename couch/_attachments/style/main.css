@@ -10,6 +10,14 @@
 	text-align: center;
 }
 
+#clothing img{
+	height: 520px;
+}
+
+#liking img{
+	width: 300;
+}
+
 .mannequin-canvas-dragging {
     border: 1px solid #97efd5;
 }
