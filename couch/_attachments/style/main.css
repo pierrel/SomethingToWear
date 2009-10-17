@@ -4,8 +4,15 @@
 }
 #instructions img{
 	text-align: center;
-	height: 550px;
 	opacity: 0.50;
+}
+
+#clothing img{
+	height: 520px;
+}
+
+#liking img{
+	width: 300;
 }
 
 .mannequin-canvas-dragging {
