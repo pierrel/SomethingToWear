@@ -309,7 +309,8 @@ var app = $.sammy(function() {
            });
         });
     });    
-            
+    
+    var id = '';
     this.get('#/piece/new', function(context) {
         form = $('#piece-image-upload-form');
         form.ajaxForm(null);
@@ -328,8 +329,10 @@ var app = $.sammy(function() {
                 $('#new-piece-id').attr('value', msg.id);
                 $('#new-piece-revision').attr('value', msg.rev);
                 
+                id = msg.id;
+                
                 form.ajaxForm(function() {
-                    context.redirect('#/piece/describe/' + msg.id);
+                    context.redirect('#/piece/describe');
                 });
                 
             },
@@ -338,7 +341,7 @@ var app = $.sammy(function() {
             });
     });
     
-    this.get('#/piece/describe/:id', function(context) {
+    this.get('#/piece/describe', function(context) {
         // show/hide the correct elements
         $('#piece-preview').show();
         $('#pick-points-instructions').hide();
@@ -352,30 +355,30 @@ var app = $.sammy(function() {
         $('#piece-canvas').click(null);
         
         // draw the piece for reference
-        draw_new_piece(piece_image_url(params['id']), 'piece-canvas');
-        
-        $('#piece-description-id').attr('value', params['id']);
-        
-        //clear the form
+        draw_new_piece(piece_image_url(id), 'piece-canvas');
+                
+        $('#describe-piece-form').ajaxForm(function() {
+            //do stuff
+            data = {};
+            data['colors'] = comma_separate($('#colors').val());
+            data['styles'] = comma_separate($('#styles').val());
+            data['pattern'] = $('#pattern').val();
+            data['material'] = $('#material').val();
+            data['name'] = $('#name').val();
+            data['type'] = $('#place :selected').val();
+            
+            update_piece(id, data, function(msg) {
+                context.redirect('#/piece/pick_points/');
+            });
+        })
         
     });
     
     this.post('#/piece/describe', function(context) {
-        //do stuff
-        data = {};
-        data['colors'] = comma_separate(params['colors']);
-        data['styles'] = comma_separate(params['styles']);
-        data['pattern'] = params['pattern'];
-        data['material'] = params['material'];
-        data['name'] = params['name'];
-        data['type'] = params['type'];
-        
-        update_piece(params['piece-description-id'], data, function(msg) {
-            context.redirect('#/piece/pick_points/' + params['piece-description-id']);
-        });
+
     });
     
-    this.get('#/piece/pick_points/:id', function(context) {
+    this.get('#/piece/pick_points/', function(context) {
         // show/hide the correct elements
         $('#piece-preview').show();
         $('#pick-points-instructions').show();
@@ -387,10 +390,10 @@ var app = $.sammy(function() {
         $('#all-done').hide();
         
         // draw the image onto the canvas
-        draw_new_piece(piece_image_url(params['id']), 'piece-canvas');
+        draw_new_piece(piece_image_url(id), 'piece-canvas');
         
         // get the piece information
-        piece = get_piece(params['id']);
+        piece = get_piece(id);
         
         // set the listener on the canvas
         canvas = $('#piece-canvas');
@@ -438,7 +441,7 @@ var app = $.sammy(function() {
                     data['right_ankle'] = point_pixels[1];
                 }
                 update_piece(
-                    params['id'],
+                    id,
                    data,
                     function(msg) {
                         // show/hide the correct elements
