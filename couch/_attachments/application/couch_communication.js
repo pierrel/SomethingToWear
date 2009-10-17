@@ -131,12 +131,13 @@ function update_piece(id, data, success_func) {
 
 function get_view(view_name, params) {
     var to_return = null;
-    var url_params = '';
+    var url_params = [];
     
     for (key in params) {
-        url_params += (key + '=' + JSON.stringify(params[key]));
+        url_params.push(key + '=' + JSON.stringify(params[key]));
     }
-
+    url_params = url_params.join('&');
+    
     $.ajax({
         type: "GET",
         url: couch_view(view_name),
