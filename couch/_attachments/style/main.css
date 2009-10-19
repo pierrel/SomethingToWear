@@ -30,6 +30,10 @@
 	margin-top: 20px;
 }
 
+#mannequin:hover {
+    cursor: pointer;
+}
+
 /* @group main functionality */
 
 
