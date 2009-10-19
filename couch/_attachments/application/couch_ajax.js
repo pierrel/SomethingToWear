@@ -1,5 +1,63 @@
-var couch_url = 'http://127.0.0.1:5984/wear';
-var proxy_url = 'http://127.0.0.1:4567';
+Couch = (function(){
+    
+    // return url for a given key value in our urls.json file. This contains
+    // all the potentially changing URLs for the app in our convienient place
+    // Do not use url_data; this should be private
+    var url_data;
+    var get_url_for = function(server_name) 
+    {
+        if (!url_data) {
+            url_data = JSON.parse($.ajax({
+                type: "GET",
+                url: "urls.json",
+                async: false, // blocks
+                ifModified: true,
+                dataType: 'json',
+                failure: function() {
+                    throw new Error("CouchDB::get_url_for returned an error");
+                }
+            }).responseText);
+        }
+        return url_data[server_name];
+    };
+    
+    // called via Couch.url()
+    var url = function()
+    {
+        return get_url_for('couchdb') + "/";
+    };
+    
+    var view_url = function(view_name)
+    {
+        var host = get_url_for('couchdb');
+        var views = get_url_for('views');
+        if (!host || !views) {
+            throw new Error("view_url: Couldn't retrieve host or view key");
+        }
+        return host + "/" + views + view_name;
+    };
+    
+    var image_url = function()
+    {
+        var image;
+        if (!(image = get_url_for('image'))) throw new Error("image_url: unknown key 'image'");
+        return image;
+    };
+    
+    var proxy_url = function()
+    {
+        var proxy;
+        if (!(proxy = get_url_for('proxy'))) throw new Error("proxy_url: unknown key 'proxy");
+        return proxy;
+    };
+    
+    return {
+        url: url,
+        view_url: view_url,
+        proxy_url: proxy_url,
+        image_url: image_url
+    };
+})();
 
 function couch(url) {
     return couch_url + '/' + url;
