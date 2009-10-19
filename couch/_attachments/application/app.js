@@ -203,15 +203,23 @@ var app = $.sammy(function() {
                     } else if (piece == 'pants') {
                         Mannequin.pant_id = '';
                         Mannequin.draw();
-                    }
+                    }                        
+
                 })
                 
                 Mannequin.element().mousemove(function(evt) {
                     piece = Mannequin.piece_mousing_over(evt);
+                    
                     if(piece) {
                         if (piece != Mannequin.last_piece_hover) {
                             Mannequin.draw(piece);
                             Mannequin.last_piece_hover = piece;
+                        }
+                        
+                        if (piece != 'none') {
+                            $('#mannequin:hover').css('cursor', 'pointer');
+                        } else {
+                            $('#mannequin:hover').css('cursor', 'default');
                         }
                     }
                 });
