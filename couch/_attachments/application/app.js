@@ -165,8 +165,11 @@ var app = $.sammy(function() {
                 Mannequin.draw_random_outfit();
                 fill_closet(context);
                 
-                $('#dress').click(function(evt) {
+                $('#complete-dress').click(function(evt) {
                     Mannequin.complete_outfit();
+                })
+                $('#new-dress').click(function(evt) {
+                    Mannequin.draw_random_outfit();
                 })
 
 
