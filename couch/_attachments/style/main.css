@@ -99,10 +99,6 @@ body {
     right: -420px;
 }
 
-#closet {
-/*  display: none;*/
-}
-
 #closet-handle {
 	background-color: #ff704b;
 	height: 600px;
@@ -152,12 +148,6 @@ body {
 	margin-left: 2px;
 }
 
-
-
-/* @end */
-
-
-
 /* @end */
 
 .fullpage-form {
@@ -181,4 +171,75 @@ body {
 	color: #29b99e;
 	font-size: 15px;
 	font-weight: bold;
+}
+
+a {
+    text-decoration: underline;
+    color: black;
+}
+
+html {
+    background-color: white;
+}
+
+label {
+    margin-right: 2em;
+}
+/*Overrides error coloring for all element in an error box*/
+.error * {
+    color: #8A1F11;
+}
+
+#header-info {
+    position: relative;
+    padding-top: 4em;
+}
+    #header-nav {
+        margin: 0 1em 0 1em;
+    }
+    
+#main-content {}
+
+#side-nav {
+    min-height: 500px;
+    position: relative;
+}
+
+.nav { 
+    background: url("../images/main/nav-sprite.png") no-repeat top left;
+    display: block; 
+}
+.nav-title { cursor: pointer; }
+#discover { background-position: 0 -193px; width: 235px; height: 57px;} 
+#discover:hover, #discover-hover { background-position: 0 0; width: 235px; height: 57px; } 
+#discover-text { background-position: 0 -106px; width: 235px; height: 37px;} 
+
+#rate { background-position: 0 -476px; width: 235px; height: 44px;} 
+#rate:hover, #rate-hover { background-position: 0 -299px; width: 235px; height: 44px;} 
+#rate-text { background-position: 0 -393px; width: 235px; height: 33px; } 
+
+#share { background-position: 0 -743px; width: 235px; height: 43px; } 
+#share:hover, #share-hover { background-position: 0 -570px; width: 235px; height: 43px;} 
+#share-text { background-position: 0 -663px; width: 235px; height: 30px;} 
+
+#side-bottom-nav {
+    position: absolute;
+    width: 100%;
+    margin-left: 20px;
+    bottom: 0px;
+}
+#side-bottom-nav  > ul {
+    list-style: none;
+    margin-left: -40px;
+}
+
+.share-list {
+    list-style-type: none;
+}
+.share-list > li {
+    text-indent: -3em;
+}
+.share-list > li > .number {
+    font-size: 300%;
+    font-weight: bold;
 }

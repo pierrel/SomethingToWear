@@ -1,7 +1,14 @@
 require 'rubygems'
 require 'sinatra'
 require 'rest_client'
+require 'json'
 
 post '/attach_file' do
-  RestClient.put 'http://localhost:5984/wear/' + params[:id] + '/image?rev=' + params[:revision], params[:image][:tempfile].read(), :content_type => 'image/jpeg'
+  
+  urls = nil
+  File.open("../couch/_attachments/application/urls.json") { |f| urls = JSON.parse(f.read)}
+  
+  RestClient.put(urls[:couchdb] + "/" + params[:id] + '/image?rev=' + params[:revision], 
+                 params[:image][:tempfile].read(), 
+                 :content_type => params[:image][:type])
 end

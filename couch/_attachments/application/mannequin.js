@@ -6,13 +6,15 @@ Mannequin.shirt_id = '';
 Mannequin.pant_id = '';
 Mannequin.shoes_id = '';
 
-Mannequin.last_piece_hover = ''
+Mannequin.last_piece_hover = ''; // The last piece the mouse was over, to detect changes
 
-Mannequin.shirt_position = {};
-Mannequin.pant_position = {};
-Mannequin.shoes_position = {};
+Mannequin.shirt_position = {};  // Set in the draw() function for later highlighting
+Mannequin.pant_position = {};   // keys are min_x, min_y, max_x, and max_y
+Mannequin.shoes_position = {};  //
 
-Mannequin.cached_images = {};
+Mannequin.cached_images = {};   // hash of hashes for drawing images that have already been loaded
+                                // first level key is the piece id
+                                // second level keys are image, image_x, image_y, image_width, and image_height
 
 Mannequin.element = function() {
     return $('#' + this.element_id);
@@ -30,25 +32,25 @@ Mannequin.like_current_outfit = function (username) {
     // check if the outfit exists
     msg = get_view('outfits_by_pieces', {key: [this.shirt_id, this.pant_id, this.shoes_id]});
 
-    if (msg['rows'].length == 0) { // outfit doesn't exist, create it
+    if (msg['rows'].length == 0) { // outfit doesn't exist so create it
         outfit = new_outfit(this.shirt_id, this.pant_id, this.shoes_id, username, function(msg) {
             Mannequin.like_confirmation();
         });
 
-    } else { // it exists, so add the user to it's liked_by array
+    } else { // it exists, so add the user to its liked_by array
         users = msg['rows'][0]['value'];    // there should only be one.
         outfit_id = msg['rows'][0]['id'];   //
                 
         // check to see if the user has already liked the outfit
         user_in = arr_select(users, function(user) { return normal_username(user) == username });
 
-        if (user_in.length == 0) {
-            // if not then add the user
+        if (user_in.length == 0) {  // if the user has not already like it
+                                    // then add the user to the array and update the document
             users.push(couch_username(username));            
             update_piece(outfit_id, {liked_by: users}, function(msg) {
                 Mannequin.like_confirmation();
             });
-        } else {
+        } else { // if the user has already liked it just pretend we've done something
             Mannequin.like_confirmation();
         }
     }
@@ -120,37 +122,28 @@ Mannequin.draw = function(highlight) {
     var pant = new Image();
     var shoes = new Image();
     
-    if (cache[this.shirt_id] != null) {
-        shirt = cache[shirt_id]['image'];
-    }
-    if (cache[this.pant_id] != null) {
-        pant = cache[pant_id]['image'];
-    }
-    if (cache[this.shoes_id] != null) {
-        shoes = cache[shoes_id]['image'];
-    }
-
     // Some constants
     var waistline_y = 200;
     var waistline_x = canvas.width/2;
     var waist_width = 75;
     var leg_length = 210;
     
-    if (cache[pant_id]) { // draw the cached image
+    if (pant_id in cache) { // draw the cached image
         cached_info = cache[pant_id];
         Mannequin.pant_position = {min_x: cached_info['image_x'], min_y: cached_info['image_y'], max_x: cached_info['image_x'] + cached_info['image_width'], max_y: cached_info['image_y'] + cached_info['image_height']};
         cont.drawImage(cached_info['image'], cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
         if (highlight == 'pants') {
             cont.strokeRect(cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
         }
-    } else {
+    } else { // calculate the image info, cache it, and draw it
         pant.onload = function() {
-            pant_info = get_piece(pant_id);
-            right_waist = pant_info['right_waist'];
-            left_waist = pant_info['left_waist']
+            var pant_points = get_piece(pant_id)
+            
+            right_waist = pant_points['right_waist'];
+            left_waist = pant_points['left_waist']
             image_dimensions_ratio = pant.width/pant.height;
 
-            // Calculate the appropriate size of the image
+            // Calculate the appropriate size of the image for the canvas
             image_waist_width = right_waist[0] - left_waist[0];
 
             image_width = waist_width * (pant.width/image_waist_width);
@@ -159,7 +152,7 @@ Mannequin.draw = function(highlight) {
             image_width_translation_ratio = image_width/pant.width;
             image_height_translation_ratio = image_height/pant.height;
 
-            // Calculate the appropriate position of the image
+            // Calculate the appropriate position of the image in the canvas
             image_waistline_y = (right_waist[1] - left_waist[1])/2 + left_waist[1];
             image_waistline_x = (image_waist_width)/2 + left_waist[0];
 
@@ -167,21 +160,24 @@ Mannequin.draw = function(highlight) {
             translated_image_waistline_x = image_waistline_x * image_width_translation_ratio;
 
             image_y = waistline_y - translated_image_waistline_y;
-            image_x = waistline_x - translated_image_waistline_x;
-
+            image_x = waistline_x - translated_image_waistline_x;            
+            
             Mannequin.pant_position = {min_x: image_x, min_y: image_y, max_x: image_x + image_width, max_y: image_y + image_height};
             cont.drawImage(pant, image_x, image_y, image_width, image_height);
             if (highlight == 'pants') {
                 cont.strokeRect(image_x, image_y, image_width, image_height);
             }
-            
+
             // cache it for later use
             Mannequin.cached_images[pant_id] = {image: pant, image_x: image_x, image_y: image_y, image_width: image_width, image_height: image_height};
+
         }
+        
+        pant.src = couch(this.pant_id) + '/image';
         
     }
 
-    if (cache[shirt_id]) { // draw the cached image
+    if (shirt_id in cache) { // draw the cached image
         cached_info = cache[shirt_id];
         cont.drawImage(cached_info['image'], cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
         Mannequin.shirt_position = {min_x: cached_info['image_x'], min_y: cached_info['image_y'], max_x: cached_info['image_x'] + cached_info['image_width'], max_y: cached_info['image_y'] + cached_info['image_height']};
@@ -230,9 +226,11 @@ Mannequin.draw = function(highlight) {
             Mannequin.cached_images[shirt_id] = {image: shirt, image_x: image_x, image_y: image_y, image_width: image_width, image_height: image_height};
         }
         
+        shirt.src = couch(this.shirt_id) + '/image';
+        
     }
 
-    if (cache[shoes_id]) { // draw the cached image
+    if (shoes_id in cache) { // draw the cached image
         cached_info = cache[shoes_id];
         cont.drawImage(cached_info['image'], cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
         Mannequin.shoes_position = {min_x: cached_info['image_x'], min_y: cached_info['image_y'], max_x: cached_info['image_x'] + cached_info['image_width'], max_y: cached_info['image_y'] + cached_info['image_height']};
@@ -271,15 +269,7 @@ Mannequin.draw = function(highlight) {
             Mannequin.cached_images[shoes_id] = {image: shoes, image_x: image_x, image_y: image_y, image_width: image_width, image_height: image_height};
         }
         
-    }
-    if (!(shoes_id in cache)) {
         shoes.src = couch(this.shoes_id) + '/image';
+        
     }
-    if (!(pant_id in cache)) {
-        pant.src = couch(this.pant_id) + '/image';
-    }
-    if (!(shirt_id in cache)) {
-       shirt.src = couch(this.shirt_id) + '/image';  
-    }
-    
 }
