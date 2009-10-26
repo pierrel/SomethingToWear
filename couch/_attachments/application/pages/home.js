@@ -82,12 +82,9 @@ function page_home(context) {
             });
 
             select_function = function(elt) { return elt != "" && elt != "and"}; // use this to select only non-empty strings as attributes
-            $('#shirt-search').keyup(function(evt) {
-                var value = $(this).attr('value');
-                var attributes = arr_select(comma_separate(value), select_function);
-
-                search_and_update_closet(context, 'shirt', 'shirts', attributes);
-            });        
+            $('#shirt-search').keyup(closet_search(context, 'shirt', 'shirts'));
+            $('#pants-search').keyup(closet_search(context, 'pants', 'pants'));
+            $('#shoes-search').keyup(closet_search(context, 'shoes', 'shoes')); 
         });
     });
 }

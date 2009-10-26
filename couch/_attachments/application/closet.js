@@ -136,3 +136,12 @@ function search_and_update_closet(context, piece_type, closet_part_name, attribu
         }, 'json');
     }    
 }
+
+function closet_search(context, piece_type, closet_part_name) {
+    return function(evt) {
+        var value = $(this).attr('value');
+        var attributes = arr_select(comma_separate(value), select_function);
+
+        search_and_update_closet(context, piece_type, closet_part_name, attributes);
+    }
+}

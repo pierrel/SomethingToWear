@@ -60,7 +60,7 @@ Couch = (function(){
 })();
 
 function couch(url) {
-    return couch_url + '/' + url;
+    return Couch.url() + url;
 }
 
 function couch_view(view_name) {
@@ -73,8 +73,8 @@ function couch_username(username) {
 
 function normal_username(couch_username) {
     split = couch_username.split('-');
-    user_dash = split.shift();
-    return split.join('-');
+    split.shift(); // the first element looks like "user", so remove it
+    return split.join('-'); // join with dashes in case there were dashes in the actual username
 }
 
 function couch_user_url(username) {
