@@ -128,6 +128,7 @@ Mannequin.draw = function(highlight) {
     var waist_width = 75;
     var leg_length = 210;
     
+    
     if (pant_id in cache) { // draw the cached image
         cached_info = cache[pant_id];
         Mannequin.pant_position = {min_x: cached_info['image_x'], min_y: cached_info['image_y'], max_x: cached_info['image_x'] + cached_info['image_width'], max_y: cached_info['image_y'] + cached_info['image_height']};
@@ -135,7 +136,7 @@ Mannequin.draw = function(highlight) {
         if (highlight == 'pants') {
             cont.strokeRect(cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
         }
-    } else { // calculate the image info, cache it, and draw it
+    } else if (pant_id != '') { // calculate the image info, cache it, and draw it
         pant.onload = function() {
             var pant_points = get_piece(pant_id)
             
@@ -184,7 +185,7 @@ Mannequin.draw = function(highlight) {
         if (highlight == 'shirt') {
             cont.strokeRect(cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
         }
-    } else { // draw a new image when it loads
+    } else if (shirt_id != ''){ // draw a new image when it loads
         shirt.onload = function() {
 
             var shirt_info = get_piece(shirt_id);
@@ -237,7 +238,7 @@ Mannequin.draw = function(highlight) {
         if (highlight == 'shoes') {
             cont.strokeRect(cached_info['image_x'], cached_info['image_y'], cached_info['image_width'], cached_info['image_height']);
         }
-    } else {
+    } else if (shoes_id != ''){
         shoes.onload = function() {
             shoe_info = get_piece(shoes_id);
             image_dimensions_ratio = shoes.width/shoes.height;

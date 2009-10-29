@@ -41,33 +41,34 @@ function page_home(context) {
             Mannequin.element().click(function(evt) {
                 piece_over = Mannequin.piece_mousing_over(evt);
                 
-                if (piece == 'shoes') {
-                    Mannequin.shoes_id = '';
+                if (piece_over != 'none') {
+                    if (piece_over == 'shoes') {
+                        Mannequin.shoes_id = '';
+                        Mannequin.shoes_position = {};
+                    } else if (piece_over == 'shirt') {
+                        Mannequin.shirt_id = '';
+                        Mannequin.shirt_position = {};
+                    } else if (piece_over == 'pants') {
+                        Mannequin.pant_id = '';
+                        Mannequin.pant_id = {};
+                    }                        
                     Mannequin.draw();
-                } else if (piece == 'shirt') {
-                    Mannequin.shirt_id = '';
-                    Mannequin.draw();
-                } else if (piece == 'pants') {
-                    Mannequin.pant_id = '';
-                    Mannequin.draw();
-                }                        
+                }
 
             })
             
             Mannequin.element().mousemove(function(evt) {
                 piece = Mannequin.piece_mousing_over(evt);
                 
-                if(piece) {
-                    if (piece != Mannequin.last_piece_hover) {
-                        Mannequin.draw(piece);
-                        Mannequin.last_piece_hover = piece;
-                    }
-                    
-                    if (piece != 'none') {
-                        $('#mannequin:hover').css('cursor', 'pointer');
-                    } else {
-                        $('#mannequin:hover').css('cursor', 'default');
-                    }
+                if (piece != Mannequin.last_piece_hover) {
+                    Mannequin.draw(piece);
+                    Mannequin.last_piece_hover = piece;
+                }
+                
+                if (piece != 'none') {
+                    $('#mannequin:hover').css('cursor', 'pointer');
+                } else {
+                    $('#mannequin:hover').css('cursor', 'default');
                 }
             });
             
