@@ -18,7 +18,7 @@ function random_outfit() {
 
 function most_liked_pieces(type, limit) {
     params = {startkey: [couch_username(user()), type, ''], endkey: [couch_username(user()), type, 'Z'], group: true};
-    rows = get_view('user_outfit_pieces_count', params)['rows']; // looks like [{key: [user, type, id], value: count }, ...]
+    rows = get_view('user_outfit_pieces_count', params)['rows']; // looks like [{'key': [user, type, id], 'value': count }, ...]
     id_count = {}; // want to look like {id: count, ...}
     $.each(rows, function(i, row) {
        id_count[row['key'][2]] = row['value']; 
