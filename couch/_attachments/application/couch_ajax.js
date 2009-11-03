@@ -115,6 +115,7 @@ function new_piece(data, success_func, error_func) {
         type: "POST",
         url: couch(''),
         dataType: "json",
+        beforeSend: set_cookie_headers,
         contentType: 'application/json',
         data: JSON.stringify(typed_data),
         success: success_func,
@@ -133,6 +134,7 @@ function new_outfit(shirt_id, pants_id, shoes_id, username, success_func) {
         type: "POST",
         url: couch(''),
         dataType: 'json',
+        beforeSend: set_cookie_headers,
         contentType: 'application/json',
         data: JSON.stringify(data),
         success: success_func
@@ -145,6 +147,7 @@ function new_user(username, password, success_func, error_func) {
         type: "PUT",
         url: couch_user_url(username),
         dataType: "json",
+        beforeSend: set_cookie_headers,
         contentType: 'application/json',
         data: JSON.stringify(data),
         success: success_func,
@@ -201,6 +204,7 @@ function update_piece(id, data, success_func) {
         type: "GET",
         url: couch(id),
         dataType: 'json',
+        beforeSend: set_cookie_headers,
         contentType: 'application/json',
         success: function(msg) {            
             // get the old attributes
@@ -216,6 +220,7 @@ function update_piece(id, data, success_func) {
                 type: "PUT",
                 url: couch(id),
                 dataType: 'json',
+                beforeSend: set_cookie_headers,
                 contentType: 'application/json',
                 data: JSON.stringify(reved_data),
                 success: success_func,
@@ -244,6 +249,7 @@ function get_view(view_name, params) {
         url: couch_view(view_name),
         data: url_params,
         dataType: 'json',
+        beforeSend: set_cookie_headers,
         async: false,
         success: function(msg) {
             to_return = msg;
