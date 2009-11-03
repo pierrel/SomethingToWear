@@ -1,5 +1,5 @@
 function user() {
-    return $.cookie('somethingtowear-user');
+    return $.cookie('somethingtowear-username');
 }
         
 App = $.sammy(function() {
