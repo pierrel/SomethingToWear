@@ -53,11 +53,12 @@ App = $.sammy(function() {
            
            $('#login-form').ajaxForm(function() { // for some reason Sammy's post isn't working so hijack the form
                 username = $('#username').val();
-                password = $('#password').crypt({method: 'sha1'});
+                password = $('#password').val();
 
-                if (user_authentic(username, password)) {
-                    
-                  $.cookie('somethingtowear', username, { expires: 10 });
+                cookie = user_authentic(username, password);
+                if (cookie != false) {
+                  $.cookie('somethingtowear-username', username, { expires: 10 });
+                  $.cookie('somethingtowear-cookie', cookie, {expires: 10});
                   context.redirect('#/');
                 } else {
                   alert('username and password did not match');

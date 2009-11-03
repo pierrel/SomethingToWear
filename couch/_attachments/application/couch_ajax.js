@@ -24,7 +24,7 @@ Couch = (function(){
     // called via Couch.url()
     var url = function()
     {
-        return get_url_for('couchdb') + "/";
+        return get_url_for('couchdb_host') + '/' + get_url_for('couchdb') + "/";
     };
     
     var view_url = function(view_name)
@@ -35,7 +35,7 @@ Couch = (function(){
         if (!host || !views || !db) {
             throw new Error("view_url: Couldn't retrieve host or view or db key");
         }
-        return host + '/' couchdb + '/'+ views + '/' + view_name;
+        return host + '/' + couchdb + '/'+ views + '/' + view_name;
     };
     
     var image_url = function()
@@ -142,8 +142,27 @@ function new_user(username, password, success_func, error_func) {
 }
 
 function user_authentic(username, password) {
-    doc = get_piece('user-' + username);
-    return doc['password'] == password;
+    doc_id = couch_username(username);
+    
+    response = $.ajax({
+        type: "POST",
+        async: false,
+        url: Couch.session_url(),
+        dataType: 'json',
+        data: {username: doc_id, password: password},
+        error: function(msg, error, exception) {
+            throw new Error("user_authentic returned an error");
+        }
+    });
+    text = JSON.parse(response.responseText);
+    cookie = response.getResponseHeader('Set-Cookie');
+    
+    if (text['ok']) {
+       auth_session = cookie.split(';')[0];
+       return auth_session;
+    } else {
+        return false;
+    }
 }
 
 function get_piece(id) {

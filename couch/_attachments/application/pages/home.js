@@ -1,6 +1,6 @@
 function page_home(context) {
     // check that the user is logged in
-    if($.cookie('somethingtowear') == null) {
+    if($.cookie('somethingtowear-cookie') == null) {
         context.redirect('#/user/login');
         return false;
     }
