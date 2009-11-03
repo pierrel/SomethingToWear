@@ -179,16 +179,18 @@ function user_authentic(username, password) {
     }
 }
 
-function user_logout() {
-    $.ajax({
-        type: "DELETE",
-        url: Couch.session_url(),
-        beforeSend: set_cookie_headers,
-        dataType: 'json',
-        error: function(msg, error, exception) {
-            throw new Error("user_logout returned an error");
-        }
-    });
+function clear_session() {
+    if ($.cookie('somethingtowear-cookie')) {
+        $.ajax({
+            type: "DELETE",
+            url: Couch.session_url(),
+            beforeSend: set_cookie_headers,
+            dataType: 'json',
+            error: function(msg, error, exception) {
+                throw new Error("user_logout returned an error");
+            }
+        });
+    }
 }
 
 function get_piece(id) {

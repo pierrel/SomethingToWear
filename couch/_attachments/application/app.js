@@ -1,5 +1,5 @@
 function user() {
-    return $.cookie('somethingtowear');
+    return $.cookie('somethingtowear-user');
 }
         
 App = $.sammy(function() {
@@ -68,7 +68,7 @@ App = $.sammy(function() {
     });
     
     this.get('#/user/logout', function(context) {
-        user_logout();
+        clear_session();
         $.cookie('somethingtowear-username', null);
         $.cookie('somethingtowear-cookie', null);
         context.redirect('#/user/login');
