@@ -68,7 +68,9 @@ App = $.sammy(function() {
     });
     
     this.get('#/user/logout', function(context) {
-        $.cookie('somethingtowear', null);
+        user_logout();
+        $.cookie('somethingtowear-username', null);
+        $.cookie('somethingtowear-cookie', null);
         context.redirect('#/user/login');
     });
     
