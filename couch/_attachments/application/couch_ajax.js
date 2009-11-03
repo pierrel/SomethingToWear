@@ -29,12 +29,13 @@ Couch = (function(){
     
     var view_url = function(view_name)
     {
-        var host = get_url_for('couchdb');
+        var host = get_url_for('couchdb_host');
+        var db = get_url_for('couchdb');
         var views = get_url_for('views');
-        if (!host || !views) {
-            throw new Error("view_url: Couldn't retrieve host or view key");
+        if (!host || !views || !db) {
+            throw new Error("view_url: Couldn't retrieve host or view or db key");
         }
-        return host + "/" + views + view_name;
+        return host + '/' couchdb + '/'+ views + '/' + view_name;
     };
     
     var image_url = function()
@@ -47,15 +48,26 @@ Couch = (function(){
     var proxy_url = function()
     {
         var proxy;
-        if (!(proxy = get_url_for('proxy'))) throw new Error("proxy_url: unknown key 'proxy");
+        if (!(proxy = get_url_for('proxy'))) throw new Error("proxy_url: unknown key 'proxy'");
         return proxy;
     };
+    
+    var session_url = function()
+    {
+        var session = get_url_for('session');
+        var host = get_url_for('couchdb_host');
+        if (!session || !host) {
+            throw new Error("session_url: coucld not retrieve session or couchdb_host key");
+        }
+        return host + '/' + session; 
+    }
     
     return {
         url: url,
         view_url: view_url,
         proxy_url: proxy_url,
-        image_url: image_url
+        image_url: image_url,
+        session_url: session_url
     };
 })();
 
