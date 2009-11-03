@@ -97,6 +97,17 @@ function piece_image_url(id) {
     return couch(id) + "/image";
 }
 
+function set_cookie_headers(request) {
+    if ($.cookie('somethingtowear-cookie')) {
+        request.setRequestHeader('Cookie', $.cookie('somethingtowear-cookie'));
+        request.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    } else {
+        return false;
+    }
+    
+}
+
 function new_piece(data, success_func, error_func) {
     typed_data = data;
     typed_data['doc_type'] = 'piece';
@@ -171,6 +182,7 @@ function get_piece(id) {
         type: "GET",
         url: couch(id),
         dataType: 'json',
+        beforeSend: set_cookie_headers,
         async: false,
         success: function(msg) {
             to_return = msg;
