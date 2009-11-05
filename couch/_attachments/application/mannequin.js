@@ -28,7 +28,7 @@ Mannequin.like_confirmation = function() {
 
 
 Mannequin.like_current_outfit = function (username) {
-            
+                
     // check if the outfit exists
     msg = get_view('outfits_by_pieces', {key: [this.shirt_id, this.pant_id, this.shoes_id]});
 

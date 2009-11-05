@@ -229,6 +229,7 @@ function update_piece(id, data, success_func) {
                 reved_data[key] = value;
             });
             
+            
             // Send the updated doc
             $.ajax({
                 type: "PUT",
@@ -239,7 +240,7 @@ function update_piece(id, data, success_func) {
                 data: JSON.stringify(reved_data),
                 success: success_func,
                 error: function(msg) {
-                    alert('error, could not update ' + id + ": '" + JSON.stringify(msg) + "'");
+                    alert('error, could not update ' + id + ": '" + msg.reason + "'\n replacing '" + JSON.stringify(msg) + "' with '" + JSON.stringify(reved_data) + "'");
                 }
             })
         },
