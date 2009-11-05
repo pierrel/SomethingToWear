@@ -5,7 +5,6 @@ require 'json'
 
 set :public, "sammy"
 set :port, 8080
-set :static, false
 
 post '/attach_file' do
   
