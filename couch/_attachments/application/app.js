@@ -56,7 +56,7 @@ App = $.sammy(function() {
                   store_cookie(username, couchauth);
                   context.redirect('#/');
                 } else {
-                  alert('username and password did not match');
+                  alert('username or password incorrect');
                 }
            });
         });
