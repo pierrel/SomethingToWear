@@ -105,7 +105,6 @@ function set_cookie_headers(request) {
     } else {
         return false;
     }
-    
 }
 
 function new_piece(data, success_func, error_func) {
