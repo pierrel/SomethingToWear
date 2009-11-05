@@ -1,5 +1,8 @@
 function(doc) {
     if (doc.doc_type == 'user') {
-        emit(doc._id, {password_sha: doc.password, salt: "", secret: 'halloween', roles: ['user']});
+        id_array = doc._id.split('-')
+        id_array.shift();
+        name = id_array.join('-')
+        emit(doc._id, {name: name, password_sha: doc.password, salt: "", secret: 'halloween', roles: ['user']});
     }
 }

@@ -74,7 +74,7 @@ function page_home(context) {
             
             // outfit saving stuff
             $('#like-link').click(function(evt) {
-                Mannequin.like_current_outfit($.cookie('somethingtowear'));
+                Mannequin.like_current_outfit($.cookie('somethingtowear-user'));
             });
 
             // search stuff
