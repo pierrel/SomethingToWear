@@ -1,7 +1,3 @@
-function user() {
-    return $.cookie('somethingtowear-username');
-}
-        
 App = $.sammy(function() {
     // =================
     // = Public routes =
@@ -55,10 +51,9 @@ App = $.sammy(function() {
                 username = $('#username').val();
                 password = $('#password').val();
 
-                cookie = user_authentic(username, password);
-                if (cookie != false) {
-                  $.cookie('somethingtowear-username', username, { expires: 10 });
-                  $.cookie('somethingtowear-cookie', cookie, {expires: 10});
+                couchauth = user_authentic(username, password);
+                if (couchauth != false) {
+                  store_cookie(username, couchauth);
                   context.redirect('#/');
                 } else {
                   alert('username and password did not match');
@@ -69,8 +64,7 @@ App = $.sammy(function() {
     
     this.get('#/user/logout', function(context) {
         clear_session();
-        $.cookie('somethingtowear-username', null);
-        $.cookie('somethingtowear-cookie', null);
+        clear_cookie();
         context.redirect('#/user/login');
     });
     
@@ -92,9 +86,14 @@ App = $.sammy(function() {
                    alert('come on, put in a username');
                } else {
                    new_user(username, encrypted, function(success_msg) {
-                       $.cookie('somethingtowear', username, { expires: 10 });
-
-                       context.redirect('#/');
+                       couchauth = user_authentic(username, password);
+                       if (cookie) {
+                           set_cookie(username, couchauth);
+                           context.redirect('#/');
+                       } else {
+                           throw new Error("Newely created user '" + username + "' could not be authenticated");
+                       }
+                       
                    },
                    function(error_msg) {                       
                        if (JSON.parse(error_msg['responseText'])['error'] == 'conflict') {

@@ -98,8 +98,9 @@ function piece_image_url(id) {
 }
 
 function set_cookie_headers(request) {
-    if ($.cookie('somethingtowear-cookie')) {
-        request.setRequestHeader('Cookie', $.cookie('somethingtowear-cookie'));
+    auth = get_cookie().couchauth;
+    if (auth) {
+        request.setRequestHeader('Cookie', auth);
         request.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
     } else {
@@ -178,8 +179,37 @@ function user_authentic(username, password) {
     }
 }
 
+// First checks if the auth cookie is stored
+// then asks the server for the username and
+// checks that against what is stored in the
+// cookie
+function check_session() {
+    auth = get_cookie().couchauth;
+    if (auth) {
+        response = $.ajax({
+           type: 'GET',
+           url: Couch.session_url(),
+           async: false,
+           beforeSend: set_cookie_headers,
+           dataType: 'json',
+           error: function(msg, error, exception) {
+               throw new Error("check_session: could not check session: '" + JSON.stringify(msg) + "'");
+           }
+        });
+        
+        text = JSON.parse(response.responseText);
+        if (text.ok && text.name == couch_username(user())) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}
+
 function clear_session() {
-    if ($.cookie('somethingtowear-cookie')) {
+    if (get_cookie().couchauth) {
         $.ajax({
             type: "DELETE",
             url: Couch.session_url(),

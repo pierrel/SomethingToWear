@@ -1,6 +1,11 @@
 function page_home(context) {
     // check that the user is logged in
-    if($.cookie('somethingtowear-cookie') == null) {
+    if(get_cookie().couchauth == null) {
+        clear_cookie();
+        context.redirect('#/user/login');
+        return false;
+    } else if (!check_session()) { // make sure the session is still active
+        clear_cookie();
         context.redirect('#/user/login');
         return false;
     }
