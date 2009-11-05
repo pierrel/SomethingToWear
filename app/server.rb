@@ -17,6 +17,6 @@ post '/attach_file' do
                  :content_type => params[:image][:type])
 end
 
-get '/*' do
+get '/' do
   redirect '/index.html'
 end
