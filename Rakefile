@@ -17,5 +17,4 @@ task :pushAuth do
 end
 
 desc 'pushes both couchapps'
-task :pushCouchapps => [:pushAuth, :pushCouch] do
-end
+task :pushCouchapps => [:pushAuth, :pushCouch]
