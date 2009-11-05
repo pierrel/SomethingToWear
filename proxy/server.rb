@@ -3,7 +3,6 @@ require 'sinatra'
 require 'rest_client'
 require 'json'
 
-set :public, "sammy"
 set :port, 8080
 
 post '/attach_file' do
@@ -14,8 +13,4 @@ post '/attach_file' do
   RestClient.put(urls[:couchdb] + "/" + params[:id] + '/image?rev=' + params[:revision], 
                  params[:image][:tempfile].read(), 
                  :content_type => params[:image][:type])
-end
-
-get '/' do
-  redirect '/index.html'
 end
