@@ -5,7 +5,7 @@ require 'json'
 
 set :public, "sammy"
 set :port, 8080
-set :static, true
+set :static, false
 
 post '/attach_file' do
   
@@ -17,6 +17,6 @@ post '/attach_file' do
                  :content_type => params[:image][:type])
 end
 
-get '/' do
+get '/*' do
   redirect '/index.html'
 end
