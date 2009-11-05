@@ -3,7 +3,7 @@ task :pushCouch do
   if File.exists?('couch/.couchapprc')
     `cd couch && couchapp push`
   else
-    puts 'Please create a .couchapprc file in the couch directory that looks like this: https://gist.github.com/69c010f0581d837aa988'
+    raise 'Please create a .couchapprc file in the couch directory that looks like this: https://gist.github.com/69c010f0581d837aa988'
   end
 end
 
@@ -12,7 +12,7 @@ task :pushAuth do
   if File.exists?('_auth/.couchapprc')
     `cd _auth && couchapp push`
   else
-    puts 'Please create a .couchapprc file in the _auth directory that looks like this: https://gist.github.com/69c010f0581d837aa988'
+    raise 'Please create a .couchapprc file in the _auth directory that looks like this: https://gist.github.com/69c010f0581d837aa988'
   end
 end
 
