@@ -1,5 +1,5 @@
 {
-    "couchdb_host"  : "http://localhost:5984",
+    "couchdb_host"  : "http://localhost:80/couch",
     "couchdb"       : "wear",
     "proxy"         : "http://localhost:4567",
     "views"         : "_design/couch/_view",

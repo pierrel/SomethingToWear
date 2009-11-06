@@ -161,7 +161,7 @@ function user_authentic(username, password) {
     response = $.ajax({
         type: "POST",
         async: false,
-        url: Couch.proxy_url() + '/authenticate',
+        url: Couch.session_url(),
         dataType: 'json',
         data: {username: doc_id, password: password},
         error: function(msg, error, exception) {
@@ -169,9 +169,11 @@ function user_authentic(username, password) {
         }
     });
     text = JSON.parse(response.responseText);
-        
-    if (text.ok) {
-       return text.cookie;
+    cookie = response.getResponseHeader('Set-Cookie');
+    
+    if (text['ok']) {
+       auth_session = cookie.split(';')[0];
+       return auth_session;
     } else {
         return false;
     }

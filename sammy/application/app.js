@@ -52,11 +52,11 @@ App = $.sammy(function() {
                 password = $('#password').val();
 
                 couchauth = user_authentic(username, password);
-                if (couchauth) {
+                if (couchauth != false) {
                   store_cookie(username, couchauth);
                   context.redirect('#/');
                 } else {
-                  alert('username or password incorrect');
+                  alert('username and password did not match');
                 }
            });
         });
