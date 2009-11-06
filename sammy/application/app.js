@@ -53,10 +53,10 @@ App = $.sammy(function() {
 
                 couchauth = user_authentic(username, password);
                 if (couchauth != false) {
-                  store_cookie(username, couchauth);
-                  context.redirect('#/');
+                    store_cookie(username, couchauth);
+                    context.redirect('#/');
                 } else {
-                  alert('username and password did not match');
+                    alert('username or password entered incorrectly');
                 }
            });
         });
