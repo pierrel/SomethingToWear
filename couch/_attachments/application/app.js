@@ -52,7 +52,7 @@ App = $.sammy(function() {
                 password = $('#password').val();
 
                 couchauth = user_authentic(username, password);
-                if (couchauth != false) {
+                if (couchauth) {
                   store_cookie(username, couchauth);
                   context.redirect('#/');
                 } else {
