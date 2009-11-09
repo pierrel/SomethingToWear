@@ -1,9 +1,8 @@
 function (newDoc, oldDoc, user) {
-    // !code lib/validate.js 
     
-    var type = newDoc.doc_type; // so that it doesn't need to be accessed a bunch of times
+    isAdmin = (user.roles.indexOf('_admin') != -1)
     
-    if (!isAdmin(user)) {
+    if (!isAdmin) {
         // TODO: Make validations    
     }    
 }
