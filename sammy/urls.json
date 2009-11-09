@@ -3,6 +3,5 @@
     "couchdb"       : "wear",
     "proxy"         : "http://localhost:80/proxy",
     "views"         : "_design/couch/_view",
-    "image"         : "image",
-    
+    "image"         : "image"    
 }
