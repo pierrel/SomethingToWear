@@ -30,15 +30,6 @@ function (newDoc, oldDoc, user) {
             throw({unauthorized: 'users cannot edit pieces of clothing'});
         }
         
-        // non-admins can only add themselves to the list of 'liked_by' for outfits
-        if (type == 'outfit') {
-            old_liked_by = oldDoc.liked_by;
-            new_liked_by = newDoc.liked_by;
-            
-            if ((old_liked_by.length != new_liked_by.length) && (new_liked_by.indexOf(user.name) != (new_liked_by.length-1))) {
-                throw({unauthorized: 'users can only add themselves to the list of liked_by'});
-            }
-        }
-        
+        // TODO: Make a validation for outfits    
     }    
 }

@@ -4,7 +4,7 @@ require 'rest_client'
 require 'json'
 
 urls = nil
-File.open("../couch/_attachments/urls.json") { |f| urls = JSON.parse(f.read)}
+File.open("../sammy/urls.json") { |f| urls = JSON.parse(f.read)}
 
 post '/attach_file' do
   
@@ -30,4 +30,8 @@ post '/authenticate' do
     our_response = {'ok' => JSON.parse(couch_response)['ok'], 'cookie' => couch_response.headers[:set_cookie].split(';').first}
     return JSON.generate our_response
   end
+end
+
+get '/check' do
+  'Proxy server works!'
 end
