@@ -1,15 +1,5 @@
 function page_home(context) {
-    // check that the user is logged in
-    if(get_cookie().couchauth == null) {
-        clear_cookie();
-        context.redirect('#/user/login');
-        return false;
-    } else if (!check_session()) { // make sure the session is still active
-        clear_cookie();
-        context.redirect('#/user/login');
-        return false;
-    }
-    
+
     context.partial('templates/main.html', {}, function(rendered) {
         $('#main-wrapper').html(rendered);
         
@@ -77,11 +67,6 @@ function page_home(context) {
                 }
             });
             
-            // outfit saving stuff
-            $('#like-link').click(function(evt) {
-                Mannequin.like_current_outfit($.cookie('somethingtowear-username'));
-            });
-
             // search stuff
             $('.search').click(function(evt) {
                 this.select();

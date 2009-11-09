@@ -20,42 +20,6 @@ Mannequin.element = function() {
     return $('#' + this.element_id);
 }
 
-Mannequin.like_confirmation = function() {
-    div = $('#like-feedback');
-    div.show();
-    setTimeout("div.fadeOut('slow')", 2000);
-}
-
-
-Mannequin.like_current_outfit = function (username) {
-                
-    // check if the outfit exists
-    msg = get_view('outfits_by_pieces', {key: [this.shirt_id, this.pant_id, this.shoes_id]});
-
-    if (msg['rows'].length == 0) { // outfit doesn't exist so create it
-        outfit = new_outfit(this.shirt_id, this.pant_id, this.shoes_id, username, function(msg) {
-            Mannequin.like_confirmation();
-        });
-
-    } else { // it exists, so add the user to its liked_by array
-        users = msg['rows'][0]['value'];    // there should only be one.
-        outfit_id = msg['rows'][0]['id'];   //
-                
-        // check to see if the user has already liked the outfit
-        user_in = arr_select(users, function(user) { return normal_username(user) == username });
-
-        if (user_in.length == 0) {  // if the user has not already like it
-                                    // then add the user to the array and update the document
-            users.push(couch_username(username));            
-            update_piece(outfit_id, {liked_by: users}, function(msg) {
-                Mannequin.like_confirmation();
-            });
-        } else { // if the user has already liked it just pretend we've done something
-            Mannequin.like_confirmation();
-        }
-    }
-}
-
 Mannequin.piece_mousing_over = function(evt) {
     shirt = this.shirt_position;
     pant = this.pant_position;

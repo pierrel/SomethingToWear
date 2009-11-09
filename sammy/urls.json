@@ -4,6 +4,5 @@
     "proxy"         : "http://localhost:80/proxy",
     "views"         : "_design/couch/_view",
     "image"         : "image",
-    "session"       : "_session"
     
 }

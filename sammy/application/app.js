@@ -41,69 +41,7 @@ App = $.sammy(function() {
         set_title("Share");
         page_piece_pick_points_id(context);
     });
-    
-    
-    this.get('#/user/login', function(context) {
-        context.partial('templates/login.html', {}, function(rendered) {
-           $('#main-wrapper').html(rendered); 
-           
-           $('#login-form').ajaxForm(function() { // for some reason Sammy's post isn't working so hijack the form
-                username = $('#username').val();
-                password = $('#password').val();
-
-                couchauth = user_authentic(username, password);
-                if (couchauth != false) {
-                    store_cookie(username, couchauth);
-                    context.redirect('#/');
-                } else {
-                    alert('username or password entered incorrectly');
-                }
-           });
-        });
-    });
-    
-    this.get('#/user/logout', function(context) {
-        clear_session();
-        clear_cookie();
-        context.redirect('#/user/login');
-    });
-    
-    this.get('#/user/new', function(context) {
-        context.partial('templates/new_user.html', {}, function(rendered) {
-           $('#main-wrapper').html(rendered);
-           
-           $('#new-user-form').ajaxForm(function() {
-               password = $('#password').val();
-               password_check = $('#password_check').val();
-               encrypted = $('#password').crypt({method: 'sha1'});
-               username = $('#username').val();
-               
-               if (password.length == 0) {
-                   alert('come on, put in a password.');
-               } else if (password != password_check) {
-                   alert('passwords do not match');
-               } else if (username.length == 0) {
-                   alert('come on, put in a username');
-               } else {
-                   new_user(username, encrypted, function(success_msg) {
-                       couchauth = user_authentic(username, password);
-                       if (cookie) {
-                           set_cookie(username, couchauth);
-                           context.redirect('#/');
-                       } else {
-                           throw new Error("Newely created user '" + username + "' could not be authenticated");
-                       }
-                       
-                   },
-                   function(error_msg) {                       
-                       if (JSON.parse(error_msg['responseText'])['error'] == 'conflict') {
-                           alert('Username already taken, sorry. Please try another.');
-                       }
-                   });
-               }
-           });
-        });
-    });
+        
     
      // =====================
      // = Internal settings =

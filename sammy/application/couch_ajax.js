@@ -51,23 +51,12 @@ Couch = (function(){
         if (!(proxy = get_url_for('proxy'))) throw new Error("proxy_url: unknown key 'proxy'");
         return proxy;
     };
-    
-    var session_url = function()
-    {
-        var session = get_url_for('session');
-        var host = get_url_for('couchdb_host');
-        if (!session || !host) {
-            throw new Error("session_url: coucld not retrieve session or couchdb_host key");
-        }
-        return host + '/' + session; 
-    }
-    
+        
     return {
         url: url,
         view_url: view_url,
         proxy_url: proxy_url,
         image_url: image_url,
-        session_url: session_url
     };
 })();
 
@@ -79,33 +68,8 @@ function couch_view(view_name) {
     return couch('_design/SomethingToWear/_view/' + view_name);
 }
 
-function couch_username(username) {
-    return 'user-' + username;
-}
-
-function normal_username(couch_username) {
-    split = couch_username.split('-');
-    split.shift(); // the first element looks like "user", so remove it
-    return split.join('-'); // join with dashes in case there were dashes in the actual username
-}
-
-function couch_user_url(username) {
-    return couch(couch_username(username));
-}
-
 function piece_image_url(id) {
     return couch(id) + "/image";
-}
-
-function set_cookie_headers(request) {
-    auth = get_cookie().couchauth;
-    if (auth) {
-        request.setRequestHeader('Cookie', auth);
-        request.setRequestHeader('X-CouchDB-WWW-Authenticate', 'Cookie');
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    } else {
-        return false;
-    }
 }
 
 function new_piece(data, success_func, error_func) {
@@ -115,109 +79,11 @@ function new_piece(data, success_func, error_func) {
         type: "POST",
         url: couch(''),
         dataType: "json",
-        beforeSend: set_cookie_headers,
         contentType: 'application/json',
         data: JSON.stringify(typed_data),
         success: success_func,
         error: error_func
     });
-}
-
-function new_outfit(shirt_id, pants_id, shoes_id, username, success_func) {
-    data = {
-        shirt_id: shirt_id,
-        pants_id: pants_id,
-        shoes_id: shoes_id,
-        doc_type: 'outfit',
-        liked_by: [couch_username(username)]};
-    $.ajax({
-        type: "POST",
-        url: couch(''),
-        dataType: 'json',
-        beforeSend: set_cookie_headers,
-        contentType: 'application/json',
-        data: JSON.stringify(data),
-        success: success_func
-    })
-}
-
-function new_user(username, password, success_func, error_func) {
-    data = {password: password, doc_type: 'user'};
-    $.ajax({
-        type: "PUT",
-        url: couch_user_url(username),
-        dataType: "json",
-        beforeSend: set_cookie_headers,
-        contentType: 'application/json',
-        data: JSON.stringify(data),
-        success: success_func,
-        error: error_func
-    });
-}
-
-function user_authentic(username, password) {
-    doc_id = couch_username(username);
-    
-    response = $.ajax({
-        type: "POST",
-        async: false,
-        url: Couch.proxy_url() + '/authenticate',
-        dataType: 'json',
-        data: {username: doc_id, password: password},
-        error: function(msg, error, exception) {
-            throw new Error("user_authentic returned an error");
-        }
-    });
-    text = JSON.parse(response.responseText);
-    
-    if (text.ok) {
-       return text.cookie;
-    } else {
-        return false;
-    }
-}
-
-// First checks if the auth cookie is stored
-// then asks the server for the username and
-// checks that against what is stored in the
-// cookie
-function check_session() {
-    auth = get_cookie().couchauth;
-    if (auth) {
-        response = $.ajax({
-           type: 'GET',
-           url: Couch.session_url(),
-           async: false,
-           beforeSend: set_cookie_headers,
-           dataType: 'json',
-           error: function(msg, error, exception) {
-               throw new Error("check_session: could not check session: '" + JSON.stringify(msg) + "'");
-           }
-        });
-        
-        text = JSON.parse(response.responseText);
-        if (text.ok && text.name == couch_username(user())) {
-            return true;
-        } else {
-            return false;
-        }
-    } else {
-        return false;
-    }
-}
-
-function clear_session() {
-    if (get_cookie().couchauth) {
-        $.ajax({
-            type: "DELETE",
-            url: Couch.session_url(),
-            beforeSend: set_cookie_headers,
-            dataType: 'json',
-            error: function(msg, error, exception) {
-                throw new Error("user_logout returned an error");
-            }
-        });
-    }
 }
 
 function get_piece(id) {
@@ -226,7 +92,6 @@ function get_piece(id) {
         type: "GET",
         url: couch(id),
         dataType: 'json',
-        beforeSend: set_cookie_headers,
         async: false,
         success: function(msg) {
             to_return = msg;
@@ -245,7 +110,6 @@ function update_piece(id, data, success_func) {
         type: "GET",
         url: couch(id),
         dataType: 'json',
-        beforeSend: set_cookie_headers,
         contentType: 'application/json',
         success: function(msg) {            
             // get the old attributes
@@ -262,7 +126,6 @@ function update_piece(id, data, success_func) {
                 type: "PUT",
                 url: couch(id),
                 dataType: 'json',
-                beforeSend: set_cookie_headers,
                 contentType: 'application/json',
                 data: JSON.stringify(reved_data),
                 success: success_func,
@@ -291,7 +154,6 @@ function get_view(view_name, params) {
         url: couch_view(view_name),
         data: url_params,
         dataType: 'json',
-        beforeSend: set_cookie_headers,
         async: false,
         success: function(msg) {
             to_return = msg;
