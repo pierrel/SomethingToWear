@@ -86,18 +86,11 @@ function fill_closet(context) {
 function search_and_update_closet(context, piece_type, closet_part_name, attributes) {
         
     if (attributes.length == 0 || (attributes.length == 1 && attributes[0] == "")) { // empty array or array with one empty string
-        limit = 15
-        best_ids = most_liked_pieces(piece_type, limit);
-        if (best_ids.length < limit) {
-            rows = get_view('pieces_by_type', {key: piece_type, limit: (limit + best_ids.length)})['rows'];
-            other_ids = $.map(rows, function(row) { return row['id'] });
-            best_ids = unique(best_ids.concat(other_ids));
-        }
-        
-        ids = best_ids.slice(0, limit);
+        limit = 15;
+        rows = get_view('pieces_by_type', {key: piece_type, limit: limit})['rows'];
+        ids = $.map(rows, function(row) { return row['id'] });
         
         fill_closet_part(context, ids, closet_part_name);
-
     } else {
         
         keys = [];
