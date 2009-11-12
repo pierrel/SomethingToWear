@@ -35,7 +35,7 @@ Couch = (function(){
         if (!host || !views || !db) {
             throw new Error("view_url: Couldn't retrieve host or view or db key");
         }
-        return host + '/' + couchdb + '/'+ views + '/' + view_name;
+        return host + '/' + db + '/'+ views + '/' + view_name;
     };
     
     var image_url = function()
@@ -65,7 +65,7 @@ function couch(url) {
 }
 
 function couch_view(view_name) {
-    return couch('_design/SomethingToWear/_view/' + view_name);
+    return Couch.view_url(view_name);
 }
 
 function piece_image_url(id) {
