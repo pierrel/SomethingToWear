@@ -1,7 +1,9 @@
 var point_number = 0;  // For adding clothes to the db
 var point_pixels = []; //
+var username = "";
+var password = "";
 
-// #/piece/new
+// #/edit
 function page_piece_new(context)
 {
     var form = $('#piece-image-upload-form');

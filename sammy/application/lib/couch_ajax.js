@@ -9,7 +9,7 @@ Couch = (function(){
         if (!url_data) {
             url_data = JSON.parse($.ajax({
                 type: "GET",
-                url: "urls.json",
+                url: "static/urls.json",
                 async: false, // blocks
                 ifModified: true,
                 dataType: 'json',
@@ -148,7 +148,7 @@ function get_view(view_name, params) {
         url_params.push(key + '=' + JSON.stringify(params[key]));
     }
     url_params = url_params.join('&');
-    
+
     $.ajax({
         type: "GET",
         url: couch_view(view_name),

@@ -1,0 +1,27 @@
+<div id="pick-points-instructions">
+	<div id="pick-points-instructions-shirt">
+		<h3>
+			<ol>
+				<li>Click on the left shoulder (your left)</li>
+				<li>Click on the right shoulder (your right)</li>
+				<li>Click on where the waist should be</li>
+			</ol>
+		</h3>
+	</div>
+	<div id="pick-points-instructions-pants">
+		<h3>
+			<ol>
+				<li>Click on the left-most part of the waist (your left)</li>
+				<li>Click on the right-most part of the waist (your right)</li>
+			</ol>
+		</h3>
+	</div>
+	<div id="pick-points-instructions-shoes">
+		<h3>
+			<ol>
+				<li>Click on the ankle of the left shoe (your left)</li>
+				<li>Click on the ankle of the right shoe (your right)</li>
+			</ol>
+		</h3>
+	</div>
+</div>

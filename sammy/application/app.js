@@ -4,45 +4,6 @@ App = $.sammy(function() {
     // =================
     this.get('#/', page_home);
 
-    this.get('#/rate', function() {
-        set_nav_css('rate');
-        set_title('Rate');
-        this.partial("templates/fashion.template");
-    });
-
-    this.get("#/share",function(ctx) {
-        set_nav_css('share');
-        set_title("Share");
-        this.partial("templates/share.template");
-        page_piece_new(ctx);
-    });
-    
-    this.get('#/piece/new', function(context) {
-        set_nav_css('share');
-        set_title("Share");
-        page_piece_new(context);
-    });
-
-    this.get('#/piece/describe/:id', function(context) { 
-        set_nav_css('share');
-        set_title("Share");
-        page_piece_describe_id(context);
-    });
-
-    this.post('#/piece/describe', function(context) {
-        set_nav_css('share');
-        set_title("Share");
-    
-        page_piece_describe(context);
-    });
-    
-    this.get('#/piece/pick_points/:id', function(context) {
-        set_nav_css('share');
-        set_title("Share");
-        page_piece_pick_points_id(context);
-    });
-        
-    
      // =====================
      // = Internal settings =
      // =====================
