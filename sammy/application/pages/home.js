@@ -61,15 +61,22 @@ function page_home(context) {
                     // update the piece position
                     if (Mannequin.dragging == 'shirt') {
                         id = Mannequin.shirt_id;
-                        image_info = Mannequin.cached_images[id];
-                        Mannequin.cached_images[id] = {
-                            image: image_info.image,
-                            x: image_info.x + move_x,
-                            y: image_info.y + move_y,
-                            width: image_info.width,
-                            height: image_info.height
-                        };
+                    } else if (Mannequin.dragging == 'pants') {
+                        id = Mannequin.pant_id;
+                    } else if (Mannequin.dragging == 'shoes') {
+                        id = Mannequin.shoes_id;
+                    } else {
+                        throw "Dragging '" + Mannequin.dragging + "'";
                     }
+                    
+                    image_info = Mannequin.cached_images[id];
+                    Mannequin.cached_images[id] = {
+                        image: image_info.image,
+                        x: image_info.x + move_x,
+                        y: image_info.y + move_y,
+                        width: image_info.width,
+                        height: image_info.height
+                    };                    
                     Mannequin.draw();
                     
                 } else {
