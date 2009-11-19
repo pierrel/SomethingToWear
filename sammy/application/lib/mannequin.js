@@ -87,10 +87,17 @@ Mannequin.draw = function(highlight) {
     var shoes = new Image();
     
     // Some constants
-    var waistline_y = 200;
-    var waistline_x = canvas.width/2;
-    var waist_width = 75;
-    var leg_length = 210;
+    var default_shirt_pos_x = 20;
+    var default_shirt_pos_y = 20;
+    var default_shirt_width = 150;
+    
+    var default_pant_pos_x = 50;
+    var default_pant_pos_y = 200;
+    var default_pant_width = 100;
+    
+    var default_shoes_pos_x = 70;
+    var default_shoes_pos_y = 400;
+    var default_shoes_width = 100;
     
     
     if (pant_id in cache) { // draw the cached image
@@ -102,39 +109,21 @@ Mannequin.draw = function(highlight) {
         }
     } else if (pant_id != '') { // calculate the image info, cache it, and draw it
         pant.onload = function() {
-            var pant_points = get_piece(pant_id)
+            height = get_height(pant, default_pant_width);
+            Mannequin.pant_position = {
+                min_x: default_pant_pos_x,
+                min_y: default_pant_pos_y,
+                max_x: default_pant_pos_x + default_pant_width, 
+                max_y: default_pant_pos_y + height
+            };
             
-            right_waist = pant_points['right_waist'];
-            left_waist = pant_points['left_waist']
-            image_dimensions_ratio = pant.width/pant.height;
-
-            // Calculate the appropriate size of the image for the canvas
-            image_waist_width = right_waist[0] - left_waist[0];
-
-            image_width = waist_width * (pant.width/image_waist_width);
-            image_height = image_width/image_dimensions_ratio
-
-            image_width_translation_ratio = image_width/pant.width;
-            image_height_translation_ratio = image_height/pant.height;
-
-            // Calculate the appropriate position of the image in the canvas
-            image_waistline_y = (right_waist[1] - left_waist[1])/2 + left_waist[1];
-            image_waistline_x = (image_waist_width)/2 + left_waist[0];
-
-            translated_image_waistline_y = image_waistline_y * image_height_translation_ratio;
-            translated_image_waistline_x = image_waistline_x * image_width_translation_ratio;
-
-            image_y = waistline_y - translated_image_waistline_y;
-            image_x = waistline_x - translated_image_waistline_x;            
-            
-            Mannequin.pant_position = {min_x: image_x, min_y: image_y, max_x: image_x + image_width, max_y: image_y + image_height};
-            cont.drawImage(pant, image_x, image_y, image_width, image_height);
+            cont.drawImage(pant, default_pant_pos_x, default_pant_pos_y, default_pant_width, height);
             if (highlight == 'pants') {
-                cont.strokeRect(image_x, image_y, image_width, image_height);
+                cont.strokeRect(default_pant_pos_x, default_pant_pos_y, default_pant_width, height);
             }
 
             // cache it for later use
-            Mannequin.cached_images[pant_id] = {image: pant, image_x: image_x, image_y: image_y, image_width: image_width, image_height: image_height};
+            Mannequin.cached_images[pant_id] = {image: pant, image_x: default_pant_pos_x, image_y: default_pant_pos_y, image_width: default_pant_width, image_height: height};
 
         }
         
@@ -151,44 +140,22 @@ Mannequin.draw = function(highlight) {
         }
     } else if (shirt_id != ''){ // draw a new image when it loads
         shirt.onload = function() {
-
-            var shirt_info = get_piece(shirt_id);
-
-            var left_shoulder = shirt_info['left_shoulder'];
-            var right_shoulder = shirt_info['right_shoulder'];
-            image_waist = shirt_info['waist'];
-
-            image_dimensions_ratio = shirt.width/shirt.height;
-            waist_shoulder_ratio = 0.8; // pulled out of my ass
-
-            // calculate image size
-            image_shoulder_width = right_shoulder[0] - left_shoulder[0];
-            translated_image_shoulder_width = waist_width/waist_shoulder_ratio;
-
-            image_width = translated_image_shoulder_width * (shirt.width/image_shoulder_width);
-            image_height = image_width/image_dimensions_ratio
-
-            image_width_translation_ratio = image_width/shirt.width;
-            image_height_translation_ratio = image_height/shirt.height;
-
-            // calculated image location
-            image_waistline_y = image_waist[1];
-            image_waistline_x = left_shoulder[0] + image_shoulder_width/2;
-
-            translated_image_waistline_y = image_waistline_y * image_height_translation_ratio;
-            translated_image_waistline_x = image_waistline_x * image_width_translation_ratio;
-
-            image_y = waistline_y - translated_image_waistline_y;
-            image_x = waistline_x - translated_image_waistline_x;
-
-            Mannequin.shirt_position = {min_x: image_x, min_y: image_y, max_x: image_x + image_width, max_y: image_y + image_height};
-            cont.drawImage(shirt, image_x, image_y, image_width, image_height);
-            if (highlight == 'shirt') {
-                cont.strokeRect(image_x, image_y, image_width, image_height);
+            height = get_height(shirt, default_shirt_width);
+            Mannequin.shirt_position = {
+                min_x: default_shirt_pos_x,
+                min_y: default_shirt_pos_y,
+                max_x: default_shirt_pos_x + default_shirt_width, 
+                max_y: default_shirt_pos_y + height
+            };
+            
+            cont.drawImage(shirt, default_shirt_pos_x, default_shirt_pos_y, default_shirt_width, height);
+            if (highlight == 'pants') {
+                cont.strokeRect(default_shirt_pos_x, default_shirt_pos_y, default_shirt_width, height);
             }
 
             // cache it for later use
-            Mannequin.cached_images[shirt_id] = {image: shirt, image_x: image_x, image_y: image_y, image_width: image_width, image_height: image_height};
+            Mannequin.cached_images[shirt_id] = {image: shirt, image_x: default_shirt_pos_x, image_y: default_shirt_pos_y, image_width: default_shirt_width, image_height: height};
+
         }
         
         shirt.src = couch(this.shirt_id) + '/image';
@@ -204,34 +171,22 @@ Mannequin.draw = function(highlight) {
         }
     } else if (shoes_id != ''){
         shoes.onload = function() {
-            shoe_info = get_piece(shoes_id);
-            image_dimensions_ratio = shoes.width/shoes.height;
-
-            // set the dimensions
-            image_width = waist_width*1.5;
-            image_height = image_width/image_dimensions_ratio;
-
-            image_width_translation_ratio = image_width/shoes.width;
-            image_height_translation_ratio = image_height/shoes.height;
-
-            // center the shoes under the "legs"
-            image_center_y = Math.min(shoe_info['left_ankle'][1], shoe_info['right_ankle'][1]);
-            image_center_x = (shoe_info['left_ankle'][0] - shoe_info['right_ankle'][0])/2 + shoe_info['right_ankle'][0];
-
-            translated_image_center_x = image_center_x * image_width_translation_ratio;
-            translated_image_center_y = image_center_y * image_height_translation_ratio;
-
-            image_x = waistline_x - translated_image_center_x;
-            image_y = waistline_y + leg_length - translated_image_center_y;
-
-            Mannequin.shoes_position = {min_x: image_x, min_y: image_y, max_x: image_x + image_width, max_y: image_y + image_height};
-            cont.drawImage(shoes, image_x, image_y, image_width, image_height);
-            if (highlight == 'shoes') {
-                cont.strokeRect(image_x, image_y, image_width, image_height);
-            }
+            height = get_height(shoes, default_shoes_width);
+            Mannequin.shoes_position = {
+                min_x: default_shoes_pos_x,
+                min_y: default_shoes_pos_y,
+                max_x: default_shoes_pos_x + default_shoes_width, 
+                max_y: default_shoes_pos_y + height
+            };
             
+            cont.drawImage(shoes, default_shoes_pos_x, default_shoes_pos_y, default_shoes_width, height);
+            if (highlight == 'shoes') {
+                cont.strokeRect(default_shoes_pos_x, default_shoes_pos_y, default_shoes_width, height);
+            }
+
             // cache it for later use
-            Mannequin.cached_images[shoes_id] = {image: shoes, image_x: image_x, image_y: image_y, image_width: image_width, image_height: image_height};
+            Mannequin.cached_images[shoes_id] = {image: shoes, image_x: default_shoes_pos_x, image_y: default_shoes_pos_y, image_width: default_shoes_width, image_height: height};
+
         }
         
         shoes.src = couch(this.shoes_id) + '/image';
