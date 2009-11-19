@@ -23,21 +23,35 @@ Mannequin.piece_mousing_over = function(evt) {
     pant    = min_maxes_from_position(Mannequin.cached_images[Mannequin.pant_id]);
     shoes   = min_maxes_from_position(Mannequin.cached_images[Mannequin.shoes_id]);
 
-    div_offset = absolute_offset($('#mannequin-canvas'));
-
-    click_x = evt.pageX - div_offset[0] + 200; // again some crazy error, not sure but this seems to work
-    click_y = evt.pageY - div_offset[1];
-
-    if (click_x > shoes['min_x'] && click_x < shoes['max_x'] && click_y > shoes['min_y'] && click_y < shoes['max_y']) {
+    if (within_bounds(evt, shoes)) {
         return 'shoes';
-    } else if (click_x > shirt['min_x'] && click_x < shirt['max_x'] && click_y > shirt['min_y'] && click_y < shirt['max_y']) {
+    } else if (within_bounds(evt, shirt)) {
         return 'shirt';
-    } else if (click_x > pant['min_x'] && click_x < pant['max_x'] && click_y > pant['min_y'] && click_y < pant['max_y']) {
+    } else if (within_bounds(evt, pant)) {
         return 'pants';
     } else {
         return false;
     }
     
+}
+
+Mannequin.on_resize = function(evt) {
+    on_piece = this.piece_mousing_over(evt);
+    if (on_piece == 'shirt') {
+        id = this.shirt_id
+    } else if (on_piece == 'pant') {
+        id = this.pants_id;
+    } else if (on_piece == 'shoes') {
+        id = this.shoes_id
+    } else {
+        return false;
+    }
+    bounds = resize_min_maxes(this.cached_images[id])
+    if (within_bounds(evt, bounds)) {
+        return id;
+    } else {
+        return false;
+    }
 }
 
 Mannequin.draw_random_outfit = function() {

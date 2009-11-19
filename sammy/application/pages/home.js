@@ -49,6 +49,9 @@ function page_home(context) {
             });
                         
             Mannequin.element().mousemove(function(evt) {
+                if (Mannequin.on_resize(evt)) {
+                    alert("on resize");
+                }
                 if (Mannequin.dragging){
                     // grab the ∆ of the move
                     move_x = evt.pageX - Mannequin.last_cursor_pos_x;

@@ -16,3 +16,22 @@ function min_maxes_from_position(position) {
         max_y: position.y + position.height
     }
 }
+
+// returns the min-maxes for the resize area
+function resize_min_maxes(position) {
+    return {
+        min_x: position.x + position.width - 12,
+        min_y: position.y + position.height - 12,
+        max_x: position.x + position.width,
+        max_y: position.y + position.height
+    }
+}
+
+function within_bounds(evt, bounds) {
+    div_offset = absolute_offset($('#mannequin-canvas'));
+
+    click_x = evt.pageX - div_offset[0] + 215; // again some crazy error, not sure but this seems to work
+    click_y = evt.pageY - div_offset[1];
+
+    return (click_x > bounds.min_x && click_x < bounds.max_x && click_y > bounds.min_y && click_y < bounds.max_y)
+}
