@@ -45,9 +45,6 @@ function page_home(context) {
             });
             
             Mannequin.element().mouseup(function(evt) {
-                if (Mannequin.dragging) {
-                    alert("we've stopped dragging");  
-                }
                Mannequin.dragging = false;
             });
                         
@@ -64,13 +61,13 @@ function page_home(context) {
                     // update the piece position
                     if (Mannequin.dragging == 'shirt') {
                         id = Mannequin.shirt_id;
-                        image = Mannequin.cached_images[id];
+                        image_info = Mannequin.cached_images[id];
                         Mannequin.cached_images[id] = {
-                            image: image.image,
-                            image_x: image.image_x + move_x,
-                            image_y: image.image_y + move_y,
-                            image_width: image.image_width,
-                            image_height: image.image_height
+                            image: image_info.image,
+                            x: image_info.x + move_x,
+                            y: image_info.y + move_y,
+                            width: image_info.width,
+                            height: image_info.height
                         };
                     }
                     Mannequin.draw();
