@@ -77,7 +77,7 @@ function page_home(context) {
                         width: image_info.width,
                         height: image_info.height
                     };                    
-                    Mannequin.draw();
+                    Mannequin.draw(Mannequin.dragging);
                     
                 } else {
                     piece = Mannequin.piece_mousing_over(evt);
