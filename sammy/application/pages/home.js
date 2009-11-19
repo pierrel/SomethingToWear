@@ -33,37 +33,61 @@ function page_home(context) {
                 activeClass: 'mannequin-canvas-dragging'
             });
             
-            Mannequin.element().click(function(evt) {
+            Mannequin.element().mousedown(function(evt) {
                 piece_over = Mannequin.piece_mousing_over(evt);
                 
-                if (piece_over != 'none') {
-                    if (piece_over == 'shoes') {
-                        Mannequin.shoes_id = '';
-                        Mannequin.shoes_position = {};
-                    } else if (piece_over == 'shirt') {
-                        Mannequin.shirt_id = '';
-                        Mannequin.shirt_position = {};
-                    } else if (piece_over == 'pants') {
-                        Mannequin.pant_id = '';
-                        Mannequin.pant_id = {};
-                    }                        
-                    Mannequin.draw();
+                if (piece_over) { // we're dragging a piece
+                    Mannequin.dragging = piece_over;
+                    Mannequin.last_cursor_pos_x = evt.pageX;
+                    Mannequin.last_cursor_pos_y = evt.pageY;
                 }
 
-            })
+            });
             
-            Mannequin.element().mousemove(function(evt) {
-                piece = Mannequin.piece_mousing_over(evt);
-                
-                if (piece != Mannequin.last_piece_hover) {
-                    Mannequin.draw(piece);
-                    Mannequin.last_piece_hover = piece;
+            Mannequin.element().mouseup(function(evt) {
+                if (Mannequin.dragging) {
+                    alert("we've stopped dragging");  
                 }
-                
-                if (piece != 'none') {
-                    $('#mannequin:hover').css('cursor', 'pointer');
+               Mannequin.dragging = false;
+            });
+                        
+            Mannequin.element().mousemove(function(evt) {
+                if (Mannequin.dragging){
+                    // grab the ∆ of the move
+                    move_x = evt.pageX - Mannequin.last_cursor_pos_x;
+                    move_y = evt.pageY - Mannequin.last_cursor_pos_y;
+                    
+                    // update the last cursor
+                    Mannequin.last_cursor_pos_x = evt.pageX;
+                    Mannequin.last_cursor_pos_y = evt.pageY;
+                    
+                    // update the piece position
+                    if (Mannequin.dragging == 'shirt') {
+                        id = Mannequin.shirt_id;
+                        image = Mannequin.cached_images[id];
+                        Mannequin.cached_images[id] = {
+                            image: image.image,
+                            image_x: image.image_x + move_x,
+                            image_y: image.image_y + move_y,
+                            image_width: image.image_width,
+                            image_height: image.image_height
+                        };
+                    }
+                    Mannequin.draw();
+                    
                 } else {
-                    $('#mannequin:hover').css('cursor', 'default');
+                    piece = Mannequin.piece_mousing_over(evt);
+
+                    if (piece != Mannequin.last_piece_hover) {
+                        Mannequin.draw(piece);
+                        Mannequin.last_piece_hover = piece;
+                    }
+
+                    if (piece != 'none') {
+                        $('#mannequin:hover').css('cursor', 'pointer');
+                    } else {
+                        $('#mannequin:hover').css('cursor', 'default');
+                    }
                 }
             });
             

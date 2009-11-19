@@ -16,6 +16,8 @@ Mannequin.cached_images = {};   // hash of hashes for drawing images that have a
                                 // first level key is the piece id
                                 // second level keys are image, image_x, image_y, image_width, and image_height
 
+Mannequin.dragging = false // is the piece type when the user is dragging a piece
+
 Mannequin.element = function() {
     return $('#' + this.element_id);
 }
@@ -37,7 +39,7 @@ Mannequin.piece_mousing_over = function(evt) {
     } else if (click_x > pant['min_x'] && click_x < pant['max_x'] && click_y > pant['min_y'] && click_y < pant['max_y']) {
         return 'pants';
     } else {
-        return 'none';
+        return false;
     }
     
 }
