@@ -36,12 +36,11 @@ Mannequin.piece_mousing_over = function(evt) {
 }
 
 Mannequin.on_resize = function(evt) {
-    on_piece = this.piece_mousing_over(evt);
-    if (on_piece == 'shirt') {
+    if (this.last_piece_hover == 'shirt') {
         id = this.shirt_id
-    } else if (on_piece == 'pant') {
-        id = this.pants_id;
-    } else if (on_piece == 'shoes') {
+    } else if (this.last_piece_hover == 'pants') {
+        id = this.pant_id;
+    } else if (this.last_piece_hover == 'shoes') {
         id = this.shoes_id
     } else {
         return false;
