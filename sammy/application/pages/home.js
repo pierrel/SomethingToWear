@@ -38,7 +38,7 @@ function page_home(context) {
                 
                 if (piece_over) { // we're dragging or resizing a piece
                     if (Mannequin.on_resize(evt)) {
-                        Mannequin.resizing = piece_over
+                        Mannequin.resizing = piece_over;
                     } else {
                         Mannequin.dragging = piece_over;
                     }
