@@ -65,6 +65,22 @@ Mannequin.on_resize = function(evt) {
     }
 }
 
+Mannequin.draw_resize_icon = function(cont, piece_id) {
+    var piece_info = this.cached_images[piece_id];
+    
+    var image = new Image();
+    image.onload = function() {
+        cont.drawImage(
+            image,
+            piece_info.x + piece_info.width - 12,
+            piece_info.y + piece_info.height - 12,
+            12,
+            12);
+        
+    };
+    image.src = "static/images/resize_icon.png";
+}
+
 Mannequin.draw_random_outfit = function() {
     outfit = random_outfit();
     
@@ -128,6 +144,7 @@ Mannequin.draw = function(highlight) {
         cont.drawImage(cached_info['image'], cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
         if (highlight == 'pants') {
             cont.strokeRect(cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
+            this.draw_resize_icon(cont, pant_id);
         }
     } else if (pant_id != '') { // calculate the image info, cache it, and draw it
         pant.onload = function() {
@@ -151,6 +168,7 @@ Mannequin.draw = function(highlight) {
         cont.drawImage(cached_info['image'], cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
         if (highlight == 'shirt') {
             cont.strokeRect(cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
+            this.draw_resize_icon(cont, shirt_id)
         }
     } else if (shirt_id != ''){ // draw a new image when it loads
         shirt.onload = function() {
@@ -175,6 +193,7 @@ Mannequin.draw = function(highlight) {
         cont.drawImage(cached_info['image'], cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
         if (highlight == 'shoes') {
             cont.strokeRect(cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
+            this.draw_resize_icon(cont, shoes_id)
         }
     } else if (shoes_id != ''){
         shoes.onload = function() {
