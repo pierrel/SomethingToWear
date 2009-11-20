@@ -108,7 +108,7 @@ function page_home(context) {
                     }
 
                     if (piece) {
-                        $('#mannequin:hover').css('cursor', 'pointer');
+                        $('#mannequin:hover').css('cursor', 'move');
                     } else {
                         $('#mannequin:hover').css('cursor', 'default');
                     }
