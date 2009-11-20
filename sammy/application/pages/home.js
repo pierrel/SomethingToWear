@@ -62,13 +62,12 @@ function page_home(context) {
                    Mannequin.draw();
                } else if (piece_info) {
                    context.partial('templates/piece_info.template',
-                    {piece: 'hello'},
+                    {piece: get_piece(piece_info)},
                     function (rendered) {
                       $('#piece-details').html(rendered);
                       $('#piece-details').ready(function() {
                           $('#piece-info').dialog({
                               autoOpen: true,
-                              buttons: {"Close": function() {this.dialog("close")}},
                               modal: true,
                               width: 300,
                               height: 300,
