@@ -51,7 +51,8 @@ function page_home(context) {
             });
             
             Mannequin.element().click(function(evt) {
-                piece_closing = Mannequin.on_close(evt);
+                piece_closing   = Mannequin.on_close(evt);
+                piece_info      = Mannequin.on_info(evt);
                if (piece_closing) {
                    if (piece_closing == "pants") {
                        Mannequin.pant_id = "";
@@ -59,7 +60,23 @@ function page_home(context) {
                        Mannequin[piece_closing + "_id"] = "";
                    }
                    Mannequin.draw();
-               } 
+               } else if (piece_info) {
+                   context.partial('templates/piece_info.template',
+                    {piece: 'hello'},
+                    function (rendered) {
+                      $('#piece-details').html(rendered);
+                      $('#piece-details').ready(function() {
+                          $('#piece-info').dialog({
+                              autoOpen: true,
+                              buttons: {"Close": function() {this.dialog("close")}},
+                              modal: true,
+                              width: 300,
+                              height: 300,
+                              closeOnEscape: true
+                          })
+                      }) 
+                   });
+               }
             });
             
             Mannequin.element().mouseup(function(evt) {

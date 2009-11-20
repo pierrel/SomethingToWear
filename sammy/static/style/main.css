@@ -153,6 +153,10 @@ body {
 	margin-left: 2px;
 }
 
+#piece-info {
+	background-color: #fff;
+}
+
 /* @end */
 
 .fullpage-form {

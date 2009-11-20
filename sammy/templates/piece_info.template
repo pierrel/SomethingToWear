@@ -1,0 +1,15 @@
+<div id="piece-info" >
+	HERE IT IS
+	<!-- <div id="piece-original-image">
+		<img width="200px" src="<%= piece.uncut_image_url %>" />
+	</div>
+	<div id="piece-name">
+		<h2><%= piece.name %></h2>
+	</div>
+	<div id="piece-price">
+		<h2><%= piece.price %></h2>
+	</div>
+	<div id="piece-url">
+		<a href="<%= piece.detail_page_url %>">Get it from Amazon.com</a>
+	</div> -->
+</div>
