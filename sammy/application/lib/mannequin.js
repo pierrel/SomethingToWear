@@ -34,14 +34,24 @@ Mannequin.piece_mousing_over = function(evt) {
     pant    = min_maxes_from_position(Mannequin.cached_images[Mannequin.pant_id]);
     shoes   = min_maxes_from_position(Mannequin.cached_images[Mannequin.shoes_id]);
 
+    pieces_over = [];
     if (within_bounds(evt, shoes)) {
-        return 'shoes';
-    } else if (within_bounds(evt, shirt)) {
-        return 'shirt';
-    } else if (within_bounds(evt, pant)) {
-        return 'pants';
-    } else {
+        pieces_over.push('shoes');
+    }
+    if (within_bounds(evt, shirt)) {
+        pieces_over.push('shirt');
+    }
+    if (within_bounds(evt, pant)) {
+        pieces_over.push('pants');
+    }
+    
+    // give precedence to the piece that the cursor is currently over
+    if (pieces_over.indexOf(this.last_piece_hover) != -1) {
+        return this.last_piece_hover;
+    } else if (pieces_over.size == 0){
         return false;
+    } else {
+        return pieces_over[0];
     }
     
 }
@@ -94,8 +104,8 @@ Mannequin.draw_info_icon = function(cont, piece_id) {
     if (icon_info) { // it's in the cache
         cont.drawImage(
             icon_info.image,
-            piece_info.x,
-            piece_info.y + piece_info.height - 16,
+            piece_info.x + 2,
+            piece_info.y + piece_info.height - 18,
             16,
             16);
     } else {
@@ -144,6 +154,7 @@ Mannequin.draw = function(highlight) {
 
     // First clear the canvas
     cont.clearRect(0, 0, canvas.width, canvas.height);
+    cont.strokeStyle = "#ff704b";
     
     var pant_id = this.pant_id;
     var shirt_id = this.shirt_id;
