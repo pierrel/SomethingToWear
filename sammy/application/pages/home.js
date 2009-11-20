@@ -36,8 +36,14 @@ function page_home(context) {
             Mannequin.element().mousedown(function(evt) {
                 piece_over = Mannequin.piece_mousing_over(evt);
                 
-                if (piece_over) { // we're dragging a piece
-                    Mannequin.dragging = piece_over;
+                if (piece_over) { // we're dragging or resizing a piece
+                    if (Mannequin.on_resize(evt)) {
+                        Mannequin.resizing = piece_over
+                    } else {
+                        Mannequin.dragging = piece_over;
+                    }
+                    
+                    // either way save the position
                     Mannequin.last_cursor_pos_x = evt.pageX;
                     Mannequin.last_cursor_pos_y = evt.pageY;
                 }
@@ -46,13 +52,11 @@ function page_home(context) {
             
             Mannequin.element().mouseup(function(evt) {
                Mannequin.dragging = false;
+               Mannequin.resizing = false;
             });
                         
             Mannequin.element().mousemove(function(evt) {
-                if (Mannequin.on_resize(evt)) {
-                    alert("on resize");
-                }
-                if (Mannequin.dragging){
+                if (Mannequin.handling()){
                     // grab the ∆ of the move
                     move_x = evt.pageX - Mannequin.last_cursor_pos_x;
                     move_y = evt.pageY - Mannequin.last_cursor_pos_y;
@@ -60,28 +64,41 @@ function page_home(context) {
                     // update the last cursor
                     Mannequin.last_cursor_pos_x = evt.pageX;
                     Mannequin.last_cursor_pos_y = evt.pageY;
-                    
-                    // update the piece position
-                    if (Mannequin.dragging == 'shirt') {
+
+                    if (Mannequin.handling() == 'shirt') {
                         id = Mannequin.shirt_id;
-                    } else if (Mannequin.dragging == 'pants') {
+                    } else if (Mannequin.handling() == 'pants') {
                         id = Mannequin.pant_id;
-                    } else if (Mannequin.dragging == 'shoes') {
+                    } else if (Mannequin.handling() == 'shoes') {
                         id = Mannequin.shoes_id;
                     } else {
-                        throw "Dragging '" + Mannequin.dragging + "'";
+                        throw "Handling '" + Mannequin.dragging + "'";
                     }
                     
-                    image_info = Mannequin.cached_images[id];
-                    Mannequin.cached_images[id] = {
-                        image: image_info.image,
-                        x: image_info.x + move_x,
-                        y: image_info.y + move_y,
-                        width: image_info.width,
-                        height: image_info.height
-                    };                    
-                    Mannequin.draw(Mannequin.dragging);
+                    if (Mannequin.dragging) {
+                        // update the piece position
+                        image_info = Mannequin.cached_images[id];
+                        Mannequin.cached_images[id] = {
+                            image: image_info.image,
+                            x: image_info.x + move_x,
+                            y: image_info.y + move_y,
+                            width: image_info.width,
+                            height: image_info.height
+                        };                                            
+    
+                    } else if (Mannequin.resizing) {
+                        // update the piece dimensions
+                        image_info = Mannequin.cached_images[id];
+                        Mannequin.cached_images[id] = {
+                            image: image_info.image,
+                            x: image_info.x,
+                            y: image_info.y,
+                            width: image_info.width + move_x,
+                            height: image_info.height + move_y
+                        };                                            
+                    }
                     
+                    Mannequin.draw(Mannequin.handling());
                 } else {
                     piece = Mannequin.piece_mousing_over(evt);
 
@@ -90,7 +107,7 @@ function page_home(context) {
                         Mannequin.last_piece_hover = piece;
                     }
 
-                    if (piece != 'none') {
+                    if (piece) {
                         $('#mannequin:hover').css('cursor', 'pointer');
                     } else {
                         $('#mannequin:hover').css('cursor', 'default');
