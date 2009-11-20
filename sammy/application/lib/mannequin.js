@@ -66,36 +66,47 @@ Mannequin.on_resize = function(evt) {
 }
 
 Mannequin.draw_resize_icon = function(cont, piece_id) {
+    var resize_info = this.cached_images.resize_info;
     var piece_info = this.cached_images[piece_id];
     
-    var image = new Image();
-    image.onload = function() {
+    if (resize_info) {
         cont.drawImage(
-            image,
+            resize_info.image,
             piece_info.x + piece_info.width - 12,
             piece_info.y + piece_info.height - 12,
             12,
             12);
+    } else {
+        var image = new Image();
+        image.onload = function() {
+            Mannequin.cached_images['resize_info'] = {image: image};
+            Mannequin.draw_resize_icon(cont, piece_id);
+        };
+        image.src = "static/images/resize_icon.png";
         
-    };
-    image.src = "static/images/resize_icon.png";
+    }
 }
 
 Mannequin.draw_info_icon = function(cont, piece_id) {
+    var icon_info = this.cached_images['info_icon'];
     var piece_info = this.cached_images[piece_id];
     
-    var image = new Image();
-    image.onload = function() {
+    if (icon_info) { // it's in the cache
         cont.drawImage(
-            image,
+            icon_info.image,
             piece_info.x,
             piece_info.y + piece_info.height - 16,
             16,
             16);
+    } else {
+        var image = new Image();
+        image.onload = function() {
+            Mannequin.cached_images['info_icon'] = {image: image};
+            Mannequin.draw_info_icon(cont, piece_id);
+        };
+        image.src = "static/images/info_icon.png";
         
-    };
-    image.src = "static/images/info_icon.png";
-    
+    }    
 }
 
 Mannequin.draw_random_outfit = function() {
