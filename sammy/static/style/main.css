@@ -25,6 +25,11 @@
     border: 1px solid #97efd5;
 }
 
+#mannequin-canvas {
+	border-style: dashed;
+	border-color: #aaa;
+}
+
 #mannequin {
 	text-align: center;
 	margin-top: 20px;
