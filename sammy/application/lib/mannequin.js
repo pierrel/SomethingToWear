@@ -75,6 +75,26 @@ Mannequin.on_resize = function(evt) {
     }
 }
 
+Mannequin.on_info = function(evt) {
+    if (this.last_piece_hover == 'shirt') {
+        id = this.shirt_id
+    } else if (this.last_piece_hover == 'pants') {
+        id = this.pant_id;
+    } else if (this.last_piece_hover == 'shoes') {
+        id = this.shoes_id
+    } else {
+        return false;
+    }
+    
+    bounds = info_min_maxes(this.cached_images[id]);
+    if (within_bounds(evt, bounds)) {
+        return id;
+    } else {
+        return false;
+    }
+}
+
+
 Mannequin.on_close = function(evt) {
     if (this.last_piece_hover == 'shirt') {
         id = this.shirt_id

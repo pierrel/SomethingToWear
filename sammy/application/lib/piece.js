@@ -38,6 +38,15 @@ function close_min_maxes(position) {
     }
 }
 
+function info_min_maxes(position) {
+    return {
+        min_x: position.x,
+        min_y: position.y + position.height - 18,
+        max_x: position.x + 18,
+        max_y: position.y + position.height
+    }
+}
+
 
 function within_bounds(evt, bounds) {
     div_offset = absolute_offset($('#mannequin-canvas'));

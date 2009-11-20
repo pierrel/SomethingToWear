@@ -120,7 +120,11 @@ function page_home(context) {
                     }
 
                     if (piece) {
-                        $('#mannequin:hover').css('cursor', 'move');
+                        if (Mannequin.on_close(evt) || Mannequin.on_info(evt)) {
+                            $('#mannequin:hover').css('cursor', 'pointer');
+                        } else {
+                            $('#mannequin:hover').css('cursor', 'move');
+                        }
                     } else {
                         $('#mannequin:hover').css('cursor', 'default');
                     }
