@@ -50,6 +50,18 @@ function page_home(context) {
 
             });
             
+            Mannequin.element().click(function(evt) {
+                piece_closing = Mannequin.on_close(evt);
+               if (piece_closing) {
+                   if (piece_closing == "pants") {
+                       Mannequin.pant_id = "";
+                   } else {
+                       Mannequin[piece_closing + "_id"] = "";
+                   }
+                   Mannequin.draw();
+               } 
+            });
+            
             Mannequin.element().mouseup(function(evt) {
                Mannequin.dragging = false;
                Mannequin.resizing = false;

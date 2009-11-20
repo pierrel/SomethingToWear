@@ -35,13 +35,13 @@ Mannequin.piece_mousing_over = function(evt) {
     shoes   = min_maxes_from_position(Mannequin.cached_images[Mannequin.shoes_id]);
 
     pieces_over = [];
-    if (within_bounds(evt, shoes)) {
+    if (shoes && within_bounds(evt, shoes)) {
         pieces_over.push('shoes');
     }
-    if (within_bounds(evt, shirt)) {
+    if (shirt && within_bounds(evt, shirt)) {
         pieces_over.push('shirt');
     }
-    if (within_bounds(evt, pant)) {
+    if (pant && within_bounds(evt, pant)) {
         pieces_over.push('pants');
     }
     
@@ -70,6 +70,25 @@ Mannequin.on_resize = function(evt) {
     bounds = resize_min_maxes(this.cached_images[id])
     if (within_bounds(evt, bounds)) {
         return id;
+    } else {
+        return false;
+    }
+}
+
+Mannequin.on_close = function(evt) {
+    if (this.last_piece_hover == 'shirt') {
+        id = this.shirt_id
+    } else if (this.last_piece_hover == 'pants') {
+        id = this.pant_id;
+    } else if (this.last_piece_hover == 'shoes') {
+        id = this.shoes_id
+    } else {
+        return false;
+    }
+    
+    bounds = close_min_maxes(this.cached_images[id]);
+    if (within_bounds(evt, bounds)) {
+        return this.last_piece_hover;
     } else {
         return false;
     }
@@ -117,6 +136,28 @@ Mannequin.draw_info_icon = function(cont, piece_id) {
         image.src = "static/images/info_icon.png";
         
     }    
+}
+
+Mannequin.draw_close_icon = function(cont, piece_id) {
+    var icon_info = this.cached_images['close_icon'];
+    var piece_info = this.cached_images[piece_id];
+    
+    if (icon_info) { // it's in the cache
+        cont.drawImage(
+            icon_info.image,
+            piece_info.x + 2,
+            piece_info.y + 2,
+            13,
+            13);
+    } else {
+        var image = new Image();
+        image.onload = function() {
+            Mannequin.cached_images['close_icon'] = {image: image};
+            Mannequin.draw_close_icon(cont, piece_id);
+        };
+        image.src = "static/images/close_icon.png";
+        
+    }
 }
 
 Mannequin.draw_random_outfit = function() {
@@ -185,6 +226,7 @@ Mannequin.draw = function(highlight) {
             cont.strokeRect(cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
             this.draw_resize_icon(cont, pant_id);
             this.draw_info_icon(cont, pant_id);
+            this.draw_close_icon(cont, pant_id);
         }
     } else if (pant_id != '') { // calculate the image info, cache it, and draw it
         pant.onload = function() {
@@ -210,6 +252,7 @@ Mannequin.draw = function(highlight) {
             cont.strokeRect(cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
             this.draw_resize_icon(cont, shirt_id);
             this.draw_info_icon(cont, shirt_id);
+            this.draw_close_icon(cont, shirt_id);
         }
     } else if (shirt_id != ''){ // draw a new image when it loads
         shirt.onload = function() {
@@ -236,6 +279,7 @@ Mannequin.draw = function(highlight) {
             cont.strokeRect(cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
             this.draw_resize_icon(cont, shoes_id);
             this.draw_info_icon(cont, shoes_id);
+            this.draw_close_icon(cont, shoes_id);
         }
     } else if (shoes_id != ''){
         shoes.onload = function() {
