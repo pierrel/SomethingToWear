@@ -69,8 +69,8 @@ function page_home(context) {
                           $('#piece-info').dialog({
                               autoOpen: true,
                               modal: true,
-                              width: 300,
-                              height: 300,
+                              width: 400,
+                              height: 450,
                               closeOnEscape: true
                           })
                       }) 

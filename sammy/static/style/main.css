@@ -35,60 +35,79 @@
 	margin-top: 20px;
 }
 
+/* @group piece-info */
+#piece-info {
+	position: relative;
+	background-color: #fff;
+	display: block;
+	border: 1px solid #000;
+	padding: 10px;
+}
+
+.ui-dialog-titlebar {
+	background-color: #fff;
+}
+
+#piece-basic-info {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 200px;
+}
+
+#piece-info-top {
+	position: relative;
+	display: block;
+}
+
+#piece-original-image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 150px;
+	display: block;
+}
+
+#piece-original-image img {
+	width: 150px;
+}
+
+#piece-url {
+	position: relative;
+	clear: both;
+}
+
+
+
+/* @end */
+
+/* @group closet images */
+
+.closet-part {
+	overflow-x: auto;
+	height: 150px;
+	width: 400px;
+	border: 2px solid #9c979a;
+	margin-bottom: 23px;
+}
+
+#shoes div img {
+	height: 100px;
+}
+
+.piece-image img{
+    float: left;
+	height: 140px;
+	border: 1px solid #97efd5;
+	margin-right: 2px;
+	margin-left: 2px;
+}
+
+/* @end */
+
 #mannequin:hover {
     cursor: pointer;
 }
-
-/* @group main functionality */
-
-
-
-/* @end */
-
-/* @group Non-owned */
-
-#fashion-image {
-	width: 300px;
-	float: left;
-	text-align: right;
-	margin: 10px;
-}
-
-#add-to-closet-links {
-	width: 150px;
-	float: left;
-	text-align: center;
-	vertical-align: middle;
-}
-
-#other-rating {
-	float: left;
-	display: block;
-	text-align: center;
-}
-
-#fashion{
-	background-color: #fff;
-	border: 3px solid #ff704b;
-}
-
-
-
-/* @end */
-
-/* @group Add clothes */
-
-#add-clothes {
-	background-color: #fff;
-	border: 3px solid #ff704b;
-}
-
-body {
-    background: url('../images/main_bg.png') top left repeat-y !important;
-}
-
-
-/* @end */
 
 #main-wrapper {
     position: relative;
@@ -118,68 +137,12 @@ body {
 	height: 120px;;
 }
 
-#edit_button {
-	position: relative;
-	left: 100px;
-}
-
 .search {
 	display: block;
 	color: #9b9b9b;
 	width: 400px;
 	height: 30px;
 	font-size: 17px;
-}
-
-/* @group closet images */
-
-.closet-part {
-	overflow-x: auto;
-	height: 150px;
-	width: 400px;
-	border: 2px solid #9c979a;
-	margin-bottom: 23px;
-}
-
-#shoes div img {
-	height: 100px;
-}
-
-.piece-image img{
-    float: left;
-	height: 140px;
-	border: 1px solid #97efd5;
-	margin-right: 2px;
-	margin-left: 2px;
-}
-
-#piece-info {
-	background-color: #fff;
-}
-
-/* @end */
-
-.fullpage-form {
-	text-align: center;
-	border: 1px solid #81828f;
-	margin-top: 100px;
-	padding-top: 20px;
-}
-
-.fullpage-form th{
-	text-align: right;
-}
-
-#like-link {
-	font-size: 20px;
-	color: #ff704b;
-}
-
-#like-feedback {
-	display: none;
-	color: #29b99e;
-	font-size: 15px;
-	font-weight: bold;
 }
 
 a {
@@ -198,57 +161,11 @@ label {
 .error * {
     color: #8A1F11;
 }
-
-#header-info {
-    position: relative;
-    padding-top: 4em;
-}
-    #header-nav {
-        margin: 0 1em 0 1em;
-    }
     
 #main-content {}
-
-#side-nav {
-    min-height: 500px;
-    position: relative;
-}
 
 .nav { 
     background: url("../images/main/nav-sprite.png") no-repeat top left;
     display: block; 
 }
 .nav-title { cursor: pointer; }
-#discover { background-position: 0 -193px; width: 235px; height: 57px;} 
-#discover:hover, #discover-hover { background-position: 0 0; width: 235px; height: 57px; } 
-#discover-text { background-position: 0 -106px; width: 235px; height: 37px;} 
-
-#rate { background-position: 0 -476px; width: 235px; height: 44px;} 
-#rate:hover, #rate-hover { background-position: 0 -299px; width: 235px; height: 44px;} 
-#rate-text { background-position: 0 -393px; width: 235px; height: 33px; } 
-
-#share { background-position: 0 -743px; width: 235px; height: 43px; } 
-#share:hover, #share-hover { background-position: 0 -570px; width: 235px; height: 43px;} 
-#share-text { background-position: 0 -663px; width: 235px; height: 30px;} 
-
-#side-bottom-nav {
-    position: absolute;
-    width: 100%;
-    margin-left: 20px;
-    bottom: 0px;
-}
-#side-bottom-nav  > ul {
-    list-style: none;
-    margin-left: -40px;
-}
-
-.share-list {
-    list-style-type: none;
-}
-.share-list > li {
-    text-indent: -3em;
-}
-.share-list > li > .number {
-    font-size: 300%;
-    font-weight: bold;
-}
