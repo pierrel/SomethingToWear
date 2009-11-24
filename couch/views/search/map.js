@@ -10,7 +10,7 @@ function(doc) {
         return has_descriptors && doc.detail_page_url && doc.name && doc.uncut_image_url;
     }
         
-    if (doc.doc_type == 'test-piece' && doc.placement && doc._attachments) { // make sure it is a piece and has an image
+    if (doc.doc_type == 'piece' && doc.placement && doc._attachments) { // make sure it is a piece and has an image
         
         // convert from placement to type
         if (doc.placement == 'tops') {
