@@ -3,5 +3,14 @@
     "couchdb"       : "wear",
     "proxy"         : "http://localhost:80/proxy",
     "views"         : "_design/couch/_view",
-    "image"         : "image"    
+    "image"         : "image",
+    
+    
+    
+    "prod": {
+        "couchdb_host"  : "http://somethingtowear.com/couch",
+        "couchdb"       : "wear-prod",
+        "views"         : "_design/couch/_view",
+        "image"         : "image",
+    }
 }
