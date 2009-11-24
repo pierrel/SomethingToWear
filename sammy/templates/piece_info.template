@@ -11,7 +11,7 @@
 				<h2><%= piece.price %></h2>
 			</div>
 						<div id="piece-url">
-		<a href="#" onclick="window.open('<%= 'http://www.amazon.com/gp/product/' + piece.store_piece_id + '?ie=UTF8&tag=pierrelaroche-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=' + piece.store_piece_id %>','newwin')">Get it from Amazon.com</a> (will open a new window)
+		<a href="#" onclick="window.open('<%= 'http://www.amazon.com/gp/product/' + piece.store_id + '?ie=UTF8&tag=pierrelaroche-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=' + piece.store_id %>','newwin')">Get it from Amazon.com</a> (will open a new window)
 	</div>
 
 		</div>
