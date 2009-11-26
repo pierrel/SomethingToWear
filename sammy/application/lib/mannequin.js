@@ -207,7 +207,6 @@ Mannequin.complete_outfit = function() {
 }
 
 Mannequin.draw = function(highlight) {
-
     // Image stuff
     var canvas = document.getElementById(this.element_id);
     var cont = canvas.getContext('2d');
@@ -217,105 +216,77 @@ Mannequin.draw = function(highlight) {
     cont.clearRect(0, 0, canvas.width, canvas.height);
     cont.strokeStyle = "#ff704b";
     
-    var pant_id = this.pant_id;
-    var shirt_id = this.shirt_id;
-    var shoes_id = this.shoes_id;    
+    var ids = {
+        pant: this.pant_id,
+        shirt: this.shirt_id,
+        shoes: this.shoes_id
+    };
     
-    var shirt = new Image();
-    var pant = new Image();
-    var shoes = new Image();
+    var images = {
+        pant: new Image(),
+        shirt: new Image(),
+        shoes: new Image()
+    };
     
     // Some constants
-    var default_shirt_pos_x = 20;
-    var default_shirt_pos_y = 20;
-    var default_shirt_width = 150;
-    
-    var default_pant_pos_x = 50;
-    var default_pant_pos_y = 200;
-    var default_pant_width = 100;
-    
-    var default_shoes_pos_x = 70;
-    var default_shoes_pos_y = 400;
-    var default_shoes_width = 100;
-    
-    
-    if (pant_id in cache) { // draw the cached image
-        cached_info = cache[pant_id];
-        cont.drawImage(cached_info['image'], cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
-        if (highlight == 'pants') {
-            cont.strokeRect(cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
-            this.draw_resize_icon(cont, pant_id);
-            this.draw_info_icon(cont, pant_id);
-            this.draw_close_icon(cont, pant_id);
+    var positions = {
+        shirt: {
+            x: 20,
+            y: 20,
+            width: 150
+        },
+        pant: {
+            x: 50,
+            y: 200,
+            width: 100
+        },
+        shoes: {
+            x: 70,
+            y: 300,
+            width: 100
         }
-    } else if (pant_id != '') { // calculate the image info, cache it, and draw it
-        pant.onload = function() {
-            height = get_height(pant, default_pant_width);            
-            cont.drawImage(pant, default_pant_pos_x, default_pant_pos_y, default_pant_width, height);
-            if (highlight == 'pants') {
-                cont.strokeRect(default_pant_pos_x, default_pant_pos_y, default_pant_width, height);
-            }
-
-            // cache it for later use
-            Mannequin.cached_images[pant_id] = {image: pant, x: default_pant_pos_x, y: default_pant_pos_y, width: default_pant_width, height: height};
-
-        }
+    };
         
-        pant.src = couch(this.pant_id) + '/image';
-        
+    order = []
+    if (!highlight || highlight == 'shoes') {
+        order = ['pant', 'shirt', 'shoes'];
+    } else if (highlight == 'pants') {
+        order = ['shirt', 'shoes', 'pant'];
+    } else if (highlight == 'shirt') {
+        order = ['pant', 'shoes', 'shirt'];
     }
-
-    if (shirt_id in cache) { // draw the cached image
-        cached_info = cache[shirt_id];
-        cont.drawImage(cached_info['image'], cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
-        if (highlight == 'shirt') {
-            cont.strokeRect(cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
-            this.draw_resize_icon(cont, shirt_id);
-            this.draw_info_icon(cont, shirt_id);
-            this.draw_close_icon(cont, shirt_id);
-        }
-    } else if (shirt_id != ''){ // draw a new image when it loads
-        shirt.onload = function() {
-            height = get_height(shirt, default_shirt_width);
+    
+    for (piece_ind in order) {
+        var piece = order[piece_ind];
+                
+        if (ids[piece] in cache) { // draw the cached image
+            cached_info = cache[ids[piece]];
             
-            cont.drawImage(shirt, default_shirt_pos_x, default_shirt_pos_y, default_shirt_width, height);
-            if (highlight == 'pants') {
-                cont.strokeRect(default_shirt_pos_x, default_shirt_pos_y, default_shirt_width, height);
+            cont.drawImage(cached_info.image, cached_info.x, cached_info.y, cached_info.width, cached_info.height);
+            if (highlight && highlight == piece || highlight == piece + "s") { // it's the one being highlighted
+                cont.strokeRect(cached_info.x, cached_info.y, cached_info.width, cached_info.height);
+                this.draw_resize_icon(cont, ids[piece]);
+                this.draw_info_icon(cont, ids[piece]);
+                this.draw_close_icon(cont, ids[piece]);
             }
+        } else if (ids[piece] != '') {
+            images[piece].onload = function(id, image, position) {
+                return function() {
+                    var height = get_height(image, position.width);
 
-            // cache it for later use
-            Mannequin.cached_images[shirt_id] = {image: shirt, x: default_shirt_pos_x, y: default_shirt_pos_y, width: default_shirt_width, height: height};
-
-        }
-        
-        shirt.src = couch(this.shirt_id) + '/image';
-        
-    }
-
-    if (shoes_id in cache) { // draw the cached image
-        cached_info = cache[shoes_id];
-        cont.drawImage(cached_info['image'], cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
-        if (highlight == 'shoes') {
-            cont.strokeRect(cached_info['x'], cached_info['y'], cached_info['width'], cached_info['height']);
-            this.draw_resize_icon(cont, shoes_id);
-            this.draw_info_icon(cont, shoes_id);
-            this.draw_close_icon(cont, shoes_id);
-        }
-    } else if (shoes_id != ''){
-        shoes.onload = function() {
-            height = get_height(shoes, default_shoes_width);
+                    cont.drawImage(image, position.x, position.y, position.width, height);
+                    Mannequin.cached_images[id] = {
+                        image: image,
+                        x: position.x,
+                        y: position.y,
+                        width: position.width,
+                        height: height
+                    };
+                    
+                };
+            }(ids[piece], images[piece], positions[piece]);
             
-            cont.drawImage(shoes, default_shoes_pos_x, default_shoes_pos_y, default_shoes_width, height);
-            if (highlight == 'shoes') {
-                cont.strokeRect(default_shoes_pos_x, default_shoes_pos_y, default_shoes_width, height);
-            }
-
-            // cache it for later use
-            Mannequin.cached_images[shoes_id] = {image: shoes, x: default_shoes_pos_x, y: default_shoes_pos_y, width: default_shoes_width, height: height};
-
+            images[piece].src = couch(ids[piece]) + '/image'
         }
-        
-        shoes.src = couch(this.shoes_id) + '/image';
-        
-    }
+    }    
 }
