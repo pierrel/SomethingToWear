@@ -1,17 +1,8 @@
 function(doc) {
+    // !code lib/piece.js
+    
     var attrs = ['materials', 'colors', 'pattern', 'styles'];
-    
-    is_correct = function(doc) {
-        var has_descriptors = true;
-        for_search = attrs;
-        for (var i in for_search) {
-            part_name = for_search[i];
-            has_descriptors = has_descriptors && doc[part_name] && doc[part_name].length >= 2;
-        }
         
-        return has_descriptors && doc.name && doc.uncut_image_url;
-    }
-    
     // returns an array of terms
     // terms is a string containing the term
     // example: if term = 'dark blue jeans', then the result is ['dark', 'blue', 'jeans', 'dark blue', 'dark blue jeans']
@@ -72,7 +63,7 @@ function(doc) {
             type = doc.placement; // it's "shoes"
         }
         
-        if (is_correct(doc)) {
+        if (ready_to_show(doc)) {
             for (var index in attrs) {
                 attr = attrs[index];
                 

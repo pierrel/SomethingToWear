@@ -1,5 +1,7 @@
 function(doc) {
-    if (doc.doc_type == 'piece' && doc.placement && doc._attachments) { // make sure it is a piece and has an image
+    // !code lib/piece.js
+    
+    if (doc.doc_type == 'piece' && doc.placement && doc._attachments && ready_to_show(doc)) { // make sure it is a piece and has an image
         
         if (doc.placement == 'tops') {
             type = 'shirt';
