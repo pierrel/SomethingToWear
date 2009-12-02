@@ -138,6 +138,8 @@ function page_home(context) {
                     if (piece) {
                         if (Mannequin.on_close(evt) || Mannequin.on_info(evt)) {
                             $('#mannequin:hover').css('cursor', 'pointer');
+                        } else if (Mannequin.on_resize(evt)) {
+                            $('#mannequin::hover').css('cursor', 'se-resize');
                         } else {
                             $('#mannequin:hover').css('cursor', 'move');
                         }
