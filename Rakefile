@@ -22,9 +22,7 @@ namespace :deploy do
     
     urls = JSON.parse(File.read("sammy/static/urls.json"))
     File.open("#{tmp_dir}/static/urls.json", 'w') { |file| file.write(JSON.generate(urls['prod']))}
-    
-    `cp /tmp/urls.json #{tmp_dir}`
-    
+        
     `scp -r #{tmp_dir}/* #{to_path}`
   end
 end
