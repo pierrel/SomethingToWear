@@ -50,9 +50,15 @@ function info_min_maxes(position) {
 
 function within_bounds(evt, bounds) {
     div_offset = absolute_offset($('#mannequin-canvas'));
-
-    click_x = evt.pageX - div_offset[0] + 215; // again some crazy problem, not sure but this seems to work
-    click_y = evt.pageY - div_offset[1];
+    
+    
+    if ($.browser.safari) {
+        click_x = evt.pageX - div_offset[0] + 215; // again some crazy problem, not sure but this seems to work
+        click_y = evt.pageY - div_offset[1];
+    } else {
+        click_x = evt.pageX - div_offset[0] + 235;
+        click_y = evt.pageY - div_offset[1] - 5;
+    }
 
     return (click_x > bounds.min_x && click_x < bounds.max_x && click_y > bounds.min_y && click_y < bounds.max_y)
 }
