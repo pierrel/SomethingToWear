@@ -36,7 +36,6 @@
 	margin-top: 20px;
 }
 
-/* @group piece-info */
 #piece-info {
 	position: relative;
 	background-color: #fff;
@@ -44,7 +43,7 @@
 	border: 1px solid #000;
 	padding: 10px;
 }
-=======
+
 #mannequin:hover {
     cursor: pointer;
 }
@@ -103,12 +102,21 @@
 	height: 100px;
 }
 
+.piece-image {
+	cursor: pointer;
+}
+
 .piece-image img{
     float: left;
 	height: 140px;
 	border: 1px solid #97efd5;
 	margin-right: 2px;
 	margin-left: 2px;
+}
+
+.highlighted {
+	cursor: default;
+	background-color: #97efd5;
 }
 
 /* @end */
@@ -167,10 +175,6 @@ label {
 .piece {
     cursor: move;
 }
-
-
-
-/* @end */
 
 
 
