@@ -152,12 +152,11 @@ function search_and_update_closet(context, piece_type, closet_part_name, attribu
 }
 
 function highlight_piece(part, id) {
-    var color = '#97EFD5';
-    $('#' + part + '-' + id).css('background-color', color);
+    $('#' + part + '-' + id).addClass('highlighted');
 }
 
 function unhighlight_piece(part, id) {
-    $('#' + part + '-' + id).css('background-color', null);
+    $('#' + part + '-' + id).removeClass('highlighted');
 }
 
 function closet_search(context, piece_type, closet_part_name) {
