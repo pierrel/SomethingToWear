@@ -49,13 +49,17 @@ function most_liked_pieces(type, limit) {
 function fill_closet_part(context, ids, part_name) {
     // empty first closet
     $('#' + part_name).empty();
+    var transform = {shirts: 'shirt_id', pants: 'pant_id', shoes: 'shoes_id'};
     
     $.each(ids, function(i, id) {
         context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
             $('#' + part_name).append(rendered);
+            
+            // if the piece is in the mannequin then highlight it
+            if (Mannequin[transform[part_name]] == id) {
+                highlight_piece(part_name, id);
+            }
             $('#' + part_name + '-' + id).click(function(evt) {
-                var transform = {shirts: 'shirt_id', pants: 'pant_id', shoes: 'shoes_id'};
-                
                 // get the previous part for removing the background
                 old_id = Mannequin[transform[part_name]];
                 
@@ -64,12 +68,11 @@ function fill_closet_part(context, ids, part_name) {
                 Mannequin.draw();
                 
                 // change the background to show it's selected
-                $('#' + part_name + '-' + id).css('background-color', '#97EFD5');
+                highlight_piece(part_name, id);
                 
                 // remove the old piece's background
-                old_element = $('#' + part_name + '-' + old_id)
-                if (old_id != '' && old_element) {
-                    old_element.css('background', null);
+                if (old_id != '' && $('#' + part_name + '-' + old_id)) {
+                    unhighlight_piece(part_name, old_id);
                 }
             });
         });
@@ -146,6 +149,15 @@ function search_and_update_closet(context, piece_type, closet_part_name, attribu
             fill_closet_part(context, matching_ids, closet_part_name);
         }, 'json');
     }    
+}
+
+function highlight_piece(part, id) {
+    var color = '#97EFD5';
+    $('#' + part + '-' + id).css('background-color', color);
+}
+
+function unhighlight_piece(part, id) {
+    $('#' + part + '-' + id).css('background-color', null);
 }
 
 function closet_search(context, piece_type, closet_part_name) {
