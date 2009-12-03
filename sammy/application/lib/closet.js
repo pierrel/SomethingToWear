@@ -55,8 +55,22 @@ function fill_closet_part(context, ids, part_name) {
             $('#' + part_name).append(rendered);
             $('#' + part_name + '-' + id).click(function(evt) {
                 var transform = {shirts: 'shirt_id', pants: 'pant_id', shoes: 'shoes_id'};
+                
+                // get the previous part for removing the background
+                old_id = Mannequin[transform[part_name]];
+                
+                // add the new piece to the mannequin
                 Mannequin[transform[part_name]] = id;
                 Mannequin.draw();
+                
+                // change the background to show it's selected
+                $('#' + part_name + '-' + id).css('background-color', '#97EFD5');
+                
+                // remove the old piece's background
+                old_element = $('#' + part_name + '-' + old_id)
+                if (old_id != '' && old_element) {
+                    old_element.css('background', null);
+                }
             });
         });
     });
