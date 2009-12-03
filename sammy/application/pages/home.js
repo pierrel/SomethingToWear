@@ -13,26 +13,9 @@ function page_home(context) {
 
 
             // set up mannequin-canvas interaction
-            Mannequin.element().droppable({
-                drop: function(evt, ui) {
-                    draggable_info = ui.draggable.attr('id').split("-");
-                    type = draggable_info[0];
-                    id = draggable_info[1];
-
-                    if (type == 'shirts') {
-                        Mannequin.shirt_id = id;
-                    } else if (type == 'pants') {
-                        Mannequin.pant_id = id;
-                    } else if (type == 'shoes') {
-                        Mannequin.shoes_id = id;
-                    }
-
-                    Mannequin.draw();
-                },
-                accept: '.piece',
-                activeClass: 'mannequin-canvas-dragging'
-            });
             
+            
+            // Setup the piece-canvas interaction
             Mannequin.element().mousedown(function(evt) {
                 piece_over = Mannequin.piece_mousing_over(evt);
                 

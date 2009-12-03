@@ -53,7 +53,11 @@ function fill_closet_part(context, ids, part_name) {
     $.each(ids, function(i, id) {
         context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
             $('#' + part_name).append(rendered);
-            $('.piece').draggable({helper: 'clone'});
+            $('#' + part_name + '-' + id).click(function(evt) {
+                var transform = {shirts: 'shirt_id', pants: 'pant_id', shoes: 'shoes_id'};
+                Mannequin[transform[part_name]] = id;
+                Mannequin.draw();
+            });
         });
     });
     
