@@ -1,6 +1,25 @@
+/* @override http://localhost/~pierrelarochelle/SomethingToWear/sammy/static/style/main.css */
+
 #top-left {
     color: #aaa;
 }
+
+#loading {
+	text-align: center;
+	margin-top: 50px;
+}
+
+#loading-message {
+	color: #ff704b;
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light",
+                 "Helvetica Neue", sans-serif;
+    font-weight: 300;
+    font-size: 4em;
+    line-height: 1em;
+}
+
+
+
 #title {
 	color: #aaa;
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light",
