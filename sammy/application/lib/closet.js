@@ -46,10 +46,13 @@ function most_liked_pieces(type, limit) {
     return largests;
 }
 
-function render_piece(context, part_name, id) {
+function render_piece(context, part_name, id, total) {
     var transform = {shirts: 'shirt_id', pants: 'pant_id', shoes: 'shoes_id'};
+    var search_trans = {shirts: 'shirt', pants: 'pants', shoes: 'shoes'};
+    
     context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
         $('#' + part_name).append(rendered);
+        
         
         // if the piece is in the mannequin then highlight it
         if (Mannequin[transform[part_name]] == id) {
@@ -71,17 +74,31 @@ function render_piece(context, part_name, id) {
                 unhighlight_piece(part_name, old_id);
             }
         });
+        
+        // Add the icon and modify the search input if it's the first one
+        if ($('.' + part_name + '-piece').length == 1) {
+            $('#' + search_trans[part_name] + '-search').addClass('searching');
+            $('#' + part_name + '-load').show();
+        }
+        
+        // Remove the loading icon if this is the last piece loaded
+        if (ids.length == $('.' + part_name + '-piece').length) {
+            $('#' + search_trans[part_name] + '-search').removeClass('searching');
+            $('#' + part_name + '-load').hide();
+        }        
     });
 }
 
 function fill_closet_part(context, ids, part_name) {
-    // empty first closet
+    // first empty the closet
     $('#' + part_name).empty();
     
     $.each(ids, function(i, id) {
+        if (i == 0) {
+        }
         image = new Image();
         image.onload = function() {
-            return render_piece(context, part_name, id);
+            return render_piece(context, part_name, id, ids.length);
         }
         image.src = piece_image_url(id);
     });

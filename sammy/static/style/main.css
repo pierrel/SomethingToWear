@@ -92,7 +92,7 @@
 
 .closet-part {
 	overflow-x: auto;
-	height: 150px;
+	height: 160px;
 	width: 400px;
 	border: 2px solid #9c979a;
 	margin-bottom: 23px;
@@ -154,11 +154,18 @@
 }
 
 .search {
-	display: block;
 	color: #9b9b9b;
 	width: 400px;
 	height: 30px;
 	font-size: 17px;
+}
+
+.searching {
+	width: 350px;
+}
+
+.search-icon {
+	height: 30px;
 }
 
 a {
@@ -172,6 +179,8 @@ html {
 
 label {
     margin-right: 2em;
+}
+
 .piece {
     cursor: move;
 }
