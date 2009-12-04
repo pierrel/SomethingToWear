@@ -92,26 +92,31 @@
 
 .closet-part {
 	overflow-x: auto;
-	height: 150px;
+	height: 140px;
 	width: 400px;
 	border: 2px solid #9c979a;
 	margin-bottom: 23px;
-}
-
-#shoes div img {
-	height: 100px;
 }
 
 .piece-image {
 	cursor: pointer;
 }
 
-.piece-image img{
+.piece {
     float: left;
-	height: 140px;
+	height: 130px;
 	border: 1px solid #97efd5;
 	margin-right: 2px;
 	margin-left: 2px;
+}
+
+.loading-piece {
+	float: left;
+	padding: 40px;
+	border: 1px solid #97efd5;
+	margin-right: 2px;
+	margin-left: 2px;
+
 }
 
 .highlighted {
@@ -147,10 +152,6 @@
 
 #closet-handle:hover {
 	cursor: pointer;
-}
-
-#shoes-part {
-	height: 120px;;
 }
 
 .search {
