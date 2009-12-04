@@ -84,7 +84,7 @@ function fill_closet_part(context, ids, part_name) {
             image.onload = function(part_name, id) {
                 return function() {
                     $('#' + part_name + '-' + id).removeClass('loading-piece');
-                    $('#' + part_name + '-' + id).addClass('piece');
+                    $('#' + part_name + '-' + id).addClass('piece-image');
                     $('#' + part_name + '-' + id).attr('src', piece_image_url(id));
                 };
             }(part_name, id);
