@@ -76,7 +76,7 @@ function(doc) {
             }
             
             // emit all terms in the piece name
-            var name_terms = gradual_split(doc.name)
+            var name_terms = gradual_split(doc.name.toLowerCase())
             for (var term_index in name_terms) {
                 emit([type, name_terms[term_index]], null);
             }
