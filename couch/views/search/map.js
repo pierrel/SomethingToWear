@@ -63,7 +63,9 @@ function(doc) {
             type = doc.placement; // it's "shoes"
         }
         
+        
         if (ready_to_show(doc)) {
+            // emit all "ready" descriptions
             for (var index in attrs) {
                 attr = attrs[index];
                 
@@ -72,7 +74,13 @@ function(doc) {
                     emit([type, all_terms[term]], null);
                 }                
             }
-            emit([type, doc.name], null);
+            
+            // emit all terms in the piece name
+            var name_terms = gradual_split(doc.name)
+            for (var term_index in name_terms) {
+                emit([type, name_terms[term_index]], null);
+            }
+            
         }
         
     }
