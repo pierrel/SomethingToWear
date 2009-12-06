@@ -25,4 +25,8 @@ namespace :deploy do
         
     `scp -r #{tmp_dir}/* #{to_path}`
   end
+  
+  desc 'Deploys both the couch app and sammy application to production'
+  task :all => [:couch, :sammy] do
+  end
 end
