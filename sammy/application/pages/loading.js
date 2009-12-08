@@ -5,7 +5,7 @@ function page_loading(context) {
         
         if (!$.browser.msie) {
             var image_prefix = "static/images/";
-            var images = ["loading_orange.gif", "instructions.png", "mannequin-instructions.png", "close_icon.png", "info_icon.png", "resize_icon.png"];
+            var images = ["loading_orange.gif", "instructions.png", "mannequin_instructions.png", "close_icon.png", "info_icon.png", "resize_icon.png"];
             var loaded_images = []
 
             $.each(images, function(i, image_name) {
