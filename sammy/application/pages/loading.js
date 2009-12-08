@@ -35,9 +35,13 @@ function page_loading(context) {
             });
             context.redirect('#/home')
         } else {
-            context.partial('templates/sorry.html', {}, function(rendered) {
-                $('#main-wrapper').html(rendered);
-            });
+            var image = new Image();
+            image.onload = function() {
+                context.partial('templates/sorry.html', {}, function(rendered) {
+                    $('#main-wrapper').html(rendered);
+                });
+            };
+            image.src = 'static/images/sorry.png';
         }
     });
 }
