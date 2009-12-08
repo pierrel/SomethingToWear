@@ -55,7 +55,11 @@
 	margin-top: 20px;
 }
 
-#piece-info {
+#piece-info-dialog {
+	display: block;
+}
+
+.dialog {
 	position: relative;
 	background-color: #fff;
 	display: block;
@@ -81,20 +85,14 @@
 	width: 200px;
 }
 
-#piece-info-top {
+#piece-original-image {
 	position: relative;
 	display: block;
+	vertical-align: center;
 }
 
-#piece-original-image {
+#uncut-image {
 	position: absolute;
-	top: 0;
-	left: 0;
-	width: 150px;
-	display: block;
-}
-
-#piece-original-image img {
 	width: 150px;
 }
 

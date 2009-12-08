@@ -1,22 +1,20 @@
 <div id="piece-info" >
-	<div id="piece-info-top">
-		<div id="piece-original-image">
-			<img src="<%= piece.uncut_image_url %>" />
+	<div id="piece-original-image">
+		<img src="static/images/loading_orange.gif" />
+	</div>
+	<div id="piece-basic-info">
+		<div id="piece-name">
+			<h2><%= piece.name %></h2>
 		</div>
-		<div id="piece-basic-info">
-			<div id="piece-name">
-				<h2><%= piece.name %></h2>
-			</div>
-			<div id="piece-price">
-				<h2><%= piece.price %></h2>
-			</div>
-			<div id="piece-url">
-				<a href="#" onclick="window.open('<%= 'http://www.amazon.com/gp/product/' + piece.store_id + '?ie=UTF8&tag=pierrelaroche-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=' + piece.store_id %>','newwin')">Get it from Amazon.com</a> (will open a new window)
-			</div>
-
+		<div id="piece-price">
+			<h2><%= piece.price %></h2>
+		</div>
+		<div id="piece-url">
+			<a href="#" onclick="window.open('<%= 'http://www.amazon.com/gp/product/' + piece.store_id + '?ie=UTF8&tag=pierrelaroche-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=' + piece.store_id %>','newwin')">Get it from Amazon.com</a> (will open a new window)
 		</div>
 
 	</div>
+
 
 
 </div>
