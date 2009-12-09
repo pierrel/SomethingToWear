@@ -1,4 +1,5 @@
 require 'json'
+require 'hpricot'
 
 namespace :deploy do
   desc 'pushes the couch couchapp'
@@ -20,8 +21,14 @@ namespace :deploy do
     
     `cp -R sammy/* #{tmp_dir}`
     
+    # make sure only prod urls are in the urls file
     urls = JSON.parse(File.read("sammy/static/urls.json"))
     File.open("#{tmp_dir}/static/urls.json", 'w') { |file| file.write(JSON.generate(urls['prod']))}
+    
+    # put the analytics string into the index file
+    index = Hpricot(File.read("sammy/index.html"))
+    index.at('body').after(File.read("sammy/templates/analytics.html"))
+    File.open("#{tmp_dir}/index.html", 'w') { |file| file.write(index.to_html)}
         
     `scp -r #{tmp_dir}/* #{to_path}`
   end
