@@ -1,5 +1,5 @@
 function page_home(context) {
-    context.partial('templates/main.html', {}, function(rendered) {
+    context.partial('templates/home.template', {}, function(rendered) {
         $('#main-wrapper').html(rendered);
 
         $('#main-wrapper').ready(function() {
@@ -11,7 +11,6 @@ function page_home(context) {
             });
 
 
-            // set up mannequin-canvas interaction
 
 
             // Setup the piece-canvas interaction
@@ -31,7 +30,8 @@ function page_home(context) {
             }
 
         });
-
+        
+        // set up mannequin-canvas interaction
         Mannequin.element().click(function(evt) {
             piece_closing   = Mannequin.on_close(evt);
             piece_info      = Mannequin.on_info(evt);
