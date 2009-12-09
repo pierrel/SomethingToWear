@@ -1,7 +1,7 @@
 function(doc) {
     // !code lib/piece.js
     
-    if (doc.doc_type == 'piece' && doc.placement && doc._attachments && ready_to_show(doc)) { // make sure it is a piece and has an image
+    if (doc.doc_type == 'piece' && ready_to_show(doc)) { // make sure it is ready to show
         
         if (doc.placement == 'tops') {
             type = 'shirt';
@@ -11,7 +11,7 @@ function(doc) {
             type = 'shoes';
         }
         
-        emit(type, doc._id);
+        emit(type, 1);
         
     }
 }
