@@ -46,52 +46,52 @@ function most_liked_pieces(type, limit) {
     return largests;
 }
 
-function fill_closet_part(context, ids, part_name) {
+function piece_to_closet_part(context, ids, part_name) {
     var transform = {shirts: 'shirt_id', pants: 'pant_id', shoes: 'shoes_id'};
     
-    // empty first closet
-    $('#' + part_name).empty();
+    // just return if there are no more ids
+    if (ids.length == 0) {
+        return true;
+    }
     
-    $.each(ids, function(i, id) {
+    var id = ids.pop();
+    context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
+        $('#' + part_name).append(rendered);
+
+        $('#' + part_name + '-' + id).click(function(evt) {
+            // get the previous part for removing the background
+            old_id = Mannequin[transform[part_name]];
         
-        context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
-            $('#' + part_name).append(rendered);
-
-            // if the piece is in the mannequin then highlight it
-            if (Mannequin[transform[part_name]] == id) {
-                highlight_piece(part_name, id);
+            // add the new piece to the mannequin
+            Mannequin[transform[part_name]] = id;
+            Mannequin.draw();
+        
+            // change the background to show it's selected
+            highlight_piece(part_name, id);
+        
+            // remove the old piece's background
+            if (old_id != '' && $('#' + part_name + '-' + old_id)) {
+                unhighlight_piece(part_name, old_id);
             }
-            $('#' + part_name + '-' + id).click(function(evt) {
-                // get the previous part for removing the background
-                old_id = Mannequin[transform[part_name]];
-
-                // add the new piece to the mannequin
-                Mannequin[transform[part_name]] = id;
-                Mannequin.draw();
-
-                // change the background to show it's selected
-                highlight_piece(part_name, id);
-
-                // remove the old piece's background
-                if (old_id != '' && $('#' + part_name + '-' + old_id)) {
-                    unhighlight_piece(part_name, old_id);
-                }
-            });
-            
-            // grab the correct image and replace the loading icon
-            // when the image is loaded
-            image = new Image();
-            image.onload = function(part_name, id) {
-                return function() {
-                    $('#' + part_name + '-' + id).removeClass('loading-piece');
-                    $('#' + part_name + '-' + id).addClass('piece-image');
-                    $('#' + part_name + '-' + id).attr('src', piece_image_url(id));
-                };
-            }(part_name, id);
-            image.src = piece_image_url(id);
-            
         });
         
+        // grab the correct image and replace the loading icon
+        // when the image is loaded
+        image = new Image();
+        image.onload = function(part_name, id, ids) {
+            return function() {
+                $('#' + part_name + '-' + id).removeClass('loading-piece');
+                $('#' + part_name + '-' + id).addClass('piece-image');
+                $('#' + part_name + '-' + id).attr('src', piece_image_url(id));
+                // if the piece is in the mannequin then highlight it
+                if (Mannequin[transform[part_name]] == id) {
+                    highlight_piece(part_name, id);
+                }
+                // call fill_closet_part on the rest of the ids
+                piece_to_closet_part(context, ids, part_name);
+            };
+        }(part_name, id, ids);
+        image.src = piece_image_url(id);        
     });
     
     //find out part width
@@ -104,7 +104,19 @@ function fill_closet_part(context, ids, part_name) {
         part_width = 150;
     }
     
-    $('#' + part_name).width('' + ids.length*part_width + 'px');
+    if ($('#' + part_name).width() == 400) {
+        $('#' + part_name).width('' + ids.length*part_width + 'px');
+    }
+    
+}
+
+function fill_closet_part(context, ids, part_name) {
+    
+    // empty closet first 
+    $('#' + part_name).empty();
+    
+    // the fill
+    piece_to_closet_part(context, ids, part_name);
     
 }
 
