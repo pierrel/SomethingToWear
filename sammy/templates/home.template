@@ -3,6 +3,12 @@
 		Some- thing to Wear
 	</div>
 	
+	<div id="piece-numbers">
+		<p><span class="slight-highlight"><%= get_view('pieces_by_type', {key: 'shirt'})['rows'][0]['value'] %> tops and dresses </span>, </p>
+		<p><span class="slight-highlight"><%= get_view('pieces_by_type', {key: 'pants'})['rows'][0]['value'] %> pants</span>, and</p>
+		<p><span class="slight-highlight"><%= get_view('pieces_by_type', {key: 'shoes'})['rows'][0]['value'] %> shoes</span> available</p>
+	</div>
+	
 	<div id="copyright" style="color: gray; margin-top: 20em;">
 	  &copy; 2009 Pierre, Bryan, Ming
 	</div>

@@ -221,3 +221,12 @@ label {
     display: block; 
 }
 .nav-title { cursor: pointer; }
+
+.slight-highlight {
+	border-bottom: 1px solid #fd6f4a;
+}
+
+#piece-numbers {
+	position: absolute;
+	top: 350px;
+}
