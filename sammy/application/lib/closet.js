@@ -1,7 +1,7 @@
 function random_outfit() {
-    shirt_rows = get_view('pieces_by_type', {key: 'shirt'})['rows'];
-    pant_rows = get_view('pieces_by_type', {key: 'pants'})['rows'];
-    shoes_rows = get_view('pieces_by_type', {key: 'shoes'})['rows'];
+    shirt_rows = get_view('pieces_by_type', {key: 'shirt', reduce: false})['rows'];
+    pant_rows = get_view('pieces_by_type', {key: 'pants', reduce: false})['rows'];
+    shoes_rows = get_view('pieces_by_type', {key: 'shoes', reduce: false})['rows'];
     
     shirts = $.map(shirt_rows, function(row) { return row['id']});
     pants = $.map(pant_rows, function(row) { return row['id']});
@@ -130,7 +130,7 @@ function search_and_update_closet(context, piece_type, closet_part_name, attribu
         
     if (attributes.length == 0 || (attributes.length == 1 && attributes[0] == "")) { // empty array or array with one empty string
         limit = 15;
-        rows = get_view('pieces_by_type', {key: piece_type, limit: limit})['rows'];
+        rows = get_view('pieces_by_type', {key: piece_type, limit: limit, reduce: false})['rows'];
         ids = $.map(rows, function(row) { return row['id'] });
         
         fill_closet_part(context, ids, closet_part_name);
