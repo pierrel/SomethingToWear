@@ -77,43 +77,37 @@ function piece_to_closet_part(context, ids, part_name) {
         
         // grab the correct image and replace the loading icon
         // when the image is loaded
-        image = new Image();
+        var image = new Image();
         image.onload = function(part_name, id, ids) {
             return function() {
-                $('#' + part_name + '-' + id).removeClass('loading-piece');
-                $('#' + part_name + '-' + id).addClass('piece-image');
-                $('#' + part_name + '-' + id).attr('src', piece_image_url(id));
+                var piece_image = $('#' + part_name + '-' + id);
+                piece_image.removeClass('loading-piece');
+                piece_image.addClass('piece-image');
+                piece_image.attr('src', piece_image_url(id));
                 // if the piece is in the mannequin then highlight it
                 if (Mannequin[transform[part_name]] == id) {
                     highlight_piece(part_name, id);
                 }
+                
+                // change the width of the part
+                var part = $('#' + part_name);
+                part.width((part.width() + parseInt(piece_image.css('width')) + 10) + 'px');
+                
                 // call fill_closet_part on the rest of the ids
                 piece_to_closet_part(context, ids, part_name);
             };
         }(part_name, id, ids);
         image.src = piece_image_url(id);        
-    });
-    
-    //find out part width
-    part_width = 200;
-    if (part_name == 'shoes') {
-        part_width = 210;
-    } else if (part_name == 'shirts') {
-        part_width = 150;
-    } else if (part_name == 'pants') {
-        part_width = 150;
-    }
-    
-    if ($('#' + part_name).width() == 400) {
-        $('#' + part_name).width('' + ids.length*part_width + 'px');
-    }
-    
+    });    
 }
 
 function fill_closet_part(context, ids, part_name) {
     
     // empty closet first 
     $('#' + part_name).empty();
+    
+    // change the width
+    $('#' + part_name).width('0px');
     
     // the fill
     piece_to_closet_part(context, ids, part_name);
