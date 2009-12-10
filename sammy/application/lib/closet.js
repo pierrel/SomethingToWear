@@ -86,6 +86,7 @@ function piece_to_closet_part(context, ids, part_name) {
             image.onload = function(part_name, id, ids) {
                 return function() {
                     var piece_image = $('#' + part_name + '-' + id);
+
                     piece_image.removeClass('loading-piece');
                     piece_image.addClass('piece-image');
                     piece_image.attr('src', piece_image_url(id));
@@ -96,10 +97,12 @@ function piece_to_closet_part(context, ids, part_name) {
 
                     // change the width of the part
                     var part = $('#' + part_name);
-                    part.width((part.width() + parseInt(piece_image.css('width')) + 10) + 'px');
-
-                    // call fill_closet_part on the rest of the ids
-                    piece_to_closet_part(context, ids, part_name);
+                    part.ready(function(evt) {
+                        part.width((part.width() + parseInt(piece_image.css('width')) + 10) + 'px');
+                        // call fill_closet_part on the rest of the ids
+                        piece_to_closet_part(context, ids, part_name);
+                        
+                    });
                 };
             }(part_name, id, ids);
             image.src = piece_image_url(id);        
