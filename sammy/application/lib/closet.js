@@ -53,7 +53,18 @@ function piece_to_closet_part(context, ids, part_name) {
     if (ids.length == 0) {
         
         // clean up all loading image elements, dirty fix but it works
-        $('#' + part_name + ' > .closet-piece:has(.loading-piece)').remove();
+        var loading = $('#' + part_name + ' > .closet-piece:has(.loading-piece)');
+        var part = $('#' + part_name);
+        
+        loading.each(function() {
+            if (part_name == 'shirts') {
+                alert('removing ' + (parseInt($(this).css('width')) + 10) + ' from ' + part.width());
+            }
+            
+            part.width((part.width() - (parseInt($(this).css('width')) + 10)) + 'px');
+        });
+        
+        loading.remove();
         return true;
     }
     
@@ -97,12 +108,9 @@ function piece_to_closet_part(context, ids, part_name) {
 
                     // change the width of the part
                     var part = $('#' + part_name);
-                    part.ready(function(evt) {
-                        part.width((part.width() + parseInt(piece_image.css('width')) + 10) + 'px');
-                        // call fill_closet_part on the rest of the ids
-                        piece_to_closet_part(context, ids, part_name);
-                        
-                    });
+                    part.width((part.width() + parseInt(piece_image.css('width')) + 7) + 'px');
+                    // call fill_closet_part on the rest of the ids
+                    piece_to_closet_part(context, ids, part_name);
                 };
             }(part_name, id, ids);
             image.src = piece_image_url(id);        
