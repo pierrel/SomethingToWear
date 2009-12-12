@@ -62,21 +62,25 @@
 </div>
 
 <script type="text/javascript" charset="utf-8">
-var closet_state = 'closed';
+$(document).ready(function() {
+	var closet_state = 'closed';
 
-$("#closet-handle").click(function() {
-	if (closet_state == 'closed') {
-		$("#instructions").fadeOut(250,function() {
-		  $("#closet-layer").animate({right: 0},500,"swing");
-		});
+	$("#closet-handle").click(function() {
+		if (closet_state == 'closed') {
+			$("#instructions").fadeOut(250,function() {
+			  $("#closet-layer").animate({right: 0},500,"swing");
+			});
 
-		closet_state = 'open';
-	} else {
-		$("#closet-layer").animate({right: "-420px"}, 500, "swing", function() {
-			$("#instructions").fadeIn(250);
-		});
-		closet_state = 'closed';
-	}
-});
+			closet_state = 'open';
+		} else {
+			$("#closet-layer").animate({right: "-420px"}, 500, "swing", function() {
+				$("#instructions").fadeIn(250);
+			});
+			closet_state = 'closed';
+		}
+	});
+	
+	$("#closet-handle").click();
+})
 
 </script>
