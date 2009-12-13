@@ -55,47 +55,49 @@ function piece_to_closet_part(context, ids, part_name) {
     }
     
     var id = ids.pop();
-    context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
-        $('#' + part_name).append(rendered);
+    context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(id, ids, part_name) {
+        return function(rendered) {
+            $('#' + part_name).append(rendered);
 
-        $('#' + part_name + '-' + id).click(function(evt) {
-            // get the previous part for removing the background
-            old_id = Mannequin[transform[part_name]];
+            $('#' + part_name + '-' + id).click(function(evt) {
+                // get the previous part for removing the background
+                old_id = Mannequin[transform[part_name]];
         
-            // add the new piece to the mannequin
-            Mannequin[transform[part_name]] = id;
-            Mannequin.draw();
+                // add the new piece to the mannequin
+                Mannequin[transform[part_name]] = id;
+                Mannequin.draw();
         
-            // change the background to show it's selected
-            highlight_piece(part_name, id);
+                // change the background to show it's selected
+                highlight_piece(part_name, id);
         
-            // remove the old piece's background
-            if (old_id != '' && $('#' + part_name + '-' + old_id)) {
-                unhighlight_piece(part_name, old_id);
-            }
-        });
-        
-        // grab the correct image and replace the loading icon
-        // when the image is loaded
-        var image = new Image();
-        image.onload = function(part_name, id, ids) {
-            return function() {
-                var piece_image = $('#' + part_name + '-' + id);
-                // if the piece is in the mannequin then highlight it
-                if (Mannequin[transform[part_name]] == id) {
-                    highlight_piece(part_name, id);
+                // remove the old piece's background
+                if (old_id != '' && $('#' + part_name + '-' + old_id)) {
+                    unhighlight_piece(part_name, old_id);
                 }
+            });
+        
+            // grab the correct image and replace the loading icon
+            // when the image is loaded
+            var image = new Image();
+            image.onload = function(part_name, id, ids) {
+                return function() {
+                    var piece_image = $('#' + part_name + '-' + id);
+                    // if the piece is in the mannequin then highlight it
+                    if (Mannequin[transform[part_name]] == id) {
+                        highlight_piece(part_name, id);
+                    }
                 
-                // change the width of the part
-                var part = $('#' + part_name);
-                part.width((part.width() + parseInt(piece_image.css('width')) + 7) + 'px');
+                    // change the width of the part
+                    var part = $('#' + part_name);
+                    part.width((part.width() + parseInt(piece_image.css('width')) + 7) + 'px');
                 
-                // call fill_closet_part on the rest of the ids
-                piece_to_closet_part(context, ids, part_name);
-            };
-        }(part_name, id, ids);
-        image.src = piece_image_url(id);        
-    });    
+                    // call fill_closet_part on the rest of the ids
+                    piece_to_closet_part(context, ids, part_name);
+                };
+            }(part_name, id, ids);
+            image.src = piece_image_url(id);     
+        }   
+    }(id, ids, part_name));    
 }
 
 function fill_closet_part(context, ids, part_name) {
