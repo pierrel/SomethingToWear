@@ -108,7 +108,7 @@
 /* @group closet images */
 
 .closet-part {
-	overflow-x: auto;
+	overflow-x: scroll;
 	overflow-y: hidden;
 	height: 140px;
 	width: 400px;
