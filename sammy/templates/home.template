@@ -80,7 +80,10 @@ $(document).ready(function() {
 		}
 	});
 	
-	$("#closet-handle").click();
+	$(document).ready(function() {
+		$("#closet-handle").click();
+
+	});
 })
 
 </script>
