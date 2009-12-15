@@ -54,9 +54,8 @@ function piece_to_closet_part(context, ids, part_name) {
         return true;
     }
     
-    var id = ids.pop();
-    context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(id, ids, part_name) {
-        return function(rendered) {
+    $.each(ids, function(i, id) {
+    context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
             $('#' + part_name).append(rendered);
 
             $('#' + part_name + '-' + id).click(function(evt) {
@@ -89,15 +88,12 @@ function piece_to_closet_part(context, ids, part_name) {
                 
                     // change the width of the part
                     var part = $('#' + part_name);
-                    part.width((part.width() + parseInt(piece_image.css('width')) + 7) + 'px');
-                
-                    // call fill_closet_part on the rest of the ids
-                    piece_to_closet_part(context, ids, part_name);
+                    part.width((part.width() + parseInt(piece_image.css('width')) + 7) + 'px');                
                 };
             }(part_name, id, ids);
-            image.src = piece_image_url(id);     
-        }   
-    }(id, ids, part_name));    
+            image.src = piece_image_url(id);        
+    });
+    });    
 }
 
 function fill_closet_part(context, ids, part_name) {
