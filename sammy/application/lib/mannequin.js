@@ -19,6 +19,8 @@ Mannequin.element = function() {
     return $('#' + this.element_id);
 }
 
+// the user is 'handling' if they are
+// dragging or resizing
 Mannequin.handling = function() {
     if (Mannequin.dragging) {
         return Mannequin.dragging;
@@ -29,6 +31,7 @@ Mannequin.handling = function() {
     }
 }
 
+// returns the piece the user is mousing over
 Mannequin.piece_mousing_over = function(evt) {
     shirt   = min_maxes_from_position(Mannequin.cached_images[Mannequin.shirt_id]);
     pant    = min_maxes_from_position(Mannequin.cached_images[Mannequin.pant_id]);
@@ -45,7 +48,7 @@ Mannequin.piece_mousing_over = function(evt) {
         pieces_over.push('pants');
     }
     
-    // give precedence to the piece that the cursor is currently over
+    // give precedence to the piece that the cursor is currently over, if any
     if (pieces_over.indexOf(this.last_piece_hover) != -1) {
         return this.last_piece_hover;
     } else if (pieces_over.size == 0){
@@ -214,7 +217,7 @@ Mannequin.draw = function(highlight) {
 
     // First clear the canvas
     cont.clearRect(0, 0, canvas.width, canvas.height);
-    cont.strokeStyle = "#ff704b";
+    cont.strokeStyle = "#ff704b"; // orange, the highlight color
     
     var ids = {
         pant: this.pant_id,
@@ -246,7 +249,9 @@ Mannequin.draw = function(highlight) {
             width: 100
         }
     };
-        
+    
+    // makes sure that the highlighted piece gets drawn last
+    // and so shows up on top of the rest.
     order = []
     if (!highlight || highlight == 'shoes') {
         order = ['pant', 'shirt', 'shoes'];
@@ -269,7 +274,7 @@ Mannequin.draw = function(highlight) {
                 this.draw_info_icon(cont, ids[piece]);
                 this.draw_close_icon(cont, ids[piece]);
             }
-        } else if (ids[piece] != '') {
+        } else if (ids[piece] != '') { // 
             images[piece].onload = function(id, image, position) {
                 return function() {
                     var height = get_height(image, position.width);

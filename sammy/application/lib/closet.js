@@ -49,7 +49,9 @@ function most_liked_pieces(type, limit) {
 function piece_to_closet_part(context, ids, part_name) {
     var transform = {shirts: 'shirt_id', pants: 'pant_id', shoes: 'shoes_id'};
 
+    $('#' + part_name).empty();
     $('#' + part_name).width("0px");
+    
     
     $.each(ids, function(i, id) {
     context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {

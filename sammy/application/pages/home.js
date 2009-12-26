@@ -11,8 +11,6 @@ function page_home(context) {
             });
 
 
-
-
             // Setup the piece-canvas interaction
             Mannequin.element().mousedown(function(evt) {
                 piece_over = Mannequin.piece_mousing_over(evt);
@@ -152,7 +150,28 @@ function page_home(context) {
         select_function = function(elt) { return elt != "" && elt != "and"}; // use this to select only non-empty strings as attributes
         $('#shirt-search').keyup(closet_search(context, 'shirt', 'shirts'));
         $('#pants-search').keyup(closet_search(context, 'pants', 'pants'));
-        $('#shoes-search').keyup(closet_search(context, 'shoes', 'shoes')); 
+        $('#shoes-search').keyup(closet_search(context, 'shoes', 'shoes'));
+        
+        // closet animation stuff
+        var closet_state = 'closed';
+
+    	$("#closet-handle").click(function() {
+    		if (closet_state == 'closed') {
+    			$("#instructions").fadeOut(250,function() {
+    			  $("#closet-layer").animate({right: 0},500,"swing");
+    			});
+
+    			closet_state = 'open';
+    		} else {
+    			$("#closet-layer").animate({right: "-420px"}, 500, "swing", function() {
+    				$("#instructions").fadeIn(250);
+    			});
+    			closet_state = 'closed';
+    		}
+    	});
+
+    	$("#closet-handle").click();	
+    	
     });
 });
 }
