@@ -40,8 +40,8 @@ function absolute_offset(element) {
     var offX = 0;
     var offY = 0;
     while( element.parent().length != 0 ) {
-        offY += element.position().top;
-        offX += element.position().left;
+        offY += element.offset().top;
+        offX += element.offset().left;
         element = $(element.parent().get(0));
     }
     return [offX, offY];
