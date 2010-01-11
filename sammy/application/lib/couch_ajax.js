@@ -72,6 +72,10 @@ function piece_image_url(id) {
     return couch(id) + "/image";
 }
 
+function piece_thumbnail_url(id) {
+    return couch(id) + '/image_small';
+}
+
 function new_piece(data, success_func, error_func) {
     typed_data = data;
     typed_data['doc_type'] = 'piece';

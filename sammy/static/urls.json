@@ -1,6 +1,6 @@
 {
     "couchdb_host"  : "http://localhost:80/couch",
-    "couchdb"       : "wear",
+    "couchdb"       : "wear-test",
     "proxy"         : "http://localhost:80/proxy",
     "views"         : "_design/couch/_view",
     "image"         : "image",
