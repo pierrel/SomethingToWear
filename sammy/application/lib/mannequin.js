@@ -231,6 +231,7 @@ Mannequin.draw_first_outfit = function() {
     // hide the mannequin so that nothing happens
     // when a user mouses over or clicks/drags
     $("#mannequin-canvas").hide();
+    $('#mannequin-instructions-image').hide();
     
     $.each(images, function(i, image_name) {
         var image = new Image();
@@ -259,6 +260,7 @@ Mannequin.draw_first_outfit = function() {
                     Mannequin.draw();
                     $("#mannequin-canvas").show();
                     $('#mannequin-instructions-image').attr("src", image_prefix + "mannequin_instructions.png");
+                    $('#mannequin-instructions-image').show();
                 }
             };
         }(image_name);
