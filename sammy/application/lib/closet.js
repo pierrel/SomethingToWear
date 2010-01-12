@@ -49,9 +49,7 @@ function most_liked_pieces(type, limit) {
 function piece_to_closet_part(context, ids, part_name) {
     var transform = {shirts: 'shirt_id', pants: 'pant_id', shoes: 'shoes_id'};
 
-    $('#' + part_name).empty();
-    $('#' + part_name).width("0px");
-    
+    $('#' + part_name).empty();    
     
     $.each(ids, function(i, id) {
     context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
@@ -83,11 +81,7 @@ function piece_to_closet_part(context, ids, part_name) {
                     // if the piece is in the mannequin then highlight it
                     if (Mannequin[transform[part_name]] == id) {
                         highlight_piece(part_name, id);
-                    }
-                
-                    // change the width of the part
-                    var part = $('#' + part_name);
-                    part.width((part.width() + parseInt(piece_image.css('width')) + 7) + 'px');                
+                    }                
                 };
             }(part_name, id, ids);
             image.src = piece_image_url(id);        
@@ -99,10 +93,7 @@ function fill_closet_part(context, ids, part_name) {
     
     // empty closet first 
     $('#' + part_name).empty();
-    
-    // change the width
-    $('#' + part_name).width('0px');
-    
+        
     // the fill
     piece_to_closet_part(context, ids, part_name);
     

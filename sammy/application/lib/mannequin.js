@@ -197,7 +197,7 @@ Mannequin.draw_random_outfit = function() {
 Mannequin.draw_first_outfit = function() {
     var outfit = random_outfit();
     var images = ["loading_orange.gif", "mannequin_instructions.png", "close_icon.png", "info_icon.png", "resize_icon.png"];
-    var canvas = canvas.getContext('2d');
+    var canvas = document.getElementById(this.element_id).getContext('2d');
     
     this.shirt_id = outfit['shirt'];
     this.pant_id = outfit['pant'];
