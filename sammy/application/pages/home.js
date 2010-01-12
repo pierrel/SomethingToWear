@@ -3,7 +3,7 @@ function page_home(context) {
         $('#main-wrapper').html(rendered);
 
         $('#main-wrapper').ready(function() {
-            Mannequin.draw_random_outfit();
+            Mannequin.draw_first_outfit();
             fill_closet(context);
 
             $('#dress').click(function(evt) {
