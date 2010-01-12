@@ -228,6 +228,10 @@ Mannequin.draw_first_outfit = function() {
     images.push(outfit.pant);
     images.push(outfit.shoes);
     
+    // hide the mannequin so that nothing happens
+    // when a user mouses over or clicks/drags
+    $("#mannequin-canvas").hide();
+    
     $.each(images, function(i, image_name) {
         var image = new Image();
         image.onload = function(image_name) {
@@ -235,9 +239,6 @@ Mannequin.draw_first_outfit = function() {
                 
                 if (image_name.match("\\.")) { // it's a static image
                     // add instructions as they're loaded
-                    if (image_name == "mannequin_instructions.png") {
-                        $('#mannequin-instructions-image').attr("src", image_prefix + image_name);
-                    }
                     if (image_name == "instructions.png") {
                         $('#instructions-image').attr("src", image_prefix + image_name);
                     }
@@ -256,6 +257,8 @@ Mannequin.draw_first_outfit = function() {
                 if (loaded_images.length == images.length) {
                     $('#loading-icon').remove();
                     Mannequin.draw();
+                    $("#mannequin-canvas").show();
+                    $('#mannequin-instructions-image').attr("src", image_prefix + "mannequin_instructions.png");
                 }
             };
         }(image_name);
