@@ -60,3 +60,6 @@
   	</div>
   </div>
 </div>
+<div id="loading-icon">
+	<img src="static/images/loading_orange.gif">
+</div>

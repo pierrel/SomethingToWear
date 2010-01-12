@@ -240,3 +240,9 @@ label {
 	position: absolute;
 	top: 350px;
 }
+
+#loading-icon {
+	position: absolute;
+	top: 230;
+	left: 330;
+}

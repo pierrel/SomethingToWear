@@ -195,6 +195,7 @@ Mannequin.draw_random_outfit = function() {
 
 // draws a random outfit after loading all icons
 Mannequin.draw_first_outfit = function() {
+    var image_prefix = "static/images/";
     var outfit = random_outfit();
     var images = ["loading_orange.gif", "mannequin_instructions.png", "close_icon.png", "info_icon.png", "resize_icon.png"];
     var canvas = document.getElementById(this.element_id).getContext('2d');
@@ -203,7 +204,14 @@ Mannequin.draw_first_outfit = function() {
     this.pant_id = outfit['pant'];
     this.shoes_id = outfit['shoes'];
     
-    this.draw();
+    var image = new Image();
+    image.onload = function() {
+        canvas.drawImage(image, 0, 0, 30, 30);
+    }
+    image.src = image_prefix + "loading_orange.gif";
+    
+    
+    //this.draw();
 }
 
 Mannequin.complete_outfit = function() {
