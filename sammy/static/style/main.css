@@ -105,7 +105,7 @@
 
 /* @end */
 
-/* @group closet images */
+/* @group closet */
 
 .closet-part {
 	overflow: auto;
@@ -121,25 +121,13 @@
 	height: 120px;
 	border: 1px solid #97efd5;
 	cursor: pointer;
-
 }
 .piece-image {
 	display: block;
 	max-height: 120px;
 	max-width: 123px;
 	margin: auto;
-<<<<<<< HEAD:sammy/static/style/main.css
 	cursor: pointer;
-=======
->>>>>>> closet-select:sammy/static/style/main.css
-}
-
-.loading-piece {
-	float: left;
-	padding: 40px;
-	border: 1px solid #97efd5;
-	margin-right: 2px;
-	margin-left: 2px;
 }
 
 .highlighted {
