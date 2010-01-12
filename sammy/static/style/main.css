@@ -155,7 +155,7 @@
     z-index: 2;
     position: absolute;
     background-color: white;
-    right: -420px;
+    right: 0;
 }
 
 #closet-handle {

@@ -153,7 +153,7 @@ function page_home(context) {
         $('#shoes-search').keyup(closet_search(context, 'shoes', 'shoes'));
         
         // closet animation stuff
-        var closet_state = 'closed';
+        var closet_state = 'open';
 
     	$("#closet-handle").click(function() {
     		if (closet_state == 'closed') {
@@ -169,8 +169,7 @@ function page_home(context) {
     			closet_state = 'closed';
     		}
     	});
-
-    	$("#closet-handle").click();	
+    	$("#instructions").fadeOut();
     	
     });
 });

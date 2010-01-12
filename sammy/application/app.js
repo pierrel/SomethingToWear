@@ -2,9 +2,8 @@ App = $.sammy(function() {
     // =================
     // = Public routes =
     // =================
-    this.get('#/', page_loading);
     
-    this.get('#/home', page_home);
+    this.get('#/', page_home);
 
      // =====================
      // = Internal settings =
