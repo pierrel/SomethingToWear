@@ -194,24 +194,52 @@ Mannequin.draw_random_outfit = function() {
 }
 
 // draws a random outfit after loading all icons
+// and then removes the loading icon
 Mannequin.draw_first_outfit = function() {
     var image_prefix = "static/images/";
     var outfit = random_outfit();
-    var images = ["loading_orange.gif", "mannequin_instructions.png", "close_icon.png", "info_icon.png", "resize_icon.png"];
+    var images = ["mannequin_instructions.png", "close_icon.png", "info_icon.png", "resize_icon.png", "instructions.png"];
+    var loaded_images = [];
     var canvas = document.getElementById(this.element_id).getContext('2d');
     
     this.shirt_id = outfit['shirt'];
     this.pant_id = outfit['pant'];
     this.shoes_id = outfit['shoes'];
     
-    var image = new Image();
-    image.onload = function() {
-        canvas.drawImage(image, 0, 0, 30, 30);
-    }
-    image.src = image_prefix + "loading_orange.gif";
+    $.each(images, function(i, image_name) {
+        var image = new Image();
+        image.onload = function(image_name) {
+            return function() {
+
+                // add instructions as they're loaded
+                if (image_name == "mannequin_instructions.png") {
+                    $('#mannequin-instructions-image').attr("src", image_prefix + image_name);
+                }
+                if (image_name == "instructions.png") {
+                    $('#instructions-image').attr("src", image_prefix + image_name);
+                }
+                
+                
+
+                // add the icons to the Mannequin's cached_images
+                if (image_name.match("icon")) {
+                    Mannequin.cached_images[image_name.replace('.png', '')] = {image: image};
+                }
+
+                // push the loaded image into the loaded_images array and check if
+                // a images have been loaded
+                loaded_images.push(image_name);
+                if (loaded_images.length == images.length) {
+                    $('#loading-icon').remove();
+                    Mannequin.draw();
+                }
+            };
+        }(image_name);
+        image.src = image_prefix + image_name;
+    });
     
     
-    //this.draw();
+    
 }
 
 Mannequin.complete_outfit = function() {

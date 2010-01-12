@@ -26,12 +26,14 @@
 	<canvas id="mannequin-canvas" height="500px" width="210px">
 		canvas?
 	</canvas>
-	<img id="mannequin-instructions-image" src="static/images/mannequin_instructions.png" width="210px" alt="Play around with clothes within the dashed rectangle" />
+	<!-- src for this image to be filled in by Mannequin.draw_first_outfit -->
+	<img id="mannequin-instructions-image" width="210px" alt="Play around with clothes within the dashed rectangle" />
 </div>
 
 <div id="instructions" class="span-11 last">
 	<div id="clothing">
-		<img src="static/images/instructions.png" alt="Click on the orange line to the right to see our clothes. Then click on clothes on the right to put outfits together to the left."/>
+		<!-- src for this image to be filled in by Mannequin.draw_first_outfit -->
+		<img id="instructions-image" alt="Click on the orange line to the right to see our clothes. Then click on clothes on the right to put outfits together to the left."/>
 	</div>
 </div>
 
