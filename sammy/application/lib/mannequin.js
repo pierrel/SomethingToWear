@@ -219,34 +219,39 @@ Mannequin.draw_first_outfit = function() {
     var outfit = random_outfit();
     var images = ["mannequin_instructions.png", "close_icon.png", "info_icon.png", "resize_icon.png", "instructions.png"];
     var loaded_images = [];
-    var canvas = document.getElementById(this.element_id).getContext('2d');
     
     this.shirt_id = outfit['shirt'];
     this.pant_id = outfit['pant'];
     this.shoes_id = outfit['shoes'];
     
+    images.push(outfit.shirt);
+    images.push(outfit.pant);
+    images.push(outfit.shoes);
+    
     $.each(images, function(i, image_name) {
         var image = new Image();
         image.onload = function(image_name) {
             return function() {
-
-                // add instructions as they're loaded
-                if (image_name == "mannequin_instructions.png") {
-                    $('#mannequin-instructions-image').attr("src", image_prefix + image_name);
-                }
-                if (image_name == "instructions.png") {
-                    $('#instructions-image').attr("src", image_prefix + image_name);
-                }
                 
-                
+                if (image_name.match("\\.")) { // it's a static image
+                    // add instructions as they're loaded
+                    if (image_name == "mannequin_instructions.png") {
+                        $('#mannequin-instructions-image').attr("src", image_prefix + image_name);
+                    }
+                    if (image_name == "instructions.png") {
+                        $('#instructions-image').attr("src", image_prefix + image_name);
+                    }
 
-                // add the icons to the Mannequin's cached_images
-                if (image_name.match("icon")) {
-                    Mannequin.cached_images[image_name.replace('.png', '')] = {image: image};
+
+
+                    // add the icons to the Mannequin's cached_images
+                    if (image_name.match("icon")) {
+                        Mannequin.cached_images[image_name.replace('.png', '')] = {image: image};
+                    }
                 }
 
                 // push the loaded image into the loaded_images array and check if
-                // a images have been loaded
+                // all images have been loaded
                 loaded_images.push(image_name);
                 if (loaded_images.length == images.length) {
                     $('#loading-icon').remove();
@@ -254,7 +259,13 @@ Mannequin.draw_first_outfit = function() {
                 }
             };
         }(image_name);
-        image.src = image_prefix + image_name;
+        if (image_name.match("\\.")) {
+            image.src = image_prefix + image_name;
+        } else {
+
+            image.src = piece_image_url(image_name);
+        }
+        
     });
     
     
