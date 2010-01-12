@@ -108,20 +108,27 @@
 /* @group closet images */
 
 .closet-part {
-	overflow-x: scroll;
-	overflow-y: hidden;
+	overflow: scroll;
 	height: 140px;
 	width: 400px;
 	border: 2px solid #9c979a;
 	margin-bottom: 23px;
 }
 
-.piece-image {
-    float: left;
-	height: 120px;
+.closet-piece {
+	display: inline-block;
+	width: 100px;
 	border: 1px solid #97efd5;
-	margin-right: 2px;
-	margin-left: 2px;
+
+}
+.piece-image {
+	display: block;
+	max-height: 120px;
+	max-width: 100px;
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: auto;
+	margin-bottom: auto;
 	cursor: pointer;
 }
 
