@@ -112,7 +112,7 @@
 	height: 140px;
 	width: 400px;
 	border: 2px solid #9c979a;
-	margin-top: 23px;
+	margin-bottom: 23px;
 }
 
 .closet-piece {
@@ -120,6 +120,7 @@
 	width: 123px;
 	height: 120px;
 	border: 1px solid #97efd5;
+	cursor: pointer;
 
 }
 .piece-image {
@@ -127,7 +128,6 @@
 	max-height: 120px;
 	max-width: 123px;
 	margin: auto;
-	cursor: pointer;
 }
 
 .loading-piece {
