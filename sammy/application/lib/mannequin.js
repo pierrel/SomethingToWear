@@ -15,6 +15,25 @@ Mannequin.cached_images = {};   // hash of hashes for drawing images that have a
 Mannequin.dragging = false; // is the piece type when the user is dragging a piece
 Mannequin.resizing = false; // is the piece type when the user is resizing a piece
 
+// Position of pieces when first put on Mannequin (before cache)
+Mannequin.default_positions = {
+    shirt: {
+        x: 20,
+        y: 20,
+        width: 150
+    },
+    pant: {
+        x: 50,
+        y: 200,
+        width: 100
+    },
+    shoes: {
+        x: 70,
+        y: 300,
+        width: 100
+    }
+};
+
 Mannequin.element = function() {
     return $('#' + this.element_id);
 }
@@ -281,23 +300,7 @@ Mannequin.draw = function(highlight) {
     };
     
     // Some constants
-    var positions = {
-        shirt: {
-            x: 20,
-            y: 20,
-            width: 150
-        },
-        pant: {
-            x: 50,
-            y: 200,
-            width: 100
-        },
-        shoes: {
-            x: 70,
-            y: 300,
-            width: 100
-        }
-    };
+    var positions = this.default_positions;
     
     // makes sure that the highlighted piece gets drawn last
     // and so shows up on top of the rest.
