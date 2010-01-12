@@ -114,7 +114,7 @@ function fill_closet(context) {
 function search_and_update_closet(context, piece_type, closet_part_name, attributes) {
         
     if (attributes.length == 0 || (attributes.length == 1 && attributes[0] == "")) { // empty array or array with one empty string
-        limit = 15;
+        limit = 9;
         rows = get_view('pieces_by_type', {key: piece_type, limit: limit, reduce: false})['rows'];
         ids = $.map(rows, function(row) { return row['id'] });
         
