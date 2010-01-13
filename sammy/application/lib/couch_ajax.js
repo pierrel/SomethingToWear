@@ -101,7 +101,7 @@ function get_piece(id) {
             to_return = msg;
         },
         error: function(msg) {
-            alert('There was an error retrieving ' + id);
+            //alert('There was an error retrieving ' + id);
         }
     });
     return to_return;
@@ -134,12 +134,12 @@ function update_piece(id, data, success_func) {
                 data: JSON.stringify(reved_data),
                 success: success_func,
                 error: function(msg) {
-                    alert('error, could not update ' + id + ": '" + msg.reason + "'\n replacing '" + JSON.stringify(msg) + "' with '" + JSON.stringify(reved_data) + "'");
+                    //alert('error, could not update ' + id + ": '" + msg.reason + "'\n replacing '" + JSON.stringify(msg) + "' with '" + JSON.stringify(reved_data) + "'");
                 }
             })
         },
         error: function(msg) {
-            alert('Error updating document ' + id + ": '" + JSON.stringify(msg) + "'");
+            //alert('Error updating document ' + id + ": '" + JSON.stringify(msg) + "'");
         }
     });
 }
@@ -163,8 +163,8 @@ function get_view(view_name, params) {
             to_return = msg;
         },
         error: function(msg) {
-            alert('There was an error getting information for view ' + view_name);
-            alert('error: ' + JSON.stringify(msg));
+            //alert('There was an error getting information for view ' + view_name);
+            //alert('error: ' + JSON.stringify(msg));
         }
     });
     return to_return;

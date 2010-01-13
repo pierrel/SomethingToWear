@@ -52,40 +52,29 @@ function piece_to_closet_part(context, ids, part_name) {
     $('#' + part_name).empty();    
     
     $.each(ids, function(i, id) {
-    context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
-            $('#' + part_name).append(rendered);
+        context.partial('templates/closet_piece.template', {type: part_name, id: id}, function(rendered) {
+            if ($('#' + part_name + '-' + id).length == 0) { // to prevent duplicates
+            
+                $('#' + part_name).append(rendered);
 
-            $('#' + part_name + '-' + id).click(function(evt) {
-                // get the previous part for removing the background
-                old_id = Mannequin[transform[part_name]];
+                $('#' + part_name + '-' + id).click(function(evt) {
+                    // get the previous part for removing the background
+                    old_id = Mannequin[transform[part_name]];
         
-                // add the new piece to the mannequin
-                Mannequin[transform[part_name]] = id;
-                Mannequin.draw();
+                    // add the new piece to the mannequin
+                    Mannequin[transform[part_name]] = id;
+                    Mannequin.draw();
         
-                // change the background to show it's selected
-                highlight_piece(part_name, id);
+                    // change the background to show it's selected
+                    highlight_piece(part_name, id);
         
-                // remove the old piece's background
-                if (old_id != '' && $('#' + part_name + '-' + old_id)) {
-                    unhighlight_piece(part_name, old_id);
-                }
-            });
-        
-            // grab the correct image and replace the loading icon
-            // when the image is loaded
-            var image = new Image();
-            image.onload = function(part_name, id, ids) {
-                return function() {
-                    var piece_image = $('#' + part_name + '-' + id);
-                    // if the piece is in the mannequin then highlight it
-                    if (Mannequin[transform[part_name]] == id) {
-                        highlight_piece(part_name, id);
-                    }                
-                };
-            }(part_name, id, ids);
-            image.src = piece_image_url(id);        
-    });
+                    // remove the old piece's background
+                    if (old_id != '' && $('#' + part_name + '-' + old_id)) {
+                        unhighlight_piece(part_name, old_id);
+                    }
+                });        
+            }
+        });
     });    
 }
 
