@@ -38,6 +38,29 @@ Mannequin.element = function() {
     return $('#' + this.element_id);
 }
 
+Mannequin.share_outfit = function() {
+    var id = 'share-outfit-dialog';
+    var rendered = "this is where the link goes";
+    var dialog = $('#' + id)
+    
+    if (dialog.html()) {
+        dialog.html(rendered);
+        dialog.dialog('open');
+    } else {
+        dialog = $('<div id="' + id + '"></div>');
+        dialog.html(rendered);
+        dialog.dialog({
+            autoOpen: true,
+            modal: true,
+            width: 100,
+            height: 50,
+            dialogClass: 'dialog',
+            closeOnEscape: true,
+        });
+    }
+    
+}
+
 // the user is 'handling' if they are
 // dragging or resizing
 Mannequin.handling = function() {

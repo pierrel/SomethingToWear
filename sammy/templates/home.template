@@ -30,6 +30,8 @@
 	<canvas id="mannequin-canvas" height="500px" width="210px">
 		canvas?
 	</canvas>
+	
+	<a href="#" onclick="Mannequin.share_outfit()">Share</a>
 		
 </div>
 
