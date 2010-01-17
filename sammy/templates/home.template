@@ -23,12 +23,14 @@
 
 <div id="mannequin" class="span-6">
 	
+	<!-- src for this image to be filled in by Mannequin.draw_first_outfit -->
+	<img id="mannequin-instructions-image" width="210px" alt="Play around with clothes within the dashed rectangle" />
+	
+	
 	<canvas id="mannequin-canvas" height="500px" width="210px">
 		canvas?
 	</canvas>
-	
-	<!-- src for this image to be filled in by Mannequin.draw_first_outfit -->
-	<img id="mannequin-instructions-image" width="210px" alt="Play around with clothes within the dashed rectangle" />
+		
 </div>
 
 <div id="instructions" class="span-11 last">
