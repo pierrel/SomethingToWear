@@ -1,0 +1,5 @@
+<div id="shared">
+	<canvas id="mannequin-canvas" height="500px" width="210px">
+		canvas?
+	</canvas>
+</div>

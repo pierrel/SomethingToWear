@@ -4,6 +4,8 @@ App = $.sammy(function() {
     // =================
     
     this.get('#/', page_home);
+    
+    this.get('#/shared', page_shared);
 
      // =====================
      // = Internal settings =
