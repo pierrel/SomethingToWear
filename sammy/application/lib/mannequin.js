@@ -39,8 +39,32 @@ Mannequin.element = function() {
 }
 
 Mannequin.share_outfit = function() {
+    // first grab the info about the mannequin
+    top_info = this.cached_images[this.shirt_id];
+    bottom_info = this.cached_images[this.pant_id];
+    shoe_info = this.cached_images[this.shoes_id];
+    var url_info = {
+        topid: this.shirt_id,
+        topx: top_info.x,
+        topy: top_info.y,
+        topwidth: top_info.width,
+        topheight: top_info.height,
+        
+        bottomid: this.pant_id,
+        bottomx: bottom_info.x,
+        bottomy: bottom_info.y,
+        bottomwidth: bottom_info.width,
+        bottomheight: bottom_info.height,
+        
+        shoeid: this.shoes_id,
+        shoex: shoe_info.x,
+        shoey: shoe_info.y,
+        shoewidth: shoe_info.width,
+        shoeheight: shoe_info.height
+    };
+        
     var id = 'share-outfit-dialog';
-    var rendered = "this is where the link goes";
+    var rendered = "Copy this: " + window.location.href + 'shared?' + $.param(url_info);
     var dialog = $('#' + id)
     
     if (dialog.html()) {
@@ -52,7 +76,7 @@ Mannequin.share_outfit = function() {
         dialog.dialog({
             autoOpen: true,
             modal: true,
-            width: 100,
+            width: 500,
             height: 50,
             dialogClass: 'dialog',
             closeOnEscape: true,
